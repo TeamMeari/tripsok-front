@@ -1,23 +1,22 @@
-import logo from './logo.svg';
+
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
+import MainPage from './pages/MainPage';
+import ListPage from './pages/ListPage';
+import ContentPage from './pages/ContentPage';
+import SearchListPage from './pages/SearchListPage';
 
 function App(): JSX.Element {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/list" element={<ListPage />} />
+          <Route path="/content/:id" element={<ContentPage />} />
+          <Route path="/search" element={<SearchListPage />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
