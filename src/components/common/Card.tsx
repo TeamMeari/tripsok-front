@@ -2,12 +2,11 @@ import styles from "./Card.module.css";
 import '../../styles/skeleton.css'
 
 interface CardProps {
-    width?: number;
-    height?: number;
     image?: string;
     title?: string;
     description?: string;
     isLoading?: boolean;
+    rank?: number | null;
 }
 
 const Card = ({
@@ -15,9 +14,16 @@ const Card = ({
     title,
     description,
     isLoading = false,
+    rank = null,
 }: CardProps) => {
+
+    const RankBadge = () => {
+        if (rank) return <div className={styles.rankBadge}>{rank}</div>
+        return null;
+    }
     if (isLoading) {
         return <div className={styles.card}>
+            { RankBadge() }
             <div className={`${styles.cardImageContainer} skeleton`}>
             </div>
             <div className={styles.cardBody}>
@@ -29,6 +35,7 @@ const Card = ({
     }
   return (
     <div className={styles.card}>
+        { RankBadge() }
         <div className={styles.cardImageContainer}>
             <img src={image} alt={title} />
         </div>
