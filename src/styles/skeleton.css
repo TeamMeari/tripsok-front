@@ -1,0 +1,11 @@
+/* skeleton 애니메이션 */
+@keyframes pulse {
+    50% {
+      opacity: 0.5;
+    }
+}
+  
+.skeleton {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    background-color: #D9D9D9;
+}
