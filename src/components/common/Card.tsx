@@ -7,6 +7,7 @@ interface CardProps {
     description?: string;
     isLoading?: boolean;
     rank?: number | null;
+    onClick?: () => void;
 }
 
 const Card = ({
@@ -15,6 +16,7 @@ const Card = ({
     description,
     isLoading = false,
     rank = null,
+    onClick,
 }: CardProps) => {
 
     const RankBadge = () => {
@@ -34,7 +36,7 @@ const Card = ({
         </div>
     }
   return (
-    <div className={styles.card}>
+    <div className={styles.card} onClick={onClick}>
         { RankBadge() }
         <div className={styles.cardImageContainer}>
             <img src={image} alt={title} />
