@@ -1,0 +1,35 @@
+.menuContainer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #fff;
+    padding: 16px 0;
+    width: 360px;
+    height: 78px;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.menuItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    width: 62px;
+    height: 62px;
+}
+
+.icon {
+    width: 36px;
+    height: 36px;
+    margin-bottom: 5px;
+}
+
+.label {
+    color: #888;
+    font-size: 14px;
+}
+
+.labelSelected {
+    color: #ff5722;
+    font-size: 14px;
+}
