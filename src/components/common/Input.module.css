@@ -1,0 +1,20 @@
+.inputContainer {
+    display: flex;
+    width: 312px;
+    height: 52px;
+    box-sizing: border-box; 
+    align-items: center;
+    border: 1px solid #D9D9D9;
+    border-radius: 12px;
+    padding: 12px 12px;
+    gap: 8px;
+    transition: border-color 0.2s ease-in-out;
+}
+
+.input {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    padding: 0;
+}
