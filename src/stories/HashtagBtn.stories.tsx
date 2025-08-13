@@ -1,5 +1,5 @@
 import React from "react";
-import HashtagButton from "./HashtagBtn";
+import HashtagButton from "../components/common/HashtagBtn";
 
 export default {
     title: "Components/HashtagButton",
