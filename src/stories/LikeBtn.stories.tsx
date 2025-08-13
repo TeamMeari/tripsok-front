@@ -1,5 +1,5 @@
 import React from 'react';
-import LikeButton from './LikeBtn';
+import LikeButton from '../components/common/Button/LikeBtn';
 
 export default {
     title: 'Button/LikeButton',
