@@ -11,6 +11,6 @@ export const AllButtons = () => (
         <Button variant="primary" size="small" borderRadius="12px">내 여정에 추가</Button>
         <Button variant="primary" size="large" borderRadius="12px">내 여정에 추가</Button>
         <Button variant="secondary" borderRadius="48px">로그인</Button>
-        <Button variant="secondary" borderRadius="48px">회원가입</Button>
+        <Button variant="secondary" borderRadius="48px">로그아웃</Button>
     </div>
 );
