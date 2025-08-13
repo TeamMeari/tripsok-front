@@ -1,35 +1,42 @@
 import styles from './Input.module.css'
-import { useState } from 'react';
 
 interface InputProps {
     width?: number;
-    value?: string;
-    leftIcon?: React.ElementType;
-    rightIcon?: React.ElementType;
+    value: string;
+    leftIcon?: React.ReactNode;
+    rightButton?: React.ReactNode;
     placeholder?: string;
-    shadow: boolean;
-    onFocus: () => void;
+    onFocus?: () => void;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    style?: Record<string, string>
 }
 
 const Input = ({
     width = 312, 
     value,
-    leftIcon: LeftIcon,
-    rightIcon: RightIcon,
+    leftIcon,
+    rightButton,
     placeholder = "",
-    shadow = false,
-    onFocus
+    onFocus,
+    onChange,
+    style
 }: InputProps) => {
-    return <div className={`${styles.inputContainer} ${shadow ? styles.shadow : ""}`} style={{ width: `${width}px`}}>
-        { LeftIcon && <LeftIcon /> }
+    const containerStyle = {
+        width: `${width}px`,
+        ...style
+    }
+
+    return <div className={styles.inputContainer} style={containerStyle}>
+        { leftIcon }
         <input
             type="text"
             value={value}
             className={styles.input}
             placeholder={placeholder}
             onFocus={onFocus}
+            onChange={onChange}
         />
-        { RightIcon && <RightIcon />}
+        { rightButton }
     </div>
 }
 

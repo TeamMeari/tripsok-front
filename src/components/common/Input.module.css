@@ -6,12 +6,9 @@
     align-items: center;
     border: 1px solid #D9D9D9;
     border-radius: 12px;
-    padding: 12px 13px;
+    padding: 12px 12px;
+    gap: 8px;
     transition: border-color 0.2s ease-in-out;
-}
-
-.shadow {
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.32);
 }
 
 .input {
@@ -19,4 +16,5 @@
     border: none;
     outline: none;
     font-size: 16px;
+    padding: 0;
 }
