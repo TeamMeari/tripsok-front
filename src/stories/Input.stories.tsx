@@ -12,17 +12,16 @@ const meta: Meta<typeof Input> = {
     leftIcon: {
       control: 'object',
       table: {
-        type: { summary: 'React.ElementType' },
+        type: { summary: 'React.FC' },
       },
     },
-    rightIcon: {
+    rightButton: {
       control: 'object',
       table: {
         type: { summary: 'React.ElementType' },
       },
     },
     placeholder: { control: 'text' },
-    shadow: { control: 'boolean' },
   },
 };
 
@@ -35,9 +34,9 @@ export const Default: Story = {
   },
 };
 
-export const Shadow: Story = {
+export const WithLeftIcon: Story = {
   args: {
-    placeholder: "그림자 인풋창",
-    shadow: true
+    leftIcon: <img src="/public/InfoIcon/flag.svg" alt="search" />,
+    placeholder: '출발지'
   }
 }
