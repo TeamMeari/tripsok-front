@@ -1,0 +1,21 @@
+.iconBtn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.iconBtn:hover .icon {
+    transform: scale(1.1);
+}
+
+.icon {
+    color: #fff;
+    font-size: 24px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.iconBtn:hover .icon {
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6));
+}
