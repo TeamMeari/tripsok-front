@@ -1,0 +1,19 @@
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.icon {
+    width: 28px;
+    height: 28px;
+    transition: transform 0.18s ease, fill 0.18s ease;
+}
+
+.liked {
+    transform: scale(1.1);
+}
