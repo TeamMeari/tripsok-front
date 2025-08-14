@@ -1,17 +1,20 @@
 import styles from './Input.module.css'
 
 interface InputProps {
+    type?: string;
     width?: number;
-    value: string;
+    value?: string;
     leftIcon?: React.ReactNode;
     rightButton?: React.ReactNode;
     placeholder?: string;
     onFocus?: () => void;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
     style?: Record<string, string>
 }
 
 const Input = ({
+    type="text",
     width = 312, 
     value,
     leftIcon,
@@ -19,6 +22,7 @@ const Input = ({
     placeholder = "",
     onFocus,
     onChange,
+    onKeyDown,
     style
 }: InputProps) => {
     const containerStyle = {
@@ -29,12 +33,13 @@ const Input = ({
     return <div className={styles.inputContainer} style={containerStyle}>
         { leftIcon }
         <input
-            type="text"
+            type={type}
             value={value}
             className={styles.input}
             placeholder={placeholder}
             onFocus={onFocus}
             onChange={onChange}
+            onKeyDown={onKeyDown}
         />
         { rightButton }
     </div>
