@@ -10,18 +10,18 @@ interface MenuItem {
 const menuItems: MenuItem[] = [
     {
         label: "탐색",
-        iconDefault: "/menuIcon/explore_basic.png",
-        iconSelected: "/menuIcon/explore_select.png",
+        iconDefault: "/menuIcon/explore_basic.svg",
+        iconSelected: "/menuIcon/explore_select.svg",
     },
     {
         label: "나의 여정",
-        iconDefault: "/menuIcon/myTrip_basic.png",
-        iconSelected: "/menuIcon/myTrip_select.png",
+        iconDefault: "/menuIcon/myTrip_basic.svg",
+        iconSelected: "/menuIcon/myTrip_select.svg",
     },
     {
         label: "고객센터",
-        iconDefault: "/menuIcon/customer_basic.png",
-        iconSelected: "/menuIcon/customer_select.png",
+        iconDefault: "/menuIcon/customer_basic.svg",
+        iconSelected: "/menuIcon/customer_select.svg",
     },
 ];
 
