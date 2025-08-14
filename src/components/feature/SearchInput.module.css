@@ -1,3 +1,9 @@
+.searchContainer {
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+}
+
 .cameraButton {
     background-color: transparent;
     border: 0;
@@ -5,4 +11,56 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.imageSearchContainer {
+    width: 100%;
+    border: 1px solid #D9D9D9;
+    position: absolute;
+    bottom: 0;
+    transform: translateY(calc(100% + 2px));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 20px 20px 10px 20px;
+    border-radius: 12px;
+    z-index: 20;
+    background-color: #ffffff;
+    color: #666666;
+}
+
+.imageSearchContainer > h3 {
+    font-size: 18px;
+    margin: 0;
+}
+
+.imageSearchIntro {
+    margin: 4px 0 20px 0;
+    font-size: 14px;
+}
+
+.uploadButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    border: 0;
+    width: 100%;
+    background-color: rgba(255, 107, 44, 0.1);
+    padding: 10px 20px;
+    border-radius: 12px;
+}
+
+.uploadButtonText {
+    color: #FF6B2C;
+}
+
+.imageSearchContainer > input {
+    display: none;
+}
+
+.preview {
+    width: 50%;
+    margin-bottom: 20px;
 }
