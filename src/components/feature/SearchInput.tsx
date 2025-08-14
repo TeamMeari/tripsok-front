@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import Input from '../common/Input';
 import styles from './SearchInput.module.css';
 import CameraIcon from '../Icons/CameraIcon';
 import SearchIcon from '../Icons/SearchIcon';
+import { animate } from "@motionone/dom";
 
 interface SearchInputProps {
     searchWord: string
@@ -11,19 +12,30 @@ interface SearchInputProps {
 const SearchInput = ({ searchWord }: SearchInputProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const [searchInput, setSearchInput] = useState(searchWord);
+    const buttonRef = useRef<HTMLButtonElement>(null);
 
     const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchInput(e.target.value);
     }
 
-    const toggleSearchImage = () => {
-        setIsOpen(!isOpen);
-    }
+    const toggleSearchImage = useCallback(() => {
+        setIsOpen(prev => {
+            const next = !prev;
+
+            //애니메이션 추가
+            if (buttonRef.current) {
+                animate(buttonRef.current, { scale: [1, 1.2, 1] }, { duration: 0.3 });
+            }
+
+            return next;
+        });
+    }, []);
 
     const cameraButton = (
         <button
             className={styles.cameraButton}
             onClick={toggleSearchImage}
+            ref={buttonRef}
         >
             <CameraIcon filled={isOpen} color={searchWord ? '#FF6B2C' : '#666666'}/>
         </button>
