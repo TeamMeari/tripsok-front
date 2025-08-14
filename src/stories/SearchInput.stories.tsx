@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { BrowserRouter } from 'react-router-dom';
 import SearchInput from '../components/feature/SearchInput'
 
 const meta: Meta<typeof SearchInput> = {
@@ -9,8 +10,15 @@ const meta: Meta<typeof SearchInput> = {
       },
       tags: ['autodocs'],
       argTypes: {
-        searchWord: { control: 'object' },
+        searchWord: { control: 'text' },
       },
+      decorators: [
+        (Story) => (
+          <BrowserRouter>
+            <Story />
+          </BrowserRouter>
+        ),
+      ],
 }
 
 export default meta;
