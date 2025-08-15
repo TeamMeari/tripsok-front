@@ -11,9 +11,7 @@ const meta: Meta<typeof CardCarousel> = {
     decorators: [
         (Story) => (
             <BrowserRouter>
-                <div style={{ paddingLeft: '24px' }}>
-                    <Story />
-                </div>
+                <Story />
             </BrowserRouter>
         ),
     ],
