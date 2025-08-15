@@ -1,0 +1,38 @@
+#storybook-root {
+  max-width: 100% !important;
+  padding: 0 !important;
+}
+
+/* 모바일 환경에서 스크롤 개선 */
+#storybook-root * {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* 터치 이벤트가 필요한 요소들 */
+#storybook-root input,
+#storybook-root textarea,
+#storybook-root [contenteditable="true"] {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+/* 스토리북 iframe 최적화 */
+#storybook-preview-iframe {
+  border: none !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* 모바일 뷰포트 설정 */
+@media (max-width: 768px) {
+  #storybook-root {
+    font-size: 16px; /* iOS에서 줌 방지 */
+  }
+}
