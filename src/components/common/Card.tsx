@@ -1,24 +1,25 @@
 import styles from "./Card.module.css";
 import '../../styles/skeleton.css'
+import { useNavigate } from "react-router-dom";
 
 interface CardProps {
+    id: number;
     image?: string;
     title?: string;
     description?: string;
     isLoading?: boolean;
     rank?: number | null;
-    onClick?: () => void;
 }
 
 const Card = ({
+    id,
     image = "https://via.placeholder.com/150",
     title,
     description,
     isLoading = false,
     rank = null,
-    onClick,
 }: CardProps) => {
-
+    const navigate = useNavigate();
     const RankBadge = () => {
         if (rank) return <div className={styles.rankBadge}>{rank}</div>
         return null;
@@ -36,7 +37,7 @@ const Card = ({
         </div>
     }
   return (
-    <div className={styles.card} onClick={onClick}>
+    <div className={styles.card} onClick={() => navigate(`/content/${id}`)}>
         { RankBadge() }
         <div className={styles.cardImageContainer}>
             <img src={image} alt={title} />
