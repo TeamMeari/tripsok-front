@@ -1,0 +1,27 @@
+.carouselTrack {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+.carouselTrack::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.carouselItems {
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+    gap: 10px;
+}
+
+.carouselItems::after {
+    content: '';
+    min-width: 8px;
+    flex-shrink: 0;
+}
+
+
