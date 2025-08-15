@@ -20,7 +20,13 @@
 
 .carouselItems::after {
     content: '';
-    min-width: 8px;
+    min-width: 24px;
+    flex-shrink: 0;
+}
+
+.carouselItems::before {
+    content: '';
+    min-width: 24px;
     flex-shrink: 0;
 }
 
