@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./Menu_app.module.css";
+import styles from "./MenuApp.module.css";
 
 interface MenuItem {
     label: string;

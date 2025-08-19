@@ -1,5 +1,5 @@
 import React from "react";
-import MenuApp from "../components/Menu_app";
+import MenuApp from "../components/MenuApp";
 
 export default {
     title: "Components/MenuApp",
