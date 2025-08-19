@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Header.module.css";
-import Button from "../components/common/Button/CommonBtn";
+import Button from "../common/Button/CommonBtn";
 
 interface HeaderProps {
     useBackground?: boolean; // 개발자가 배경 이미지 사용 여부 선택

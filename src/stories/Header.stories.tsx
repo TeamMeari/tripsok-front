@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { BrowserRouter } from "react-router-dom";
-import Header from "../components/Header";
+import Header from "../components/header/Header";
 
 const meta: Meta<typeof Header> = {
     title: "Layout/Header",
