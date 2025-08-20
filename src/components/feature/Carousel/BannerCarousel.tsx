@@ -85,13 +85,68 @@ const BannerCarousel = ({ banners }: BannerCarouselProps) => {
         if (!el) return;
 
         const handleWheel = (e: WheelEvent) => {
-        e.preventDefault();
-        if (e.deltaY > 0 || e.deltaX > 0) moveToNext();
-        else if (e.deltaY < 0 || e.deltaX < 0) moveToPrev();
+            e.preventDefault();
+            if (e.deltaY > 0 || e.deltaX > 0) moveToNext();
+            else if (e.deltaY < 0 || e.deltaX < 0) moveToPrev();
         };
 
         el.addEventListener("wheel", handleWheel, { passive: false });
         return () => el.removeEventListener("wheel", handleWheel);
+    }, [moveToNext, moveToPrev]);
+
+    // 터치 이벤트 처리
+    useEffect(() => {
+        const el = carouselRef.current;
+        if (!el) return;
+
+        let startX = 0;
+        let startY = 0;
+        let isDragging = false;
+        const minSwipeDistance = 50; // 최소 스와이프 거리
+
+        const handleTouchStart = (e: TouchEvent) => {
+            isDragging = true;
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+        };
+
+        const handleTouchMove = (e: TouchEvent) => {
+            if (!isDragging) return;
+            e.preventDefault();
+        };
+
+        const handleTouchEnd = (e: TouchEvent) => {
+            if (!isDragging) return;
+            
+            const endX = e.changedTouches[0].clientX;
+            const endY = e.changedTouches[0].clientY;
+            
+            const diffX = startX - endX;
+            const diffY = startY - endY;
+            
+            // 가로 스와이프가 세로 스크롤보다 클 때만 처리
+            if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > minSwipeDistance) {
+                if (diffX > 0) {
+                    // 왼쪽으로 스와이프 (다음)
+                    moveToNext();
+                } else {
+                    // 오른쪽으로 스와이프 (이전)
+                    moveToPrev();
+                }
+            }
+            
+            isDragging = false;
+        };
+
+        el.addEventListener('touchstart', handleTouchStart, { passive: true });
+        el.addEventListener('touchmove', handleTouchMove, { passive: false });
+        el.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+        return () => {
+            el.removeEventListener('touchstart', handleTouchStart);
+            el.removeEventListener('touchmove', handleTouchMove);
+            el.removeEventListener('touchend', handleTouchEnd);
+        };
     }, [moveToNext, moveToPrev]);
 
     return (

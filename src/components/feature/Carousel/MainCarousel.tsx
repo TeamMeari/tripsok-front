@@ -28,21 +28,19 @@ const MainCarousel = ({ items }: MainCarouselProps) => {
     if (isAnimating) return;
     const el = carouselRef.current;
     if (!el) return;
+    console.log("moveToNext")
 
     setIsAnimating(true);
-    const nextIndex = currentIndex + 1;
 
-    animate(el, { x: [`-${currentIndex * 100}vw`, `-${nextIndex * 100}vw`] }, { duration: 0.6, easing: "ease-in-out" })
+    animate(el, { x: [`-${currentIndex * 100}vw`, `-${(currentIndex + 1) * 100}vw`] }, { duration: 0.6, easing: "ease-in-out" })
       .finished.then(() => {
-        let newIndex = nextIndex;
 
         // 마지막 cloneFirst → 원본 첫 슬라이드 점프
-        if (nextIndex === items.length + 1) {
-          newIndex = 1;
-          el.style.transform = `translateX(-${newIndex * 100}vw)`;
+        if (currentIndex === items.length) {
+          el.style.transform = `translateX(-${(currentIndex + 1) * 100}vw)`;
         }
 
-        setCurrentIndex(newIndex);
+        setCurrentIndex(currentIndex + 1);
         setIsAnimating(false);
       });
   }, [currentIndex, isAnimating, items.length]);
@@ -53,19 +51,16 @@ const MainCarousel = ({ items }: MainCarouselProps) => {
     if (!el) return;
 
     setIsAnimating(true);
-    const prevIndex = currentIndex - 1;
 
-    animate(el, { x: [`-${currentIndex * 100}vw`, `-${prevIndex * 100}vw`] }, { duration: 0.6, easing: "ease-in-out" })
+    animate(el, { x: [`-${currentIndex * 100}vw`, `-${(currentIndex - 1) * 100}vw`] }, { duration: 0.6, easing: "ease-in-out" })
       .finished.then(() => {
-        let newIndex = prevIndex;
 
         // 첫 번째 cloneLast → 원본 마지막 슬라이드 점프
-        if (prevIndex === 0) {
-          newIndex = items.length;
-          el.style.transform = `translateX(-${newIndex * 100}vw)`;
+        if (currentIndex === 0) {
+          el.style.transform = `translateX(-${(items.length) * 100}vw)`;
         }
 
-        setCurrentIndex(newIndex);
+        setCurrentIndex(currentIndex - 1);
         setIsAnimating(false);
       });
   }, [currentIndex, isAnimating, items.length]);
@@ -74,11 +69,12 @@ const MainCarousel = ({ items }: MainCarouselProps) => {
   useEffect(() => {
     const el = carouselRef.current;
     if (!el) return;
+    if (isAnimating) return;
 
     const handleWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      if (e.deltaY > 0 || e.deltaX > 0) moveToNext();
-      else if (e.deltaY < 0 || e.deltaX < 0) moveToPrev();
+        e.preventDefault();
+        if (e.deltaY > 0 || e.deltaX > 0) moveToNext();
+        else if (e.deltaY < 0 || e.deltaX < 0) moveToPrev();
     };
 
     el.addEventListener("wheel", handleWheel, { passive: false });
@@ -91,12 +87,58 @@ const MainCarousel = ({ items }: MainCarouselProps) => {
     if (el) el.style.transform = `translateX(-${currentIndex * 100}vw)`;
   }, []);
 
+  // 터치 이벤트 처리
   useEffect(() => {
-    const interval = setInterval(() => {
-      moveToNext();
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [moveToNext, currentIndex]);
+    const el = carouselRef.current;
+    if (!el) return;
+    if (isAnimating) return;
+
+    let startX = 0;
+    let isDragging = false;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      isDragging = true;
+      startX = e.touches[0].clientX;
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!isDragging) return;
+      e.preventDefault();
+      
+      const currentX = e.touches[0].clientX;
+      const diff = startX - currentX;
+
+      if (Math.abs(diff) > 0) {
+        if (diff > 0) {
+          moveToNext();
+        } else {
+          moveToPrev();
+        }
+        isDragging = false;
+      }
+    };
+
+    const handleTouchEnd = () => {
+      isDragging = false;
+    };
+
+    el.addEventListener('touchstart', handleTouchStart);
+    el.addEventListener('touchmove', handleTouchMove, { passive: false });
+    el.addEventListener('touchend', handleTouchEnd);
+
+    return () => {
+      el.removeEventListener('touchstart', handleTouchStart);
+      el.removeEventListener('touchmove', handleTouchMove);
+      el.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [isAnimating, moveToNext, moveToPrev]);
+
+//   useEffect(() => {
+//     const interval = setInterval(() => {
+//       moveToNext();
+//     }, 5000);
+//     return () => clearInterval(interval);
+//   }, [moveToNext, currentIndex]);
 
   return (
     <div className={styles.carouselTrack}>
