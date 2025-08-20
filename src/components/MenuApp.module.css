@@ -3,9 +3,9 @@
     justify-content: space-around;
     align-items: center;
     background-color: #fff;
-    padding: 16px 0;
+    box-sizing: border-box;
     width: 360px;
-    height: 62px;
+    height: 80px;
     box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.12);
 }
 
