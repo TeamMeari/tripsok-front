@@ -1,11 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { BrowserRouter } from "react-router-dom";
 import Header from "../components/header/Header";
+import TransparentHeader from "../components/header/TransparentHeader";
+
 
 const meta: Meta<typeof Header> = {
     title: "Layout/Header",
     component: Header,
 };
+
 
 export default meta;
 type Story = StoryObj<typeof Header>;
@@ -19,6 +22,9 @@ export const Default: Story = {
 
                 {/* 배경 있는 Header */}
                 <Header useBackground={true} />
+
+                {/* 투명 Header  */}
+                <TransparentHeader />
             </div>
         </BrowserRouter>
     ),

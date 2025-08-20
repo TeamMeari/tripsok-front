@@ -1,0 +1,16 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 24px;
+    height: 84px;
+    width: 100%;
+    max-width: 360px;
+    background-color: transparent;
+    box-sizing: border-box;
+}
+
+.left, .right {
+    display: flex;
+    align-items: center;
+}
