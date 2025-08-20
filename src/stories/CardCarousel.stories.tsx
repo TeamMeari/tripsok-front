@@ -3,7 +3,7 @@ import CardCarousel from '../components/feature/Carousel/CardCarousel';
 import { BrowserRouter } from 'react-router-dom';
 
 const meta: Meta<typeof CardCarousel> = {
-    title: 'Feature/CardCarousel',
+    title: 'Feature/Carousel/CardCarousel',
     component: CardCarousel,
     parameters: {
         layout: 'centered',

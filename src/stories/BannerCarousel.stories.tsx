@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import BannerCarousel from '../components/feature/Carousel/BannerCarousel';
 
 const meta = {
-    title: 'Feature/BannerCarousel',
+    title: 'Feature/Carousel/BannerCarousel',
     component: BannerCarousel,
     parameters: {
         layout: 'centered',

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import ContentCarousel from '../components/feature/Carousel/ContentCarousel';
 
 const meta = {
-  title: 'Feature/ContentCarousel',
+  title: 'Feature/Carousel/ContentCarousel',
   component: ContentCarousel,
   parameters: {
     layout: 'centered',

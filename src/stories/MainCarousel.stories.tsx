@@ -3,7 +3,7 @@ import MainCarousel from '../components/feature/Carousel/MainCarousel';
 import { BrowserRouter } from 'react-router-dom';
 
 const meta: Meta<typeof MainCarousel> = {
-    title: 'Feature/MainCarousel',
+    title: 'Feature/Carousel/MainCarousel',
     component: MainCarousel,
     parameters: {
         layout: 'fullscreen',
