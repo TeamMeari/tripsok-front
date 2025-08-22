@@ -1,19 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ListPage from '../../pages/ListPage';
-import '../../App.css';
-import '../../index.css';
+import ListPage from '../pages/ListPage';
+import '../App.css';
+import '../index.css';
 import { BrowserRouter } from 'react-router-dom';
-import Header from '../../components/header/Header';
-import MenuApp from '../../components/MenuApp';
+import Header from '../components/header/Header';
+import MenuApp from '../components/MenuApp';
 
 const meta = {
-  title: 'Pages/ListPage',
-  component: ListPage,
+  title: 'Page/Pages',
   parameters: {
     layout: 'fullscreen',
   },
   decorators: [
-    (Story) => (
+    (Story: React.ComponentType) => (
       <BrowserRouter>
         <div className="app-area">
           <Header />
@@ -25,12 +24,11 @@ const meta = {
       </BrowserRouter>
     ),
   ],
-} satisfies Meta<typeof ListPage>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  args: {}
+export const List: Story = {
+  render: () => <ListPage />,
 };
-
