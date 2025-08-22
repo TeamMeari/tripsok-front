@@ -7,6 +7,10 @@
     width: 360px;
     height: 80px;
     box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.12);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
 }
 
 .menuItem {
