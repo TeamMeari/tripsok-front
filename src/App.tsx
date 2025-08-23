@@ -7,6 +7,8 @@ import ContentPage from './pages/ContentPage';
 import SearchListPage from './pages/SearchListPage';
 import Header from './components/header/Header';
 import MenuApp from './components/MenuApp';
+import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
 
 function App(): JSX.Element {
   return (
@@ -17,6 +19,8 @@ function App(): JSX.Element {
           <div className="content-area">
             <Routes>
               <Route path="/" element={<MainPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignupPage />} />
               <Route path="/list" element={<ListPage />} />
               <Route path="/content/:id" element={<ContentPage />} />
               <Route path="/search" element={<SearchListPage />} />
