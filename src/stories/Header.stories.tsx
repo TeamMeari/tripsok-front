@@ -29,3 +29,11 @@ export const Default: Story = {
         </BrowserRouter>
     ),
 };
+
+export const NoLogo: Story = {
+    render: () => (
+        <BrowserRouter>
+            <Header isLogo={false} />
+        </BrowserRouter>
+    ),
+};

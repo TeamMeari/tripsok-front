@@ -18,6 +18,15 @@
     align-items: center;
 }
 
+.arrowLeft {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    height: 33px;
+}
+
 .logo {
     height: 28px;
     cursor: pointer;
