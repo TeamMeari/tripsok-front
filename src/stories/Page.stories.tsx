@@ -3,8 +3,8 @@ import ListPage from '../pages/ListPage';
 import '../App.css';
 import '../index.css';
 import { BrowserRouter } from 'react-router-dom';
-import Header from '../components/header/Header';
 import MenuApp from '../components/MenuApp';
+import HeaderSelector from '../components/header/HeaderSelector';
 
 const meta = {
   title: 'Page/Pages',
@@ -15,7 +15,7 @@ const meta = {
     (Story: React.ComponentType) => (
       <BrowserRouter>
         <div className="app-area">
-          <Header />
+          <HeaderSelector />
           <div className="content-area">
             <Story />
           </div>
