@@ -1,0 +1,17 @@
+.checkBox {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.checked {
+    color: #FF6B2C;
+}
+
+.unchecked {
+    color: #D9D9D9;
+}
+
+.checkBox:disabled {
+    cursor: not-allowed;
+}
