@@ -1,16 +1,18 @@
 import styles from './Input.module.css'
+import React from 'react'
 
 interface InputProps {
     type?: string;
     width?: number;
     value?: string;
     leftIcon?: React.ReactNode;
-    rightButton?: React.ReactNode;
+    rightElement?: React.ReactNode;
     placeholder?: string;
     onFocus?: () => void;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-    style?: Record<string, string>
+    style?: Record<string, string>;
+    autoFocus?: boolean;
 }
 
 const Input = ({
@@ -18,12 +20,13 @@ const Input = ({
     width = 312, 
     value,
     leftIcon,
-    rightButton,
+    rightElement,
     placeholder = "",
     onFocus,
     onChange,
     onKeyDown,
-    style
+    style,
+    autoFocus
 }: InputProps) => {
     const containerStyle = {
         width: `${width}px`,
@@ -40,9 +43,10 @@ const Input = ({
             onFocus={onFocus}
             onChange={onChange}
             onKeyDown={onKeyDown}
+            autoFocus={autoFocus}
         />
-        { rightButton }
+        { rightElement }
     </div>
 }
 
-export default Input;
+export default React.memo(Input);
