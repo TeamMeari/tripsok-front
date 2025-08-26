@@ -5,6 +5,7 @@ import '../index.css';
 import { BrowserRouter } from 'react-router-dom';
 import MenuApp from '../components/MenuApp';
 import HeaderSelector from '../components/header/HeaderSelector';
+import LoginPage from '../pages/LoginPage';
 
 const meta = {
   title: 'Page/Pages',
@@ -32,3 +33,7 @@ type Story = StoryObj<typeof meta>;
 export const List: Story = {
   render: () => <ListPage />,
 };
+
+export const Login: Story =  {
+  render: () => <LoginPage />,
+}
