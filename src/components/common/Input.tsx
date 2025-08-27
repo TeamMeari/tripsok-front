@@ -1,5 +1,5 @@
 import styles from './Input.module.css'
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useState } from 'react'
 
 interface InputProps {
     type?: string;
@@ -33,7 +33,24 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
         ...style
     }
 
-    return <div className={styles.inputContainer} style={containerStyle}>
+    const [isFocused, setIsFocused] = useState(false);
+
+    const handleFocus = () => {
+        setIsFocused(true);
+        onFocus?.();
+    };
+
+    const handleBlur = () => {
+        setIsFocused(false);
+    };
+
+    return <div 
+        className={styles.inputContainer} 
+        style={{
+            ...containerStyle,
+            borderColor: isFocused ? '#111111' : '#D9D9D9'
+        }}
+    >
         { leftIcon }
         <input
             ref={ref}
@@ -41,7 +58,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
             value={value}
             className={styles.input}
             placeholder={placeholder}
-            onFocus={onFocus}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
             onChange={onChange}
             onKeyDown={onKeyDown}
             maxLength={maxLength}
