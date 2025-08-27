@@ -41,7 +41,7 @@ const LoginPage = () => {
                     placeholder="touang@example.com"
                     maxLength={320}
                     value={email}
-                    rightElement={<ResetButton onClick={() => setEmail("")}/>}
+                    rightElement={email && <ResetButton onClick={() => setEmail("")}/>}
                 />
                 {emailError && <p className={styles.error}>{emailError}</p>}
             </div>
