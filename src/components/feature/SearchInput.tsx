@@ -104,13 +104,14 @@ const SearchInput = ({ searchWord }: SearchInputProps) => {
                 value={searchInput}
                 leftIcon={<SearchIcon color={searchWord ? '#FF6B2C' : '#666666'}/>}
                 placeholder="이미지를 이용해 더 편하게 검색"
-                rightButton={cameraButton}
+                rightElement={cameraButton}
                 onChange={handleChangeInput}
                 onKeyDown={handleKeyDown}
                 style={searchWord ? {
                     boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.32)',
                     border: '2px solid #FF6B2C'
                 } : {}}
+                maxLength={100}
             />
             {(isOpen || isAnimating) &&
                 <div
