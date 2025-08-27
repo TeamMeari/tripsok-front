@@ -31,7 +31,7 @@ const PasswordInput = ({ placeholder, onChange }: PasswordInputProps) => {
                 type={isVisible ? "text" : "password"}
                 placeholder={placeholder}
                 onChange={onChange}
-                rightButton={<EyeButton isVisible={isVisible} onClick={() => setIsVisible(!isVisible)} />}
+                rightElement={<EyeButton isVisible={isVisible} onClick={() => setIsVisible(!isVisible)} />}
             />
         </div>
     );
