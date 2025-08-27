@@ -14,7 +14,7 @@ const HeaderSelector: React.FC = () => {
     
     // 콘텐츠 상세 페이지는 TransparentHeader 사용
     if (pathname.startsWith("/content/")) {
-      return <TransparentHeader />;
+      return null;
     }
     
     // 나머지 페이지들은 기본 Header 사용
