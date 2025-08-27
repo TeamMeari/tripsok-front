@@ -5,7 +5,6 @@ import styles from "./passwordInput.module.css";
 interface PasswordInputProps {
     placeholder: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    // value: string;
 }
 
 const EyeButton = ({ isVisible, onClick }: { isVisible: boolean, onClick: () => void }) => {
@@ -32,7 +31,7 @@ const PasswordInput = ({ placeholder, onChange }: PasswordInputProps) => {
                 type={isVisible ? "text" : "password"}
                 placeholder={placeholder}
                 onChange={onChange}
-                // value={value}
+                maxLength={20}
                 rightElement={<EyeButton isVisible={isVisible} onClick={() => setIsVisible(!isVisible)} />}
             />
         </div>

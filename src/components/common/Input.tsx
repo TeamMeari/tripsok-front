@@ -12,6 +12,7 @@ interface InputProps {
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
     style?: Record<string, string>;
+    maxLength?: number;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(({
@@ -24,7 +25,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
     onFocus,
     onChange,
     onKeyDown,
-    style
+    style,
+    maxLength
 }, ref) => {
     const containerStyle = {
         width: `${width}px`,
@@ -42,6 +44,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
             onFocus={onFocus}
             onChange={onChange}
             onKeyDown={onKeyDown}
+            maxLength={maxLength}
         />
         { rightElement }
     </div>

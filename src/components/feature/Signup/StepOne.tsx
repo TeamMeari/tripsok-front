@@ -34,7 +34,7 @@ const StepOne = ({ onSubmit }: StepOneProps) => {
         <p className={styles.message}>나만의 여정을 저장할<br />계정을 만들게요</p>
         <div className={styles.content}>
             <div className={styles.inputContainer}>
-                <Input onChange={handleEmailChange} value={email} placeholder="이메일 주소를 입력하세요."/>
+                <Input onChange={handleEmailChange} value={email} placeholder="이메일 주소를 입력하세요." maxLength={320}/>
                 {emailError && <div className={styles.errorContainer}>
                     <p className={styles.error}>{emailError}</p>
                     {emailError === EXISTING_EMAIL && <a href="/login" className={styles.link}>로그인</a>}

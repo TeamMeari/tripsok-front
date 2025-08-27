@@ -111,6 +111,7 @@ const SearchInput = ({ searchWord }: SearchInputProps) => {
                     boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.32)',
                     border: '2px solid #FF6B2C'
                 } : {}}
+                maxLength={100}
             />
             {(isOpen || isAnimating) &&
                 <div
