@@ -66,7 +66,7 @@ const StepTwo = ({ email, onSubmit }: StepTwoProps) => {
         <p className={styles.message}>{email}<br />으로 보낸 인증코드를 입력해주세요</p>
         <div className={styles.content}>
             <div className={styles.inputContainer}>
-                <Input onChange={handleCodeChange} rightElement={<CodeTimer />} value={code}/>
+                <Input onChange={handleCodeChange} rightElement={<CodeTimer />} value={code} maxLength={codeLength}/>
                 {codeError ?
                 <div className={styles.errorContainer}>
                     <p className={styles.error}>{codeError}</p>

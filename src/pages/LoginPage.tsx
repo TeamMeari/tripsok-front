@@ -36,7 +36,7 @@ const LoginPage = () => {
         </h2>
         <div className={styles.barLogin}>
             <div className={styles.inputContainer}>
-                <Input onChange={handleEmailChange}  placeholder="touang@example.com" />
+                <Input onChange={handleEmailChange}  placeholder="touang@example.com" maxLength={320} />
                 {emailError && <p className={styles.error}>{emailError}</p>}
             </div>
             <div className={styles.inputContainer}>

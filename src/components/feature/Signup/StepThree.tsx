@@ -113,7 +113,7 @@ const StepThree = ({ onSubmit, emailVerifyToken, goStepFour, goStepFive }: StepT
                 {passwordValid && passwordConfirmValid && <p className={styles.success}>비밀번호 일치</p>}
             </div>}
             {nicknameVisible && <div className={styles.inputContainer}>
-                <Input onChange={handleNicknameChange} value={nickname} placeholder="15자 이내 문자, 숫자 닉네임"/>
+                <Input onChange={handleNicknameChange} value={nickname} placeholder="15자 이내 문자, 숫자 닉네임" maxLength={NICKNAME_MAX_LENGTH}/>
                 {nicknameError && <p className={styles.error}>{nicknameError}</p>}
             </div>}
             {termAndPrivacyVisible && <div className={styles.checkboxContainer}>
