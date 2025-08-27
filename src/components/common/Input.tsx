@@ -1,5 +1,5 @@
 import styles from './Input.module.css'
-import React from 'react'
+import React, { forwardRef } from 'react'
 
 interface InputProps {
     type?: string;
@@ -12,10 +12,9 @@ interface InputProps {
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
     style?: Record<string, string>;
-    autoFocus?: boolean;
 }
 
-const Input = ({
+const Input = forwardRef<HTMLInputElement, InputProps>(({
     type="text",
     width = 312, 
     value,
@@ -25,9 +24,8 @@ const Input = ({
     onFocus,
     onChange,
     onKeyDown,
-    style,
-    autoFocus
-}: InputProps) => {
+    style
+}, ref) => {
     const containerStyle = {
         width: `${width}px`,
         ...style
@@ -36,6 +34,7 @@ const Input = ({
     return <div className={styles.inputContainer} style={containerStyle}>
         { leftIcon }
         <input
+            ref={ref}
             type={type}
             value={value}
             className={styles.input}
@@ -43,10 +42,9 @@ const Input = ({
             onFocus={onFocus}
             onChange={onChange}
             onKeyDown={onKeyDown}
-            autoFocus={autoFocus}
         />
         { rightElement }
     </div>
-}
+})
 
 export default React.memo(Input);
