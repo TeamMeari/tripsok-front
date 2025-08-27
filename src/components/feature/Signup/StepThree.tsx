@@ -34,8 +34,6 @@ const StepThree = ({ onSubmit, emailVerifyToken, goStepFour, goStepFive }: StepT
         setPasswordConfirm(e.target.value.trim());
     }, []);
 
-    const passwordConfirmSuccess = password !== "" && password === passwordConfirm;
-
     // 닉네임
     const NICKNAME_MAX_LENGTH = 15;
     const [nickname, setNickname] = useState("");
@@ -63,7 +61,7 @@ const StepThree = ({ onSubmit, emailVerifyToken, goStepFour, goStepFive }: StepT
     }, [nickname]);
 
     const passwordValid = validatePassword(password);
-    const passwordConfirmValid = passwordConfirm !== "" && password === passwordConfirm;
+    const passwordConfirmValid = password !== "" && passwordConfirm !== "" && password === passwordConfirm;
     const nicknameValid = nickname.length > 0 && nickname.length <= NICKNAME_MAX_LENGTH;
 
     const validateInfo =
@@ -75,9 +73,6 @@ const StepThree = ({ onSubmit, emailVerifyToken, goStepFour, goStepFive }: StepT
     useEffect(() => {
         const passwordError = PASSWORD_VALIDATION_WARNING(password);
         setPasswordError(passwordError);
-        if (passwordConfirm !== "" && password !== passwordConfirm) {
-            setPasswordConfirmError(PASSWORD_CONFIRM_ERROR);
-        }
         if (passwordError === "") {
             setPasswordConfirmVisible(true);
         }
@@ -115,7 +110,7 @@ const StepThree = ({ onSubmit, emailVerifyToken, goStepFour, goStepFive }: StepT
             {passwordConfirmVisible && <div className={styles.inputContainer}>
                 <PasswordInput onChange={handlePasswordConfirmChange} placeholder="비밀번호를 다시 입력하세요." />
                 {passwordConfirmError !== "" && <p className={styles.error}>{passwordConfirmError}</p>}
-                {passwordConfirmSuccess && <p className={styles.success}>비밀번호 일치</p>}
+                {passwordValid && passwordConfirmValid && <p className={styles.success}>비밀번호 일치</p>}
             </div>}
             {nicknameVisible && <div className={styles.inputContainer}>
                 <Input onChange={handleNicknameChange} value={nickname} placeholder="15자 이내 문자, 숫자 닉네임"/>
