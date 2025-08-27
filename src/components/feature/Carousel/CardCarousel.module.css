@@ -17,6 +17,16 @@
     transition: transform 0.3s ease-in-out;
     gap: 8px;
 }
+.carouselItems > * {
+    margin-right: 8px;
+}
+
+.carouselItems > *:last-child {
+    margin-right: 0;
+}
+.carouselItems > *:first-child {
+    margin-left: 0;
+}
 
 .carouselItems::after {
     content: '';
