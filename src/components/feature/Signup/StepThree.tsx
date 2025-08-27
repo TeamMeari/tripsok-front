@@ -84,11 +84,15 @@ const StepThree = ({ onSubmit, emailVerifyToken, goStepFour, goStepFive }: StepT
     }, [password])
 
     useEffect(() => {
-        if (passwordConfirm !== "" && password !== passwordConfirm) {
-            setPasswordConfirmError(PASSWORD_CONFIRM_ERROR);
+        if (passwordConfirm !== "") {
+            if (password !== passwordConfirm) {
+                setPasswordConfirmError(PASSWORD_CONFIRM_ERROR);
+            } else {
+                setPasswordConfirmError("");
+                setNicknameVisible(true);
+            }
         } else {
             setPasswordConfirmError("");
-            setNicknameVisible(true);
         }
     }, [passwordConfirm])
 
