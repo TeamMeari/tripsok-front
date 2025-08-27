@@ -50,7 +50,7 @@ export const CodeVerification: Story = {
 export const InfoVerification: Story = {
   render: () => <div style={{ margin: "84px 0" }}><StepThree onSubmit={() => {
     console.log("info verification");
-  }} emailVerifyToken="123456" /></div>,
+  }} emailVerifyToken="123456" goStepFour={() => {}} goStepFive={() => {}} /></div>,
 };
 
 export const SignupComplete: Story = {
