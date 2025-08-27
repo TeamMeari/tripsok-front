@@ -32,7 +32,7 @@ const StepTwo = ({ email, onSubmit }: StepTwoProps) => {
     }
     
     const handleCodeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        setCode(e.target.value.replace(/[^0-9]/g, ""));
+        setCode(e.target.value.replace(/[^0-9]/g, "").slice(0, codeLength));
     }, []);
 
     const handleCodeVerification = useCallback(() => {
@@ -65,7 +65,7 @@ const StepTwo = ({ email, onSubmit }: StepTwoProps) => {
         <p className={styles.message}>{email}<br />으로 보낸 인증코드를 입력해주세요</p>
         <div className={styles.content}>
             <div className={styles.inputContainer}>
-                <Input onChange={handleCodeChange} rightElement={<CodeTimer />}/>
+                <Input onChange={handleCodeChange} rightElement={<CodeTimer />} value={code}/>
                 {codeError ?
                 <div className={styles.errorContainer}>
                     <p className={styles.error}>{codeError}</p>
