@@ -25,7 +25,7 @@ const SignupPage = () => {
 
     const onSubmitInfo = useCallback((nickname: string) => {
         setNickname(nickname);
-        setStep(prev => prev + 1);
+        setStep(_ => 6);
     }, [])
 
     const goStepThree = useCallback(() => {
