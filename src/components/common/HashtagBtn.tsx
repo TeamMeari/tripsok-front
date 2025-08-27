@@ -6,10 +6,11 @@ interface HashtagButtonProps {
     onClick?: () => void;
 }
 
-const HashtagButton: React.FC<HashtagButtonProps> = ({ label, onClick }) => {
+const HashtagButton: React.FC<HashtagButtonProps& { readOnly?: boolean }> = ({ label, onClick, readOnly }) => {
     const [isSelected, setIsSelected] = useState(false);
 
     const handleClick = () => {
+        if (readOnly) return;
         setIsSelected((prev) => !prev);
         onClick?.();
     };
