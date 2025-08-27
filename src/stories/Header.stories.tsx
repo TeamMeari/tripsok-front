@@ -3,7 +3,6 @@ import { BrowserRouter } from "react-router-dom";
 import Header from "../components/header/Header";
 import TransparentHeader from "../components/header/TransparentHeader";
 
-
 const meta: Meta<typeof Header> = {
     title: "Layout/Header",
     component: Header,
@@ -16,7 +15,12 @@ type Story = StoryObj<typeof Header>;
 export const Default: Story = {
     render: () => (
         <BrowserRouter>
-            <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+            <div style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "24px",
+            }}>
+
                 {/* 배경 없는 Header */}
                 <Header />
 

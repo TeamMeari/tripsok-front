@@ -1,0 +1,127 @@
+.contentpage {
+    position: relative;
+    max-width: 360px;
+    padding-bottom: 80px;
+}
+
+.header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+}
+.Container{
+    max-width: 312px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/*컨텐트 메인 케러셀*/
+.carouselWrapper {
+    width: 100%;
+    padding-bottom: 32px;
+}
+
+.carouselWrapper img {
+    width: 100%;
+    /*height: auto;*/
+    display: block;
+}
+
+/*타이틀 및 정보*/
+.title{
+    display: flex;
+    flex-direction: column;
+    height: 64px;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+.maintitle{
+    max-width: 312px;
+    font-size: 24px;
+    color: #444;
+    font-weight: bold;
+
+}
+.ContetntData{
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
+}
+.dataDetails{
+    font-size: 14px;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap:4px;
+}
+.orangeText {
+    color: #FF6B2C;
+}
+.map{
+    display: flex;
+}
+.map div  {
+    display: flex;
+    margin-top: 8px; /* 위쪽 간격 */
+    border-radius: 12px; /* 모서리 둥글게 */
+    color: #999;
+}
+
+.subtitle{
+    font-size: 18px;
+    color: #999;
+    font-weight: 600;
+}
+.pointTag{
+    display: flex;
+    gap:5px;
+    flex-wrap: wrap;
+    max-width: 312px;
+}
+
+/*지도*/
+
+/*장소 포인트*/
+.placePoint{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 32px 0;
+}
+.pointTitle{
+    font-size: 18px;
+    color: #444;
+    font-weight: 600;
+}
+/*카드캐러셀 영역s*/
+.cardTitel {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    padding-bottom: 12px;
+}
+.cardPlace{
+    font-size: 18px;
+    color: #FF6B2C;
+    font-weight: 600;
+}
+.cardFixedTitle{
+    font-size: 18px;
+    color: #555555;
+    font-weight: 600;
+}
+
+/*하단 고정 버튼*/
+.fixedBtn{
+    display: flex;
+    position: fixed;
+    justify-content: space-around;
+    max-width: 360px;
+    width: 100%;
+    height: 80px;
+    background-color: white;
+    align-items: center;
+    bottom: 0;
+}

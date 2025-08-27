@@ -1,7 +1,10 @@
 .imageScreen {
-    width: 100vw;
-    height: 100vw;
+    max-width: 360px;
+    width: 100%;
+    height: 360px;
+    object-fit: fill;
     overflow: hidden;
+    border-radius: 0 0 12px 12px;
 }
 
 .imageScreen img {
@@ -11,9 +14,9 @@
 }
 
 .imagePaletteContainer {
-    width: calc(100vw - 48px);
+    /*width: calc(100vw - 48px);*/
     box-sizing: border-box;
-    margin: 16px 24px 0 24px;
+    margin: 16px 18px 0 18px;
     overflow-x: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -25,6 +28,7 @@
 .imagePalette {
     display: flex;
     width: fit-content;
+    /*min-width: 100%;*/
     min-width: 100%;
     gap: 4px;
 }

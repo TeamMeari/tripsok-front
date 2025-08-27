@@ -6,7 +6,7 @@ import { ArrowLeftIcon } from "lucide-react";
 
 interface HeaderProps {
     isLogo?: boolean;
-    useBackground?: boolean; // 개발자가 배경 이미지 사용 여부 선택
+    useBackground?: boolean; // 배경 이미지 사용 여부 선택
 }
 
 const Header: React.FC<HeaderProps> = ({ useBackground = false, isLogo = true }) => {
