@@ -27,7 +27,6 @@ function App(): JSX.Element {
               <Route path="/search" element={<SearchListPage />} />
             </Routes>
           </div>
-          <MenuApp />
         </BrowserRouter>
       </div>
     </div>
