@@ -86,3 +86,15 @@
     width: 179px;
     height: 40px;
 }
+
+.resetButton {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    margin-right: 8px;
+}
