@@ -29,6 +29,7 @@ const StepTwo = ({ email, onSubmit }: StepTwoProps) => {
                 setCodeError(EXPIRED_CODE);
             }
         }, 1000);
+        setCodeError("");
     }
     
     const handleCodeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
