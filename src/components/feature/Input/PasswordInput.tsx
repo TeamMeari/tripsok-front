@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Input from "../../common/Input";
-import styles from "./passwordInput.module.css";
+import styles from "./PasswordInput.module.css";
 
 interface PasswordInputProps {
     placeholder: string;
