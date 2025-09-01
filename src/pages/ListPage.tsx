@@ -15,9 +15,8 @@ const ListPage = () => {
   const tagContainerRef = useRef<HTMLDivElement>(null);
   
   const options = {
-    1: '인기순',
-    2: '최신순',
-    3: '오래된 순',
+    1: '인기 순',
+    2: '이름 순',
   };
 
   const handleTagClick = (tagId: number) => {
