@@ -33,7 +33,7 @@ const MainCarousel = ({ items }: MainCarouselProps) => {
     if (isAnimating) return;
     const el = carouselRef.current;
     if (!el) return;
-    console.log("moveToNext", currentIndex);
+
     setIsAnimating(true);
 
     animate(el, { x: [`-${getXOfIndex(currentIndex)}px`, `-${getXOfIndex(currentIndex + 1)}px`] }, { duration: 0.6, easing: "ease-in-out" })
