@@ -9,6 +9,7 @@
     display: flex;
     width: fit-content;
     will-change: transform;
+    transform: translateX(calc(-1 * min(100vw, 360px)));
 }
 
 .carouselItem {

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import styles from "./MainCarousel.module.css";
 import { useNavigate } from "react-router-dom";
 import { animate } from "@motionone/dom";
@@ -15,7 +15,7 @@ interface MainCarouselProps {
 
 const MainCarousel = ({ items }: MainCarouselProps) => {
   const navigate = useNavigate();
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(1);
   const [isAnimating, setIsAnimating] = useState(false);
 
   const extendedItems = [
@@ -33,7 +33,7 @@ const MainCarousel = ({ items }: MainCarouselProps) => {
     if (isAnimating) return;
     const el = carouselRef.current;
     if (!el) return;
-
+    console.log("moveToNext", currentIndex);
     setIsAnimating(true);
 
     animate(el, { x: [`-${getXOfIndex(currentIndex)}px`, `-${getXOfIndex(currentIndex + 1)}px`] }, { duration: 0.6, easing: "ease-in-out" })
@@ -41,13 +41,16 @@ const MainCarousel = ({ items }: MainCarouselProps) => {
 
         // 마지막 cloneFirst → 원본 첫 슬라이드 점프
         if (currentIndex === items.length) {
-          el.style.transform = `translateX(-${getXOfIndex(currentIndex + 1)}px)`;
+          console.log("jump");
+          el.style.transform = `translateX(-${getXOfIndex(1)}px)`;
+          setCurrentIndex(1);
+        } else {
+          setCurrentIndex(currentIndex + 1);
         }
 
-        setCurrentIndex(currentIndex + 1);
         setIsAnimating(false);
       });
-  }, [isAnimating, items.length]);
+  }, [isAnimating, items.length, currentIndex]);
 
   const moveToPrev = useCallback(() => {
     if (isAnimating) return;
@@ -62,12 +65,14 @@ const MainCarousel = ({ items }: MainCarouselProps) => {
         // 첫 번째 cloneLast → 원본 마지막 슬라이드 점프
         if (currentIndex === 0) {
           el.style.transform = `translateX(-${getXOfIndex(items.length)}px)`;
+          setCurrentIndex(items.length);
+        } else {
+          setCurrentIndex(currentIndex - 1);
         }
 
-        setCurrentIndex(currentIndex - 1);
         setIsAnimating(false);
       });
-  }, [isAnimating, items.length]);
+  }, [isAnimating, items.length, currentIndex]);
 
   // 스크롤 처리
   const carouselRef = useScrollToSlide({ goToNext: moveToNext, goToPrev: moveToPrev });
