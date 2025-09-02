@@ -19,6 +19,7 @@ export function useScrollToSlide({
 }: UseScrollToSlideProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const isThrottled = useRef(false);
+  const lastWheelTime = useRef<number>(0);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -26,7 +27,14 @@ export function useScrollToSlide({
 
     // 데스크톱 휠 이벤트
     const handleWheel = (e: WheelEvent) => {
-      if (isThrottled.current) return;
+      const currentTime = Date.now();
+      const timeDiff = currentTime - lastWheelTime.current;
+      lastWheelTime.current = currentTime;
+      
+      // 0.1초 이내의 모든 이벤트 차단
+      if (timeDiff <= 50) {
+        return;
+      }
 
       // 방향 계산
       if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
@@ -34,12 +42,6 @@ export function useScrollToSlide({
       } else {
         e.deltaY > 0 ? goToNext() : goToPrev();
       }
-
-      // 스로틀 활성화
-      isThrottled.current = true;
-      setTimeout(() => {
-        isThrottled.current = false;
-      }, 500); // 0.5초 동안 추가 실행 방지
     };
 
     // 모바일 Touch 이벤트
@@ -63,7 +65,7 @@ export function useScrollToSlide({
       setTimeout(() => (isThrottled.current = false), 500);
     };
 
-    container.addEventListener("wheel", handleWheel, { passive: true });
+    container.addEventListener("wheel", handleWheel, { passive: false });
     container.addEventListener("touchstart", handleTouchStart, { passive: true });
     container.addEventListener("touchend", handleTouchEnd, { passive: true });
     return () => {
@@ -78,21 +80,18 @@ export function useScrollToSlide({
     const el = containerRef.current;
     if (!el) return;
 
-    const preventScroll = (e: WheelEvent) => {
-        if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-            e.preventDefault();
-        }
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
     };
 
     const preventTouch = (e: TouchEvent) => {
         e.preventDefault();
     };
-
-    el.addEventListener('wheel', preventScroll, { passive: false });
+    el.addEventListener("wheel", handleWheel, { passive: false });
     el.addEventListener('touchstart', preventTouch, { passive: false });
     return () => {
-        el.removeEventListener('wheel', preventScroll);
         el.removeEventListener('touchstart', preventTouch);
+        el.removeEventListener("wheel", handleWheel);
     };
 }, []);
 
