@@ -6,8 +6,10 @@ import HashtagButton from '../components/common/HashtagBtn';
 import Dropdown from '../components/common/Dropdown';
 import CardType from '../types/Card';
 import Card from '../components/common/Card';
+import { useTranslation } from 'react-i18next';
 
 const ListPage = () => {
+  const { t } = useTranslation();
   const [tags, setTags] = useState<Tag[]>([]);
   const [selectedTag, setSelectedTag] = useState<Set<number>>(new Set());
   const [selectedOption, setSelectedOption] = useState<number>(1);
@@ -15,8 +17,8 @@ const ListPage = () => {
   const tagContainerRef = useRef<HTMLDivElement>(null);
   
   const options = {
-    1: '인기 순',
-    2: '이름 순',
+    1: t("sortPopular"),
+    2: t("sortName"),
   };
 
   const handleTagClick = (tagId: number) => {
@@ -87,7 +89,7 @@ const ListPage = () => {
       <div className={styles.listContainer}>
         <div className={styles.info}>
           <div className={styles.listCount}>
-            총 <span>245개</span> 검색
+            {t("totalSearch", { count: 245 })}
           </div>
           <Dropdown current={selectedOption} options={options} onClickOption={handleOptionClick} />
         </div>

@@ -13,4 +13,6 @@
 .left, .right {
     display: flex;
     align-items: center;
+    width: 70px;
+    justify-content: space-between;
 }

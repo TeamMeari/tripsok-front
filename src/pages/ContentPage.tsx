@@ -1,15 +1,18 @@
 import React from 'react';
+import { useTranslation } from "react-i18next";
 import TransparentHeader from '../components/header/TransparentHeader';
 import ContentCarousel from '../components/feature/Carousel/ContentCarousel';
 import CardCarousel from '../components/feature/Carousel/CardCarousel';
-import HashtagBtn from "../components/common/HashtagBtn";
-import styles from './ContentPage.module.css';
 import HashtagButton from "../components/common/HashtagBtn";
+import styles from './ContentPage.module.css';
 import Button from '../components/common/Button/CommonBtn';
 import LikeButton from '../components/common/Button/LikeBtn';
 import KakaoMap from "../components/KakaoMap";
 
 const ContentPage = () => {
+    const { t } = useTranslation();
+    const userName = "홍길동"; // 실제 로그인 사용자 이름으로 대체 가능
+
     return (
         <div className={styles.contentpage}>
             <div className={styles.header}>
@@ -52,12 +55,12 @@ const ContentPage = () => {
                 </div>
 
                 <div className={styles.map}>
-                        <KakaoMap />
+                    <KakaoMap />
                 </div>
 
                 <div className={styles.placePoint}>
                     <div className={styles.pointTitle}>
-                        이 장소의 매력 포인트
+                        {t("placePointTitle")}
                     </div>
 
                     <div className={styles.pointTag}>
@@ -76,57 +79,59 @@ const ContentPage = () => {
 
                 <div className={styles.cardTitel}>
                     <div className={styles.cardPlace}>BTS 정류장</div>
-                    <div className={styles.cardFixedTitle}>과 함께 찾아본 장소</div>
+                    <div className={styles.cardFixedTitle}>{t("cardSectionTitle")}</div>
                 </div>
             </div>
 
-                {/* CardCarousel */}
-                <div className={styles.carouselWrapper}>
-                    <CardCarousel
-                        cards={[
-                            {
-                                id: 1,
-                                title: '카드 제목 1',
-                                description: '카드 설명입니다. 첫 번째 카드입니다.',
-                                image: 'https://picsum.photos/200/300'
-                            },
-                            {
-                                id: 2,
-                                title: '카드 제목 2',
-                                description: '카드 설명입니다. 두 번째 카드입니다.',
-                                image: 'https://picsum.photos/200/300'
-                            },
-                            {
-                                id: 3,
-                                title: '카드 제목 3',
-                                description: '카드 설명입니다. 세 번째 카드입니다.',
-                                image: 'https://picsum.photos/200/300'
-                            },
-                            {
-                                id: 4,
-                                title: '카드 제목 4',
-                                description: '카드 설명입니다. 네 번째 카드입니다.',
-                                image: 'https://picsum.photos/200/400'
-                            },
-                            {
-                                id: 5,
-                                title: '카드 제목 5',
-                                description: '카드 설명입니다. 다섯 번째 카드입니다.',
-                                image: 'https://picsum.photos/200/350'
-                            },
-                            {
-                                id: 6,
-                                title: '카드 제목 6',
-                                description: '카드 설명입니다. 여섯 번째 카드입니다.',
-                                image: 'https://picsum.photos/200/250'
-                            }
-                        ]}
-                    />
-                </div>
+            {/* CardCarousel */}
+            <div className={styles.carouselWrapper}>
+                <CardCarousel
+                    cards={[
+                        {
+                            id: 1,
+                            title: '카드 제목 1',
+                            description: '카드 설명입니다. 첫 번째 카드입니다.',
+                            image: 'https://picsum.photos/200/300'
+                        },
+                        {
+                            id: 2,
+                            title: '카드 제목 2',
+                            description: '카드 설명입니다. 두 번째 카드입니다.',
+                            image: 'https://picsum.photos/200/300'
+                        },
+                        {
+                            id: 3,
+                            title: '카드 제목 3',
+                            description: '카드 설명입니다. 세 번째 카드입니다.',
+                            image: 'https://picsum.photos/200/300'
+                        },
+                        {
+                            id: 4,
+                            title: '카드 제목 4',
+                            description: '카드 설명입니다. 네 번째 카드입니다.',
+                            image: 'https://picsum.photos/200/400'
+                        },
+                        {
+                            id: 5,
+                            title: '카드 제목 5',
+                            description: '카드 설명입니다. 다섯 번째 카드입니다.',
+                            image: 'https://picsum.photos/200/350'
+                        },
+                        {
+                            id: 6,
+                            title: '카드 제목 6',
+                            description: '카드 설명입니다. 여섯 번째 카드입니다.',
+                            image: 'https://picsum.photos/200/250'
+                        }
+                    ]}
+                />
+            </div>
 
             <div className={styles.fixedBtn}>
                 <LikeButton/>
-                <Button variant="primary" size="small" borderRadius="12px">내 여정에 추가</Button>
+                <Button variant="primary" size="small" borderRadius="12px">
+                    {t("addToJourney")}
+                </Button>
             </div>
         </div>
     );
