@@ -84,7 +84,7 @@ const StepThree = ({ onSubmit, emailVerifyToken, goStepFour, goStepFive }: StepT
                 setPasswordConfirmError(PASSWORD_CONFIRM_ERROR);
             } else {
                 setPasswordConfirmError("");
-                setNicknameVisible(true);
+                if (passwordError === "") setNicknameVisible(true);
             }
         } else {
             setPasswordConfirmError("");
@@ -94,7 +94,7 @@ const StepThree = ({ onSubmit, emailVerifyToken, goStepFour, goStepFive }: StepT
     useEffect(() => {
         if (nickname.length > 0 && nickname.length <= NICKNAME_MAX_LENGTH) {
             setNicknameError("");
-            setTermAndPrivacyVisible(true);
+            if (passwordError === "" && passwordConfirmError === "") setTermAndPrivacyVisible(true);
         }
     }, [nickname])
     
