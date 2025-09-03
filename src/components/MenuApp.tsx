@@ -1,31 +1,33 @@
 import React, { useState } from "react";
 import styles from "./MenuApp.module.css";
+import { useTranslation } from "react-i18next";
 
 interface MenuItem {
-    label: string;
+    key: string; // i18n 키
     iconDefault: string;
     iconSelected: string;
 }
 
 const menuItems: MenuItem[] = [
     {
-        label: "탐색",
+        key: "tabNavigation",
         iconDefault: "/menuIcon/explore_basic.svg",
         iconSelected: "/menuIcon/explore_select.svg",
     },
     {
-        label: "나의 여정",
+        key: "tabMyPlan",
         iconDefault: "/menuIcon/myTrip_basic.svg",
         iconSelected: "/menuIcon/myTrip_select.svg",
     },
     {
-        label: "고객센터",
+        key: "tabCustomerService",
         iconDefault: "/menuIcon/customer_basic.svg",
         iconSelected: "/menuIcon/customer_select.svg",
     },
 ];
 
 const MenuApp: React.FC = () => {
+    const { t } = useTranslation();
     const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
     return (
@@ -38,7 +40,7 @@ const MenuApp: React.FC = () => {
                 >
                     <img
                         src={selectedIndex === index ? item.iconSelected : item.iconDefault}
-                        alt={item.label}
+                        alt={t(item.key)}
                         className={styles.icon}
                     />
                     <span
@@ -46,8 +48,8 @@ const MenuApp: React.FC = () => {
                             selectedIndex === index ? styles.labelSelected : styles.label
                         }
                     >
-            {item.label}
-          </span>
+                        {t(item.key)}
+                    </span>
                 </div>
             ))}
         </div>
