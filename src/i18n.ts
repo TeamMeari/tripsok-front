@@ -64,6 +64,10 @@ const resources = {
             myPlanDeparture: "출발지",
             myPlanPeople: "인원수",
             myPlanStart: "장소 추가하고 여행 계획 시작하기",
+            // MenuApp 텍스트
+            tabNavigation: "탐색",
+            tabMyPlan: "나의 여정",
+            tabCustomerService: "고객센터",
         },
     },
     en: {
@@ -126,6 +130,10 @@ const resources = {
             myPlanDeparture: "Departure",
             myPlanPeople: "Number of people",
             myPlanStart: "Add places and start planning",
+            // MenuApp 텍스트
+            tabNavigation: "Explore",
+            tabMyPlan: "My Journey",
+            tabCustomerService: "Customer Service",
         },
     },
     ja: {
@@ -188,6 +196,10 @@ const resources = {
             myPlanDeparture: "出発地",
             myPlanPeople: "人数",
             myPlanStart: "場所を追加して旅行計画を始める",
+            // MenuApp 텍스트
+            tabNavigation: "探索",
+            tabMyPlan: "私の旅程",
+            tabCustomerService: "カスタマーサービス",
         },
     },
     zh: {
@@ -250,6 +262,10 @@ const resources = {
             myPlanDeparture: "出发地",
             myPlanPeople: "人数",
             myPlanStart: "添加地点并开始规划旅行",
+            // MenuApp 텍스트
+            tabNavigation: "探索",
+            tabMyPlan: "我的旅程",
+            tabCustomerService: "客服中心",
         },
     },
 };
