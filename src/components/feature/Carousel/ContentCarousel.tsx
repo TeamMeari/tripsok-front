@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./ContentCarousel.module.css";
 import { animate } from "@motionone/dom";
+import useScrollHorizon from "../../../hooks/useScrollHorizon";
 
 interface ContentCarouselProps {
     images: string[];
@@ -9,10 +10,7 @@ interface ContentCarouselProps {
 const ContentCarousel = ({ images }: ContentCarouselProps) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const imageRef = useRef<HTMLImageElement>(null);
-    const paletteRef = useRef<HTMLDivElement>(null);
-    const [isDragging, setIsDragging] = useState(false);
-    const [startX, setStartX] = useState(0);
-    const [scrollLeft, setScrollLeft] = useState(0);
+    const paletteRef = useScrollHorizon();
 
     const maxImageCount = Math.ceil((window.innerWidth - 48) / 56);
 
@@ -26,58 +24,6 @@ const ContentCarousel = ({ images }: ContentCarouselProps) => {
         });
         setCurrentIndex(index);
     }
-
-    const handleTouchStart = (e: TouchEvent) => {
-        if (!paletteRef.current) return;
-        setIsDragging(true);
-        setStartX(e.touches[0].pageX - paletteRef.current.offsetLeft);
-        setScrollLeft(paletteRef.current.scrollLeft);
-    };
-
-    const handleTouchMove = (e: TouchEvent) => {
-        if (!isDragging || !paletteRef.current) return;
-        e.preventDefault();
-        const x = e.touches[0].pageX - paletteRef.current.offsetLeft;
-        const walk = (x - startX) * 1.5;
-        paletteRef.current.scrollLeft = scrollLeft - walk;
-    };
-
-    const handleTouchEnd = () => {
-        setIsDragging(false);
-    };
-
-    useEffect(() => {
-        const el = paletteRef.current;
-        if (!el) return;
-
-        el.addEventListener('touchstart', handleTouchStart);
-        el.addEventListener('touchmove', handleTouchMove);
-        el.addEventListener('touchend', handleTouchEnd);
-
-        return () => {
-            el.removeEventListener('touchstart', handleTouchStart);
-            el.removeEventListener('touchmove', handleTouchMove);
-            el.removeEventListener('touchend', handleTouchEnd);
-        };
-    }, [isDragging, startX, scrollLeft]);
-
-    useEffect(() => {
-        const el = paletteRef.current;
-        if (!el) return;
-
-        const handleWheel = (e: WheelEvent) => {
-            e.preventDefault();
-            if (!paletteRef.current) return;
-            const delta = e.deltaY || e.deltaX;
-            paletteRef.current.scrollLeft += delta;
-        };
-
-        el.addEventListener('wheel', handleWheel, { passive: false });
-        
-        return () => {
-            el.removeEventListener('wheel', handleWheel);
-        };
-    }, []);
     
     return (
         <div>

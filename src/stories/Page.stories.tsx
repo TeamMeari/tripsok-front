@@ -3,8 +3,9 @@ import ListPage from '../pages/ListPage';
 import '../App.css';
 import '../index.css';
 import { BrowserRouter } from 'react-router-dom';
-import Header from '../components/header/Header';
-import MenuApp from '../components/MenuApp';
+import HeaderSelector from '../components/header/HeaderSelector';
+import LoginPage from '../pages/LoginPage';
+import SignupPage from '../pages/SignupPage';
 
 const meta = {
   title: 'Page/Pages',
@@ -15,11 +16,10 @@ const meta = {
     (Story: React.ComponentType) => (
       <BrowserRouter>
         <div className="app-area">
-          <Header />
+          <HeaderSelector />
           <div className="content-area">
             <Story />
           </div>
-          <MenuApp />
         </div>
       </BrowserRouter>
     ),
@@ -32,3 +32,11 @@ type Story = StoryObj<typeof meta>;
 export const List: Story = {
   render: () => <ListPage />,
 };
+
+export const Login: Story =  {
+  render: () => <LoginPage />,
+}
+
+export const Signup: Story = {
+  render: () => <SignupPage />,
+}

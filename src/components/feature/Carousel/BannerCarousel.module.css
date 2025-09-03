@@ -1,5 +1,6 @@
 .carouselTrack {
     width: 100%;
+    max-width: 360px;
     overflow-x: scroll;
     overflow-y: hidden;
     scroll-behavior: smooth;
@@ -15,8 +16,16 @@
     will-change: transform;
 }
 
+.carouselItem {
+    @media (max-width: 360px) {
+        width: calc(100vw - 48px);
+    }
+    @media (min-width: 361px) {
+        width: 312px;
+    }
+}
+
 .carouselItem { 
-    width: calc(100vw - 48px);
     height: 100px;
     border-radius: 12px;
     overflow: hidden;
