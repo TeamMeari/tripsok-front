@@ -32,7 +32,7 @@ export function useScrollToSlide({
       lastWheelTime.current = currentTime;
       
       // 0.1초 이내의 모든 이벤트 차단
-      if (timeDiff <= 50) {
+      if (timeDiff <= 30) {
         return;
       }
 
