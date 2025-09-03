@@ -98,8 +98,26 @@ const SearchInput = ({ searchWord }: SearchInputProps) => {
         </button>
     )
 
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    const handleWheel = useCallback((e: WheelEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+    }, []);
+
+    useEffect(() => {
+        const container = containerRef.current;
+        if (!container) return;
+
+        container.addEventListener('wheel', handleWheel as EventListener, { passive: false });
+        
+        return () => {
+            container.removeEventListener('wheel', handleWheel as EventListener);
+        };
+    }, [handleWheel]);
+
     return (
-        <div className={styles.searchContainer}>
+        <div className={styles.searchContainer} ref={containerRef}>
             <Input
                 value={searchInput}
                 leftIcon={<SearchIcon color={searchWord ? '#FF6B2C' : '#666666'}/>}
@@ -109,8 +127,9 @@ const SearchInput = ({ searchWord }: SearchInputProps) => {
                 onKeyDown={handleKeyDown}
                 style={searchWord ? {
                     boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.32)',
-                    border: '2px solid #FF6B2C'
-                } : {}}
+                    border: '2px solid #FF6B2C',
+                    backgroundColor: 'white'
+                } : {backgroundColor: 'white'}}
                 maxLength={100}
             />
             {(isOpen || isAnimating) &&
