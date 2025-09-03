@@ -25,5 +25,6 @@ yarn-error.log*
 *storybook.log
 storybook-static
 
-
+.idea/
+.idea/workspace.xml
 .env
