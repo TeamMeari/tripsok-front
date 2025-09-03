@@ -16,8 +16,12 @@ const TransparentHeader: React.FC = () => {
             <div className={styles.left}>
                 <IconButton type="arrow" onClick={handleArrowClick} />
             </div>
+
             <div className={styles.right}>
-                <IconButton type="search" onClick={handleSearchClick} />
+                {/*<div className={styles.globe}>*/}
+                {/*    <IconButton type="globeIcon"/>*/}
+                {/*</div>*/}
+                <IconButton type="search" onClick={handleSearchClick}/>
             </div>
         </header>
     );
