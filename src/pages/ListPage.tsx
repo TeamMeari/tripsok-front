@@ -18,8 +18,7 @@ const ListPage = () => {
   
   const options = {
     1: t("sortPopular"),
-    2: t("sortNewest"),
-    3: t("sortOldest"),
+    2: t("sortName"),
   };
 
   const handleTagClick = (tagId: number) => {
