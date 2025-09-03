@@ -1,48 +1,71 @@
 import styles from './Input.module.css'
+import React, { forwardRef, useState } from 'react'
 
 interface InputProps {
     type?: string;
     width?: number;
     value?: string;
     leftIcon?: React.ReactNode;
-    rightButton?: React.ReactNode;
+    rightElement?: React.ReactNode;
     placeholder?: string;
     onFocus?: () => void;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-    style?: Record<string, string>
+    style?: Record<string, string>;
+    maxLength?: number;
 }
 
-const Input = ({
+const Input = forwardRef<HTMLInputElement, InputProps>(({
     type="text",
     width = 312, 
     value,
     leftIcon,
-    rightButton,
+    rightElement,
     placeholder = "",
     onFocus,
     onChange,
     onKeyDown,
-    style
-}: InputProps) => {
+    style,
+    maxLength
+}, ref) => {
     const containerStyle = {
         width: `${width}px`,
         ...style
     }
 
-    return <div className={styles.inputContainer} style={containerStyle}>
+    const [isFocused, setIsFocused] = useState(false);
+
+    const handleFocus = () => {
+        setIsFocused(true);
+        onFocus?.();
+    };
+
+    const handleBlur = () => {
+        setIsFocused(false);
+    };
+
+    return <div 
+        className={styles.inputContainer} 
+        style={{
+            ...containerStyle,
+            borderColor: isFocused ? '#111111' : '#D9D9D9'
+        }}
+    >
         { leftIcon }
         <input
+            ref={ref}
             type={type}
             value={value}
             className={styles.input}
             placeholder={placeholder}
-            onFocus={onFocus}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
             onChange={onChange}
             onKeyDown={onKeyDown}
+            maxLength={maxLength}
         />
-        { rightButton }
+        { rightElement }
     </div>
-}
+})
 
-export default Input;
+export default React.memo(Input);

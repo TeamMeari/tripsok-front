@@ -4,13 +4,17 @@ import { useTranslation } from "react-i18next";
 import styles from "./Header.module.css";
 import Button from "../common/Button/CommonBtn";
 import IconButton from "../common/Button/IconBtn";
+import { ArrowLeftIcon } from "lucide-react";
+    
 
 interface HeaderProps {
-    useBackground?: boolean;
+    isLogo?: boolean;
+    useBackground?: boolean; // 배경 이미지 사용 여부 선택
 }
 
-const Header: React.FC<HeaderProps> = ({ useBackground = false }) => {
+const Header: React.FC<HeaderProps> = ({ useBackground = false, isLogo = true }) => {
     const { t } = useTranslation(); // i18next 훅
+
     const navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [showLogoutMenu, setShowLogoutMenu] = useState(false);
@@ -61,15 +65,20 @@ const Header: React.FC<HeaderProps> = ({ useBackground = false }) => {
                 backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
+                borderBottom: backgroundImage ? "none" : "1px solid #D9D9D9",
             }}
         >
             <div className={styles.left}>
-                <img
-                    src={logoSrc}
-                    alt="touang logo"
-                    className={styles.logo}
-                    onClick={handleLogoClick}
-                />
+                {isLogo ? 
+                    <img
+                        src={logoSrc}
+                        alt="touang logo"
+                        className={styles.logo}
+                        onClick={handleLogoClick}
+                    /> : 
+                    <button className={styles.arrowLeft} onClick={handleLogoClick}>
+                        <ArrowLeftIcon size={33} color="#888888" />
+                    </button>}
             </div>
 
             <div className={styles.right} ref={menuRef}>
@@ -92,6 +101,7 @@ const Header: React.FC<HeaderProps> = ({ useBackground = false }) => {
                         </div>
                     )}
                 </div>
+
             </div>
         </header>
     );
