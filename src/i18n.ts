@@ -39,6 +39,11 @@ const resources = {
             privacyRequired: "(필수) 개인정보 수집 및 이용 동의",
             welcomeNickname: "{{name}}님, 반가워요! <br />관심있는 여행이 있으신가요?",
             home: "홈으로",
+            passwordTooShort: "비밀번호는 8자 이상이어야 합니다.",
+            letterRequired: "영문",
+            numberRequired: "숫자",
+            specialCharRequired: "특수문자",
+            passwordValidationWarning: "필수 조건 필요 - {{condition}} 필수",
             // ContentPage 텍스트
             placePointTitle: "이 장소의 매력 포인트",
             cardSectionTitle: "과 함께 찾아본 장소",
@@ -64,6 +69,10 @@ const resources = {
             myPlanDeparture: "출발지",
             myPlanPeople: "인원수",
             myPlanStart: "장소 추가하고 여행 계획 시작하기",
+            // MenuApp 텍스트
+            tabNavigation: "탐색",
+            tabMyPlan: "나의 여정",
+            tabCustomerService: "고객센터",
         },
     },
     en: {
@@ -101,6 +110,11 @@ const resources = {
             privacyRequired: "(Required) Agree to Privacy Policy",
             welcomeNickname: "Welcome, {{name}}!<br />Do you have any trips in mind?",
             home: "Go Home",
+            passwordTooShort: "Password must be at least 8 characters.",
+            letterRequired: "Letter",
+            numberRequired: "Number",
+            specialCharRequired: "Special character",
+            passwordValidationWarning: "Requirements needed - {{condition}} required",
             // ContentPage 텍스트
             placePointTitle: "Highlights of this place",
             cardSectionTitle: "Places explored together",
@@ -126,6 +140,10 @@ const resources = {
             myPlanDeparture: "Departure",
             myPlanPeople: "Number of people",
             myPlanStart: "Add places and start planning",
+            // MenuApp 텍스트
+            tabNavigation: "Explore",
+            tabMyPlan: "My Journey",
+            tabCustomerService: "Customer Service",
         },
     },
     ja: {
@@ -163,6 +181,11 @@ const resources = {
             privacyRequired: "(必須) 個人情報の収集および利用に同意",
             welcomeNickname: "{{name}}さん、ようこそ！<br />興味のある旅行はありますか？",
             home: "ホームへ",
+            passwordTooShort: "パスワードは8文字以上である必要があります。",
+            letterRequired: "英字",
+            numberRequired: "数字",
+            specialCharRequired: "記号",
+            passwordValidationWarning: "必須条件 - {{condition}} 必須",
             // ContentPage 텍스트
             placePointTitle: "この場所の魅力ポイント",
             cardSectionTitle: "一緒に訪れた場所",
@@ -188,6 +211,10 @@ const resources = {
             myPlanDeparture: "出発地",
             myPlanPeople: "人数",
             myPlanStart: "場所を追加して旅行計画を始める",
+            // MenuApp 텍스트
+            tabNavigation: "探索",
+            tabMyPlan: "私の旅程",
+            tabCustomerService: "カスタマーサービス",
         },
     },
     zh: {
@@ -225,6 +252,11 @@ const resources = {
             privacyRequired: "（必填）同意隐私政策",
             welcomeNickname: "{{name}}，欢迎！<br />有感兴趣的旅行吗？",
             home: "回到首页",
+            passwordTooShort: "密码至少需要8位。",
+            letterRequired: "字母",
+            numberRequired: "数字",
+            specialCharRequired: "特殊字符",
+            passwordValidationWarning: "必须条件 - {{condition}} 必须",
             // ContentPage 텍스트
             placePointTitle: "这个地方的亮点",
             cardSectionTitle: "一起探索过的地方",
@@ -250,6 +282,10 @@ const resources = {
             myPlanDeparture: "出发地",
             myPlanPeople: "人数",
             myPlanStart: "添加地点并开始规划旅行",
+            // MenuApp 텍스트
+            tabNavigation: "探索",
+            tabMyPlan: "我的旅程",
+            tabCustomerService: "客服中心",
         },
     },
 };
