@@ -3,9 +3,11 @@ import Input from "../components/common/Input";
 import { useState } from "react";
 import PasswordInput from "../components/feature/Input/PasswordInput";
 import ValidationBtn from "../components/common/Button/ValidationBtn";
+import { useTranslation, Trans } from "react-i18next";
 import { NOT_EXISTING_EMAIL, INCORRECT_PASSWORD } from "../types/loginErrors";
 
 const LoginPage = () => {
+    const { t } = useTranslation();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [emailError, setEmailError] = useState("");
@@ -25,48 +27,60 @@ const LoginPage = () => {
 
     const handleLogin = () => {
         // 로그인 로직
-        setEmailError(NOT_EXISTING_EMAIL);
-        setPasswordError(INCORRECT_PASSWORD);
+        setEmailError(t(NOT_EXISTING_EMAIL));
+        setPasswordError(t(INCORRECT_PASSWORD));
     };
-    
-    return <div className={styles.page}>
-        <h2 className={styles.message}>
-            투앙으로 더 편하게<br />
-            강릉을 여행해요
-        </h2>
-        <div className={styles.barLogin}>
-            <div className={styles.inputContainer}>
-                <Input
-                    onChange={handleEmailChange} 
-                    placeholder="touang@example.com"
-                    maxLength={320}
-                    value={email}
-                    rightElement={email && <ResetButton onClick={() => setEmail("")}/>}
-                />
-                {emailError && <p className={styles.error}>{emailError}</p>}
+
+    return (
+        <div className={styles.page}>
+            <h2 className={styles.message}>
+                <Trans i18nKey="loginSlogan" components={{ br: <br /> }} />
+            </h2>
+
+            <div className={styles.barLogin}>
+                <div className={styles.inputContainer}>
+                    <Input
+                        onChange={handleEmailChange}
+                        placeholder="touang@example.com"
+                        maxLength={320}
+                        value={email}
+                        rightElement={email && <ResetButton onClick={() => setEmail("")} />}
+                    />
+                    {emailError && <p className={styles.error}>{emailError}</p>}
+                </div>
+
+                <div className={styles.inputContainer}>
+                    <PasswordInput
+                        onChange={handlePasswordChange}
+                        placeholder={t("passwordRule")}
+                    />
+                    {passwordError && <p className={styles.error}>{passwordError}</p>}
+                </div>
+
+                <ValidationBtn isDisabled={!isLoginValid} onClick={handleLogin}>
+                    {t("login")}
+                </ValidationBtn>
             </div>
-            <div className={styles.inputContainer}>
-                <PasswordInput onChange={handlePasswordChange} placeholder="영문, 숫자, 특수문자 포함 8 - 20자" />
-                {passwordError && <p className={styles.error}>{passwordError}</p>}
+
+            <div className={styles.linkContainer}>
+                <a href="#" className={styles.link}>{t("resetPassword")}</a>
+                <div className={styles.divider} />
+                <a href="/signup" className={styles.link}>{t("signup")}</a>
             </div>
-            <ValidationBtn isDisabled={!isLoginValid} onClick={handleLogin}>로그인</ValidationBtn>
+
+            <div className={styles.orContainer}>
+                <div className={styles.divider} />
+                <span>or</span>
+                <div className={styles.divider} />
+            </div>
+
+            <div className={styles.googleButtonContainer}>
+                <button className={styles.googleButton}>
+                    <img src="/googleSignupButton.png" alt="google" />
+                </button>
+            </div>
         </div>
-        <div className={styles.linkContainer}>
-            <a href="#" className={styles.link}>비밀번호 재설정</a>
-            <div className={styles.divider} />
-            <a href="/signup" className={styles.link}><span>회원가입</span></a>
-        </div>
-        <div className={styles.orContainer}>
-            <div className={styles.divider} />
-            <span>or</span>
-            <div className={styles.divider} />
-        </div>
-        <div className={styles.googleButtonContainer}>
-            <button className={styles.googleButton}>
-                <img src="/googleSignupButton.png" alt="google" />
-            </button>
-        </div>
-    </div>
+    );
 };
 
 const ResetButton = ({ onClick }: { onClick: () => void }) => {
