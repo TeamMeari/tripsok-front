@@ -4,17 +4,21 @@ import { animate, timeline } from '@motionone/dom';
 import { useTranslation } from 'react-i18next';
 
 interface MenuTabProps {
+  tabs: {
+    label: string;
+    icon: string;
+    uri: string;
+  }[];
+  activeTab: number;
   isIcon? : boolean;
+  tabOnClick: (index: number) => void;
 }
 
-const MenuTab = ({ isIcon }: MenuTabProps) => {
-    const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState(0);
+const MenuTab = ({ tabs, activeTab, isIcon, tabOnClick }: MenuTabProps) => {
+  const { t } = useTranslation();
   const [isAnimating, setIsAnimating] = useState(false);
   const lineRef = useRef<HTMLDivElement>(null);
 
-  const tabs = [t("tabTour"), t("tabFood"), t("tabStay")];
-  const icons = ['typeIcon/spot.png', 'typeIcon/restaurant.png', 'typeIcon/accommodation.png'];
   const tabWidth = 64;
   const tabGap = 24;
 
@@ -29,7 +33,7 @@ const MenuTab = ({ isIcon }: MenuTabProps) => {
             easing: 'ease-in-out',
         }).finished.then(() => {
             setIsAnimating(false);
-            setActiveTab(index);
+            tabOnClick(index);
         });
     }
   };
@@ -52,15 +56,15 @@ const MenuTab = ({ isIcon }: MenuTabProps) => {
 
   return (
     <div className={styles.tabContainer}>
-      {tabs.map((tab, index) => (
+      {tabs.map((tab: { label: string; icon: string; uri: string }, index: number) => (
         <div
           key={index}
           className={`${styles.tabItem} ${activeTab === index ? styles.active : ''}`}
           onClick={() => handleTabClick(index)}
         >
-          {isIcon && <img src={icons[index]} alt={tab} className={styles.tabIcon} />}
+          {isIcon && <img src={tab.icon} alt={tab.label} className={styles.tabIcon} />}
           <div className={styles.tabTextContainer}>
-            <span className={styles.tabText}>{tab}</span>
+            <span className={styles.tabText}>{t(tab.label)}</span>
           </div>
         </div>
       ))}
