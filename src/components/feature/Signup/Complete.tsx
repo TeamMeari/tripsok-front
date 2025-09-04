@@ -1,17 +1,27 @@
 import styles from "../../../pages/SignupPage.module.css";
 import Button from "../../common/Button/CommonBtn";
+import { useTranslation } from "react-i18next";
 
 interface CompleteProps {
     nickname: string;
 }
 
 const Complete = ({ nickname }: CompleteProps) => {
-    return <div className={styles.step}>
-        <p className={styles.message}>{nickname}님, 반가워요!<br />관심있는 여행이 있으신가요?</p>
-        <div className={styles.buttonFixedTab}>
-            <a href="/"><Button borderRadius="12px" size="large">홈으로</Button></a>
+    const { t } = useTranslation();
+
+    return (
+        <div className={styles.step}>
+            <p
+                className={styles.message}
+                dangerouslySetInnerHTML={{ __html: t("welcomeNickname", { name: nickname }) }}
+            />
+            <div className={styles.buttonFixedTab}>
+                <a href="/">
+                    <Button borderRadius="12px" size="large">{t("home")}</Button>
+                </a>
+            </div>
         </div>
-    </div>
-}
+    );
+};
 
 export default Complete;
