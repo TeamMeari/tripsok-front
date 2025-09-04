@@ -1,3 +1,19 @@
+.bannerTitle {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #444444;
+    margin-left: 24px;
+}
+
+.bannerTitle span {
+    font-size: 12px;
+    color: #666666;
+    margin: 0;
+}
+
 .carouselTrack {
     width: 100%;
     max-width: 360px;
