@@ -142,8 +142,8 @@ const resources = {
             myPlanStart: "Add places and start planning",
             // MenuApp 텍스트
             tabNavigation: "Explore",
-            tabMyPlan: "My Journey",
-            tabCustomerService: "Customer Service",
+            tabMyPlan: "My Trip",
+            tabCustomerService: "CS",
         },
     },
     ja: {
@@ -188,7 +188,7 @@ const resources = {
             passwordValidationWarning: "必須条件 - {{condition}} 必須",
             // ContentPage 텍스트
             placePointTitle: "この場所の魅力ポイント",
-            cardSectionTitle: "一緒に訪れた場所",
+            cardSectionTitle: "と似た場所",
             addToJourney: "私の旅に追加",
             // MenuTab 텍스트
             tabTour: "観光地",
@@ -214,7 +214,7 @@ const resources = {
             // MenuApp 텍스트
             tabNavigation: "探索",
             tabMyPlan: "私の旅程",
-            tabCustomerService: "カスタマーサービス",
+            tabCustomerService: "サービス",
         },
     },
     zh: {
