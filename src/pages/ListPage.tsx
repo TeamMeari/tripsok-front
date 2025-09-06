@@ -7,6 +7,7 @@ import Dropdown from '../components/common/Dropdown';
 import CardType from '../types/Card';
 import Card from '../components/common/Card';
 import { useTranslation } from 'react-i18next';
+import MenuApp from "../components/MenuApp";
 
 const ListPage = () => {
   const { t } = useTranslation();
@@ -99,6 +100,9 @@ const ListPage = () => {
           ))}
         </div>
         <div>다음 페이지 로드</div>
+      </div>
+      <div>
+        <MenuApp/>
       </div>
     </div>
   );
