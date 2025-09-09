@@ -116,6 +116,22 @@ const SearchInput = ({ searchWord }: SearchInputProps) => {
         };
     }, [handleWheel]);
 
+    const handleClickOutside = useCallback((e: MouseEvent) => {
+        if (isOpen && imageSearchRef.current && buttonRef.current) {
+            if (!imageSearchRef.current.contains(e.target as Node) && !buttonRef.current.contains(e.target as Node)) {
+                setIsOpen(false);
+            }
+        }
+    }, [isOpen]);
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+        
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isOpen]);
+
     return (
         <div className={styles.searchContainer} ref={containerRef}>
             <Input
