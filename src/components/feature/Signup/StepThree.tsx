@@ -8,7 +8,8 @@ import PasswordInput from "../Input/PasswordInput";
 import ValidationBtn from "../../common/Button/ValidationBtn";
 import { validatePassword } from "../../../utils/validation";
 import { useTranslation } from "react-i18next";
-import { PASSWORD_VALIDATION_WARNING, PASSWORD_CONFIRM_ERROR } from "../../../types/signupErrors";
+import { PASSWORD_VALIDATION_WARNING } from "../../../types/signupErrors";
+import { useApi } from "../../../hooks/useApi";
 
 interface StepThreeProps {
     onSubmit: (nickname: string) => void;
@@ -19,7 +20,8 @@ interface StepThreeProps {
 
 const StepThree = ({ onSubmit, emailVerifyToken, goStepFour, goStepFive }: StepThreeProps) => {
     const { t } = useTranslation();
-
+    const { apiCall: nicknameValidateApiCall, isLoading: nicknameValidateIsLoading } = useApi();
+    const { apiCall: submitApiCall, isLoading: submitIsLoading } = useApi();
     const [passwordConfirmVisible, setPasswordConfirmVisible] = useState(false);
     const [nicknameVisible, setNicknameVisible] = useState(false);
     const [termAndPrivacyVisible, setTermAndPrivacyVisible] = useState(false);
@@ -52,7 +54,11 @@ const StepThree = ({ onSubmit, emailVerifyToken, goStepFour, goStepFive }: StepT
     const handlePrivacyChecked = useCallback(() => setPrivacyChecked(prev => !prev), []);
 
     const handleSubmit = useCallback(() => {
-        onSubmit(nickname);
+        submitApiCall("/auth/signup", "POST", { emailVerifyToken, nickname, password }).then(response => {
+            if (response.status === 200) {
+                onSubmit(nickname);
+            }
+        });
     }, [nickname, onSubmit]);
 
     const passwordValid = validatePassword(password);
@@ -82,10 +88,22 @@ const StepThree = ({ onSubmit, emailVerifyToken, goStepFour, goStepFive }: StepT
     }, [passwordConfirm, password, t]);
 
     useEffect(() => {
-        if (nickname.length > 0 && nickname.length <= NICKNAME_MAX_LENGTH) {
-            setNicknameError("");
-            if (passwordError === "" && passwordConfirmError === "") setTermAndPrivacyVisible(true);
-        }
+        const timer = setTimeout(() => {
+            if (nickname.length > 0 && nickname.length <= NICKNAME_MAX_LENGTH) {
+                nicknameValidateApiCall("/auth/validate/nickname", "POST", { nickname }).then(response => {
+                    if (response.status === 200) {
+                        if (response.data && typeof response.data === 'object' && 'available' in response.data && response.data.available === true) {
+                            setNicknameError("");
+                            if (passwordError === "" && passwordConfirmError === "") setTermAndPrivacyVisible(true);
+                    } else {
+                        setNicknameError('existingNickname');
+                    }
+                    }
+                });
+            }
+        }, 1000);
+
+        return () => clearTimeout(timer);
     }, [nickname]);
 
     return (
@@ -116,7 +134,7 @@ const StepThree = ({ onSubmit, emailVerifyToken, goStepFour, goStepFive }: StepT
                             placeholder={t("nicknameRule")}
                             maxLength={NICKNAME_MAX_LENGTH}
                         />
-                        {nicknameError && <p className={styles.error}>{nicknameError}</p>}
+                        {nicknameError && <p className={styles.error}>{t(nicknameError)}</p>}
                     </div>
                 )}
 
@@ -140,7 +158,7 @@ const StepThree = ({ onSubmit, emailVerifyToken, goStepFour, goStepFive }: StepT
                 )}
 
                 <div className={styles.buttonFixedTab}>
-                    <ValidationBtn isDisabled={!validateInfo} onClick={handleSubmit}>{t("signup")}</ValidationBtn>
+                    <ValidationBtn isDisabled={!validateInfo || nicknameValidateIsLoading || submitIsLoading} onClick={handleSubmit}>{t("signup")}</ValidationBtn>
                 </div>
             </div>
         </div>
