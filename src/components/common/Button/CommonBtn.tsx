@@ -11,6 +11,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     borderRadius?: string;
     children: React.ReactNode;
     onClick?: () => void
+    isLoading?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -20,6 +21,7 @@ const Button: React.FC<ButtonProps> = ({
                                            children,
                                            style,
                                            onClick,
+                                           isLoading,
                                            ...props
                                        }) => {
     const width =
@@ -31,6 +33,7 @@ const Button: React.FC<ButtonProps> = ({
                 className={`${styles.button} ${styles[variant]}`}
                 style={{width, borderRadius, ...style}}
                 {...props}
+                disabled={isLoading}
             >
                 {children}
             </button>
