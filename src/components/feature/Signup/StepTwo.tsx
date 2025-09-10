@@ -29,7 +29,7 @@ const StepTwo = ({ email, onSubmit }: StepTwoProps) => {
             setSec(Math.floor((time.current % 60000) / 1000));
             if (time.current <= 0) {
                 clearInterval(interval);
-                setCodeError(t("expiredCode"));
+                setCodeError(EXPIRED_CODE);
             }
         }, 1000);
         setCodeError("");
@@ -44,9 +44,9 @@ const StepTwo = ({ email, onSubmit }: StepTwoProps) => {
         if (code === "123456") {
             onSubmit("token");
         } else if (code.length === codeLength && code !== "123456") {
-            setCodeError(t("codeMismatch"));
+            setCodeError(INVALID_CODE);
         }
-    }, [code, onSubmit, t]);
+    }, [code, onSubmit]);
 
     const CodeTimer = () => {
         if (min === 0 && sec === 0) {
@@ -73,8 +73,8 @@ const StepTwo = ({ email, onSubmit }: StepTwoProps) => {
                     <Input onChange={handleCodeChange} rightElement={<CodeTimer />} value={code} maxLength={codeLength} />
                     {codeError ? (
                         <div className={styles.errorContainer}>
-                            <p className={styles.error}>{codeError}</p>
-                            {codeError === t("expiredCode") && (
+                            <p className={styles.error}>{t(codeError)}</p>
+                            {codeError === EXPIRED_CODE && (
                                 <button className={styles.resendButton} onClick={sendCode}>{t("resend")}</button>
                             )}
                         </div>

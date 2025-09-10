@@ -19,17 +19,17 @@ const StepOne = ({ onSubmit }: StepOneProps) => {
     const handleEmailChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const newEmail = e.target.value;
         setEmail(newEmail);
-        setEmailError(validateEmail(newEmail) ? "" : t(INVALID_EMAIL));
-    }, [t]);
+        setEmailError(validateEmail(newEmail) ? "" :INVALID_EMAIL);
+    }, []);
 
     // 이메일 코드 보내기
     const handleEmailVerification = useCallback(() => {
         if (email === "meari@gmail.com") {
-            setEmailError(t(EXISTING_EMAIL));
+            setEmailError(EXISTING_EMAIL);
         } else {
             onSubmit(email);
         }
-    }, [email, onSubmit, t]);
+    }, [email, onSubmit]);
 
     return (
         <div className={styles.step}>
@@ -46,8 +46,8 @@ const StepOne = ({ onSubmit }: StepOneProps) => {
                     />
                     {emailError && (
                         <div className={styles.errorContainer}>
-                            <p className={styles.error}>{emailError}</p>
-                            {emailError === t(EXISTING_EMAIL) && (
+                            <p className={styles.error}>{t(emailError)}</p>
+                            {emailError === EXISTING_EMAIL && (
                                 <a href="/login" className={styles.link}>
                                     {t("login")}
                                 </a>
