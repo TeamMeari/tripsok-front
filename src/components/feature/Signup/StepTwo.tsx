@@ -3,6 +3,7 @@ import Input from "../../common/Input";
 import { useRef, useState, useCallback, useEffect } from "react";
 import { EXPIRED_CODE, INVALID_CODE } from "../../../types/signupErrors";
 import { useTranslation } from "react-i18next";
+import { useApi } from "../../../hooks/useApi";
 
 interface StepTwoProps {
     email: string;
@@ -11,7 +12,7 @@ interface StepTwoProps {
 
 const StepTwo = ({ email, onSubmit }: StepTwoProps) => {
     const { t } = useTranslation();
-
+    const { apiCall, isLoading } = useApi();
     const codeValidTime = 180000;
     const codeLength = 6;
     const time = useRef<number>(codeValidTime);
@@ -41,11 +42,17 @@ const StepTwo = ({ email, onSubmit }: StepTwoProps) => {
 
     const handleCodeVerification = useCallback(() => {
         // 인증 코드 검증 로직
-        if (code === "123456") {
-            onSubmit("token");
-        } else if (code.length === codeLength && code !== "123456") {
-            setCodeError(INVALID_CODE);
-        }
+        if (code.length !== codeLength) return;
+        apiCall("/auth/email/verify", "POST", { email, code }).then(response => {
+            if (response.status === 200 &&
+                response.data &&
+                typeof response.data === 'object' &&
+                'emailVerifyToken' in response.data) {
+                onSubmit(response.data.emailVerifyToken as string);
+            } else {
+                setCodeError(INVALID_CODE);
+            }
+        });
     }, [code, onSubmit]);
 
     const CodeTimer = () => {

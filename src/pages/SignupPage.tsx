@@ -7,11 +7,11 @@ import Complete from "../components/feature/Signup/Complete";
 import Document from "../components/feature/Signup/Document";
 
 const SignupPage = () => {
-    const [step, setStep] = useState(1);
+    const [step, setStep] = useState(6);
 
     const [email, setEmail] = useState("");
     const [emailVerifyToken, setEmailVerifyToken] = useState("");
-    const [nickname, setNickname] = useState("");
+    const [nickname, setNickname] = useState("meari");
 
     const onSubmitEmail = useCallback((email: string) => {
         setEmail(email);

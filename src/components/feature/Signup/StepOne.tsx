@@ -5,6 +5,7 @@ import { INVALID_EMAIL, EXISTING_EMAIL } from "../../../types/signupErrors";
 import { validateEmail } from "../../../utils/validation";
 import ValidationBtn from "../../common/Button/ValidationBtn";
 import Input from "../../common/Input";
+import { useApi } from "../../../hooks/useApi";
 
 interface StepOneProps {
     onSubmit: (email: string) => void;
@@ -12,6 +13,7 @@ interface StepOneProps {
 
 const StepOne = ({ onSubmit }: StepOneProps) => {
     const { t } = useTranslation();
+    const { apiCall, isLoading } = useApi();
     const [email, setEmail] = useState("");
     const [emailError, setEmailError] = useState("");
 
@@ -24,11 +26,13 @@ const StepOne = ({ onSubmit }: StepOneProps) => {
 
     // 이메일 코드 보내기
     const handleEmailVerification = useCallback(() => {
-        if (email === "meari@gmail.com") {
-            setEmailError(EXISTING_EMAIL);
-        } else {
-            onSubmit(email);
-        }
+        apiCall("/auth/email/send", "POST", { email }).then(response => {
+            if (response.status === 200) {
+                onSubmit(email);
+            } else {
+                setEmailError(EXISTING_EMAIL);
+            }
+        });
     }, [email, onSubmit]);
 
     return (
@@ -56,7 +60,7 @@ const StepOne = ({ onSubmit }: StepOneProps) => {
                     )}
                 </div>
                 <ValidationBtn
-                    isDisabled={!validateEmail(email)}
+                    isDisabled={!validateEmail(email) || isLoading}
                     onClick={handleEmailVerification}
                 >
                     {t("emailVerification")}
