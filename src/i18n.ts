@@ -75,7 +75,7 @@ const resources = {
             myJourney: "{{nickname}}님의 이번 강릉 여정",
             person: "{{count}}명",
             locations: {
-            gangneungStation: "Gangneung Station",
+            gangneungStation: "강남역",
                 },
             // MenuApp 텍스트
             tabNavigation: "탐색",
