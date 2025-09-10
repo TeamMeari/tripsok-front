@@ -33,11 +33,18 @@ const DropdownInput = forwardRef<HTMLInputElement, DropdownInputProps>(
             }
         };
 
-        React.useEffect(() => {
-            document.addEventListener('mousedown', handleClickOutside);
-            return () => document.removeEventListener('mousedown', handleClickOutside);
-        }, []);
-
+        React.
+            useEffect(() => {
+                const handleClickOutside = (e: MouseEvent) => {
+                    if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+                        setIsOpen(false);
+                    }
+                };
+                document.addEventListener('mousedown', handleClickOutside);
+                return () => {
+                    document.removeEventListener('mousedown', handleClickOutside);
+                };
+            }, []);
         return (
             <div className={styles.wrapper} ref={wrapperRef} style={{ width }}>
                 <Input
@@ -83,5 +90,8 @@ const DropdownInput = forwardRef<HTMLInputElement, DropdownInputProps>(
         );
     }
 );
+
+
+DropdownInput.displayName = 'DropdownInput';
 
 export default React.memo(DropdownInput);
