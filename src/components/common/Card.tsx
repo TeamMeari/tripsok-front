@@ -1,5 +1,4 @@
 import styles from "./Card.module.css";
-import '../../styles/skeleton.css'
 import { useNavigate } from "react-router-dom";
 
 interface CardProps {
