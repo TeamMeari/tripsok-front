@@ -9,10 +9,12 @@ interface InputProps {
     rightElement?: React.ReactNode;
     placeholder?: string;
     onFocus?: () => void;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
     style?: Record<string, string>;
     maxLength?: number;
+    readOnly?: boolean;
+    onClick?: () => void;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(({

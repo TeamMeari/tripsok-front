@@ -1,0 +1,64 @@
+/* react-datepicker 커스텀 */
+.react-datepicker {
+    width: 100% !important;
+    font-size: 14px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.react-datepicker__month-container {
+    width: 100% !important;
+}
+
+.react-datepicker__header {
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.react-datepicker__current-month {
+    font-weight: 500;
+}
+.react-datepicker__day-names {
+    white-space: nowrap;
+    margin-bottom: -5px;
+    display: flex;
+    font-weight: bold;
+    justify-content: center;
+}
+
+.react-datepicker__day-name,
+.react-datepicker__day {
+    width: 2.35rem;
+    line-height: 2rem;
+    margin: 0.1rem;
+}
+
+.react-datepicker__day:hover {
+    background-color: #f2f2f2;
+    border-radius: 4px;
+}
+.react-datepicker__day {
+    color: #111111;
+}
+.react-datepicker__day--selected {
+    background-color: #FF6B2C;
+    color: #fff;
+    border-radius: 4px;
+}
+
+h2.react-datepicker__current-month {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.react-datepicker__day--outside-month {
+    color: #c0c0c0;
+}
+.react-datepicker__day-name:nth-child(1) { /* 일요일 */
+    color: #cd4848;
+}
+
+.react-datepicker__day-name:nth-child(7) { /* 토요일 */
+    color: #4242cc;
+}

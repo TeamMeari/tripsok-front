@@ -1,23 +1,23 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ContentPage from '../pages/ContentPage';
+import MyPlanPage from '../pages/MyPlanPage';
 import { BrowserRouter } from 'react-router-dom';
 import '../App.css';
 import '../index.css'
 
-const meta: Meta<typeof ContentPage> = {
-    title: 'Page/ContentPage',
-    component: ContentPage,
+const meta: Meta<typeof MyPlanPage> = {
+    title: 'Page/MyPlanPage',
+    component: MyPlanPage,
 };
 
 export default meta;
 
-type Story = StoryObj<typeof ContentPage>;
+type Story = StoryObj<typeof MyPlanPage>;
 
 export const Default: Story = {
     render: () => (
         <BrowserRouter>
-            <div style={{ maxWidth: '360px', margin: '0 auto' }}>
-                <ContentPage />
+            <div >
+                <MyPlanPage />
             </div>
         </BrowserRouter>
     ),

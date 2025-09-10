@@ -68,7 +68,15 @@ const resources = {
             myPlanDate: "여행 일자를 선택하세요",
             myPlanDeparture: "출발지",
             myPlanPeople: "인원수",
-            myPlanStart: "장소 추가하고 여행 계획 시작하기",
+            myPlanStart: "방문지 추가하고 계획 시작하기",
+            addPlace: "방문지 추가하기",
+            viewPlan: "계획 상세보기",
+            likedSpots: "내가 좋아요를 누른 관광지",
+            myJourney: "{{nickname}}님의 이번 강릉 여정",
+            person: "{{count}}명",
+            locations: {
+            gangneungStation: "강남역",
+                },
             // MenuApp 텍스트
             tabNavigation: "탐색",
             tabMyPlan: "나의 여정",
@@ -140,10 +148,19 @@ const resources = {
             myPlanDeparture: "Departure",
             myPlanPeople: "Number of people",
             myPlanStart: "Add places and start planning",
+            addPlace: "Add Place",
+            viewPlan: "View Plan Details",
+            likedSpots: "Tourist spots I liked",
+            myJourney: "{{nickname}}'s Gangneung Trip",
+            person_one: "{{count}} person",
+            person_other: "{{count}} people",
+            locations: {
+                gangneungStation: "강릉역",
+            },
             // MenuApp 텍스트
             tabNavigation: "Explore",
-            tabMyPlan: "My Journey",
-            tabCustomerService: "Customer Service",
+            tabMyPlan: "My Trip",
+            tabCustomerService: "CS",
         },
     },
     ja: {
@@ -188,7 +205,7 @@ const resources = {
             passwordValidationWarning: "必須条件 - {{condition}} 必須",
             // ContentPage 텍스트
             placePointTitle: "この場所の魅力ポイント",
-            cardSectionTitle: "一緒に訪れた場所",
+            cardSectionTitle: "と似た場所",
             addToJourney: "私の旅に追加",
             // MenuTab 텍스트
             tabTour: "観光地",
@@ -211,10 +228,18 @@ const resources = {
             myPlanDeparture: "出発地",
             myPlanPeople: "人数",
             myPlanStart: "場所を追加して旅行計画を始める",
+            addPlace: "場所を追加",
+            viewPlan: "計画の詳細を見る",
+            likedSpots: "私がいいねした観光地",
+            myJourney: "{{nickname}}さんの今回の江陵旅行",
+            person: "{{count}}人",
+            locations: {
+                gangneungStation: "江陵駅",
+            },
             // MenuApp 텍스트
             tabNavigation: "探索",
             tabMyPlan: "私の旅程",
-            tabCustomerService: "カスタマーサービス",
+            tabCustomerService: "サービス",
         },
     },
     zh: {
@@ -282,6 +307,14 @@ const resources = {
             myPlanDeparture: "出发地",
             myPlanPeople: "人数",
             myPlanStart: "添加地点并开始规划旅行",
+            addPlace: "添加地点",
+            viewPlan: "查看计划详情",
+            likedSpots: "我点赞过的景点",
+            myJourney: "{{nickname}}的江陵行程",
+            person: "{{count}}人",
+            locations: {
+                gangneungStation: "江陵站",
+            },
             // MenuApp 텍스트
             tabNavigation: "探索",
             tabMyPlan: "我的旅程",
