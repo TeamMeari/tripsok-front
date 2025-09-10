@@ -10,7 +10,7 @@ import MenuApp from './components/MenuApp';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import HeaderSelector from "./components/header/HeaderSelector";
-import MyPlan from "./pages/MyPlan"
+import MyPlan from "./pages/MyPlanPage"
 
 function App(): JSX.Element {
   return (

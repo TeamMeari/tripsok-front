@@ -73,6 +73,10 @@ const resources = {
             viewPlan: "계획 상세보기",
             likedSpots: "내가 좋아요를 누른 관광지",
             myJourney: "{{nickname}}님의 이번 강릉 여정",
+            person: "{{count}}명",
+            locations: {
+            gangneungStation: "Gangneung Station",
+                },
             // MenuApp 텍스트
             tabNavigation: "탐색",
             tabMyPlan: "나의 여정",
@@ -148,6 +152,11 @@ const resources = {
             viewPlan: "View Plan Details",
             likedSpots: "Tourist spots I liked",
             myJourney: "{{nickname}}'s Gangneung Trip",
+            person_one: "{{count}} person",
+            person_other: "{{count}} people",
+            locations: {
+                gangneungStation: "강릉역",
+            },
             // MenuApp 텍스트
             tabNavigation: "Explore",
             tabMyPlan: "My Trip",
@@ -223,6 +232,10 @@ const resources = {
             viewPlan: "計画の詳細を見る",
             likedSpots: "私がいいねした観光地",
             myJourney: "{{nickname}}さんの今回の江陵旅行",
+            person: "{{count}}人",
+            locations: {
+                gangneungStation: "江陵駅",
+            },
             // MenuApp 텍스트
             tabNavigation: "探索",
             tabMyPlan: "私の旅程",
@@ -298,6 +311,10 @@ const resources = {
             viewPlan: "查看计划详情",
             likedSpots: "我点赞过的景点",
             myJourney: "{{nickname}}的江陵行程",
+            person: "{{count}}人",
+            locations: {
+                gangneungStation: "江陵站",
+            },
             // MenuApp 텍스트
             tabNavigation: "探索",
             tabMyPlan: "我的旅程",
