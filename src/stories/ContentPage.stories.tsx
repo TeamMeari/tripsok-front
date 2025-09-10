@@ -5,7 +5,7 @@ import '../App.css';
 import '../index.css'
 
 const meta: Meta<typeof ContentPage> = {
-    title: 'Pages/ContentPage',
+    title: 'Page/ContentPage',
     component: ContentPage,
 };
 
