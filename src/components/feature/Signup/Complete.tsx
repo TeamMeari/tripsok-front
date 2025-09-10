@@ -5,6 +5,7 @@ import { Tag } from "../../../types/Tag";
 import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
 import HashtagButton from "../../common/HashtagBtn";
+import HashtagBtnSkeleton from "../../common/HashtagBtnSkeleton";
 interface CompleteProps {
     nickname: string;
 }
@@ -34,11 +35,22 @@ const Complete = ({ nickname }: CompleteProps) => {
                 <Trans i18nKey="welcomeNickname" components={{ br: <br />, span: <span /> }} values={{ name: nickname }} />
             </p>
             <div className={styles.content}>
-                <div className={styles.hashtagsContainer}>
-                    {hashtags.map(hashtag => (
-                        <HashtagButton key={hashtag.id} label={hashtag.type} />
-                    ))}
-                </div>
+                {
+                    isLoading ? (
+                        <div className={styles.hashtagsContainer}>
+                            {[...Array(10)].map((_, i) => (
+                                <HashtagBtnSkeleton key={i} />
+                            ))}
+                        </div>
+                    ) : (
+                        <div className={styles.hashtagsContainer}>
+                            {hashtags.map(hashtag => (
+                                <HashtagButton key={hashtag.id} label={hashtag.type} />
+                            ))}
+                        </div>
+                    )
+                }
+                
             </div>
             <div className={styles.buttonFixedTab}>
                 <a href="/">
