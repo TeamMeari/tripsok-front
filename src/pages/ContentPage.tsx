@@ -8,11 +8,18 @@ import styles from './ContentPage.module.css';
 import Button from '../components/common/Button/CommonBtn';
 import LikeButton from '../components/common/Button/LikeBtn';
 import KakaoMap from "../components/KakaoMap";
+import { useNavigate, useLocation  } from 'react-router-dom';
 
 const ContentPage = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
     const { t } = useTranslation();
     const userName = "홍길동"; // 실제 로그인 사용자 이름으로 대체 가능
 
+    const handleAddToMyPlan = () => {
+        const addedPlace = { id: 1, title: 'BTS 버스정류장' }; // 실제 데이터 사용
+        navigate('/myplan', { state: { addedPlace } });
+    }
     return (
         <div className={styles.contentpage}>
             <div className={styles.header}>
@@ -129,7 +136,10 @@ const ContentPage = () => {
 
             <div className={styles.fixedBtn}>
                 <LikeButton/>
-                <Button variant="primary" size="small" borderRadius="12px">
+                <Button variant="primary"
+                        size="small"
+                        borderRadius="12px"
+                        onClick={handleAddToMyPlan}>
                     {t("addToJourney")}
                 </Button>
             </div>
