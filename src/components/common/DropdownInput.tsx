@@ -46,14 +46,19 @@ const DropdownInput = forwardRef<HTMLInputElement, DropdownInputProps>(
                 };
             }, []);
         return (
-            <div className={styles.wrapper} ref={wrapperRef} style={{ width }}>
+            <div className={styles.wrapper} ref={wrapperRef} style={{ width }} onClick={toggleDropdown} >
                 <Input
                     ref={ref}
                     value={value}
                     placeholder={placeholder}
                     width={width}
+                    readOnly
                     leftIcon={leftIcon}
-                    onChange={(e) => onChange(e.target.value)}
+                    style={{
+                        pointerEvents: 'none',
+                    }}
+                        onFocus={() => ref && (ref as React.RefObject<HTMLInputElement>).current?.blur()}
+                    // onChange={(e) => onChange(e.target.value)}
                     rightElement={
                         <button type="button" className={styles.arrowBtn} onClick={toggleDropdown}>
                             {isOpen ? '▲' : '▼'}
