@@ -10,6 +10,7 @@ import MenuApp from './components/MenuApp';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import HeaderSelector from "./components/header/HeaderSelector";
+import MyPlan from "./pages/MyPlanPage"
 
 function App(): JSX.Element {
   return (
@@ -25,6 +26,7 @@ function App(): JSX.Element {
               <Route path="/list" element={<ListPage />} />
               <Route path="/content/:id" element={<ContentPage />} />
               <Route path="/search" element={<SearchListPage />} />
+              <Route path="/myplan" element={<MyPlan />} />
             </Routes>
           </div>
         </BrowserRouter>

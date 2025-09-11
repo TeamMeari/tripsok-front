@@ -1,0 +1,72 @@
+.Page{
+    margin: 84px 0;
+}
+.MyPlanPage{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 64px;
+    max-width: 360px;
+}
+.MyPlan{
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.MyPlanCreate{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 360px;
+    align-items: center;
+}
+
+.MyPlanTitle{
+    font-size: 18px;
+    font-weight: 600;
+
+}
+.MyPlanDetail{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.Myplan_FromPerson{
+    display: flex;
+    justify-content: space-between;
+}
+.pinBtn{
+    display: flex;
+    align-Items: center;
+    gap: 8px;
+}
+.plusBtn{
+    display: flex;
+    align-Items: center;
+    gap: 8px;
+}
+
+.MyPlanLikeContent{
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+.MyPlanLikeTitle{
+
+
+}
+.VisitedPlaces{
+
+}
+.LikeTitle{
+    font-size: 18px;
+    font-weight: 600;
+    width: 312px;
+}
+.LikeList{
+    width: 100%;
+    margin-left: -8px;
+}
