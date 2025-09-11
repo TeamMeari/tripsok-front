@@ -78,7 +78,7 @@ const LoginPage = () => {
             <div className={styles.linkContainer}>
                 <a href="#" className={styles.link}>{t("resetPassword")}</a>
                 <div className={styles.divider} />
-                <a href="/signup" className={styles.link}>{t("signup")}</a>
+                <a href="/signup/email/1" className={styles.link}>{t("signup")}</a>
             </div>
 
             <div className={styles.orContainer}>
