@@ -5,7 +5,6 @@ import '../index.css';
 import { BrowserRouter } from 'react-router-dom';
 import HeaderSelector from '../components/header/HeaderSelector';
 import LoginPage from '../pages/LoginPage';
-import SignupPage from '../pages/SignupPage';
 import MainPage from '../pages/MainPage';
 
 const meta = {
@@ -40,8 +39,4 @@ export const List: Story = {
 
 export const Login: Story =  {
   render: () => <LoginPage />,
-}
-
-export const Signup: Story = {
-  render: () => <SignupPage />,
 }
