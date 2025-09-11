@@ -27,7 +27,7 @@ const StepOne = ({ onSubmit }: StepOneProps) => {
     // 이메일 코드 보내기
     const handleEmailVerification = useCallback(() => {
         apiCall("/auth/email/send", "POST", { email }).then(response => {
-            if (response.status === 200) {
+            if (response.status === 204) {
                 onSubmit(email);
             } else {
                 setEmailError(EXISTING_EMAIL);
