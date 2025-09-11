@@ -36,7 +36,10 @@ const resources = {
             nicknameRule: "15자 이내 문자, 숫자 닉네임",
             existingNickname: "이미 존재하는 닉네임입니다.",
             termsRequired: "(필수) 이용 약관 동의",
+            termsContent: "이용 약관", // 수정 필요
             privacyRequired: "(필수) 개인정보 수집 및 이용 동의",
+            privacyContent: "개인정보 수집 및 이용 동의", // 수정 필요
+            agree: "동의합니다",
             welcomeNickname: "<span>{{name}}</span>님, 반가워요! <br />관심있는 여행이 있으신가요?",
             home: "홈으로",
             passwordTooShort: "비밀번호는 8자 이상이어야 합니다.",
@@ -115,7 +118,10 @@ const resources = {
             nicknameRule: "Nickname up to 15 letters/numbers",
             existingNickname: "Nickname already exists.",
             termsRequired: "(Required) Agree to Terms of Service",
+            termsContent: "Terms of Service", // 수정 필요
             privacyRequired: "(Required) Agree to Privacy Policy",
+            privacyContent: "Privacy Policy", // 수정 필요
+            agree: "Agree",
             welcomeNickname: "Welcome, {{name}}!<br />Do you have any trips in mind?",
             home: "Go Home",
             passwordTooShort: "Password must be at least 8 characters.",
@@ -195,7 +201,10 @@ const resources = {
             nicknameRule: "15文字以内の文字・数字のニックネーム",
             existingNickname: "ニックネームが既に存在します。",
             termsRequired: "(必須) 利用規約に同意",
+            termsContent: "利用規約", // 수정 필요
             privacyRequired: "(必須) 個人情報の収集および利用に同意",
+            privacyContent: "個人情報の収集および利用に同意", // 수정 필요
+            agree: "同意",
             welcomeNickname: "{{name}}さん、ようこそ！<br />興味のある旅行はありますか？",
             home: "ホームへ",
             passwordTooShort: "パスワードは8文字以上である必要があります。",
@@ -274,7 +283,10 @@ const resources = {
             nicknameRule: "15位以内的字母、数字昵称",
             existingNickname: "昵称已存在。",
             termsRequired: "（必填）同意服务条款",
+            termsContent: "服务条款", // 수정 필요
             privacyRequired: "（必填）同意隐私政策",
+            privacyContent: "隐私政策", // 수정 필요
+            agree: "同意",
             welcomeNickname: "{{name}}，欢迎！<br />有感兴趣的旅行吗？",
             home: "回到首页",
             passwordTooShort: "密码至少需要8位。",
