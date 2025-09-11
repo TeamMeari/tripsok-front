@@ -121,3 +121,7 @@
     flex-wrap: wrap;
     gap: 12px 4px;
 }
+
+.documentContent {
+    margin: 0;
+}
