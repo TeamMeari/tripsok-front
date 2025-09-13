@@ -89,7 +89,7 @@ const ListPage = () => {
       </div>
       <MenuTab tabs={menuTabs} activeTab={0} isIcon={false} tabOnClick={() => {
 
-      }} />
+      }} isDot={[true, false, false]}/>
       <div className={styles.tagContainer} ref={tagContainerRef}>
         {tags.map((tag) => (
           <HashtagButton key={tag.id} label={tag.type} onClick={() => {

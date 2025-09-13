@@ -12,9 +12,10 @@ interface MenuTabProps {
   activeTab: number;
   isIcon? : boolean;
   tabOnClick: (index: number) => void;
+  isDot?: boolean[];
 }
 
-const MenuTab = ({ tabs, activeTab, isIcon, tabOnClick }: MenuTabProps) => {
+const MenuTab = ({ tabs, activeTab, isIcon, tabOnClick, isDot = [ false, false, false ] }: MenuTabProps) => {
   const { t } = useTranslation();
   const [isAnimating, setIsAnimating] = useState(false);
   const lineRef = useRef<HTMLDivElement>(null);
@@ -65,6 +66,7 @@ const MenuTab = ({ tabs, activeTab, isIcon, tabOnClick }: MenuTabProps) => {
           {isIcon && <img src={tab.icon} alt={tab.label} className={styles.tabIcon} />}
           <div className={styles.tabTextContainer}>
             <span className={styles.tabText}>{t(tab.label)}</span>
+            {isDot[index] && <div className={styles.dot} />}
           </div>
         </div>
       ))}
