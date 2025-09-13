@@ -118,7 +118,7 @@ const MainCarousel = ({ items, texts }: MainCarouselProps) => {
                 return <div className={`${styles.carouselIndicatorDot} ${(currentIndex - 1 + texts.length) % texts.length === idx ? styles.active : ""}`} key={idx}></div>
               })}
             </div>
-            <SearchInput searchWord={""} />
+            <SearchInput variant="main" searchWord={""} />
           </div>
         </div>
     </div>
