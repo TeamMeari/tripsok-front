@@ -1,4 +1,4 @@
-import MenuTab from '../components/feature/Tab/ListMenuTab';
+import MenuTab from '../components/feature/Tab/MenuTab';
 import styles from './ListPage.module.css';
 import { Tag } from '../types/Tag';
 import { useEffect, useRef, useState } from 'react';
@@ -8,6 +8,9 @@ import CardType from '../types/Card';
 import Card from '../components/common/Card';
 import { useTranslation } from 'react-i18next';
 import MenuApp from "../components/MenuApp";
+import SearchInput from '../components/feature/SearchInput';
+import menuTabs from '../types/menuTabs';
+import { useSearchParams } from 'react-router-dom';
 
 const ListPage = () => {
   const { t } = useTranslation();
@@ -16,6 +19,8 @@ const ListPage = () => {
   const [selectedOption, setSelectedOption] = useState<number>(1);
   const [cards, setCards] = useState<CardType[]>([]);
   const tagContainerRef = useRef<HTMLDivElement>(null);
+  const [searchParams] = useSearchParams();
+  const searchWord = searchParams.get('query');
   
   const options = {
     1: t("sortPopular"),
@@ -45,11 +50,11 @@ const ListPage = () => {
   // 태그 예시 데이터
   useEffect(() => {
     setTags([
-      { id: 1, name: '바다' },
-      { id: 2, name: 'K-POP' },
-      { id: 3, name: '자연' },
-      { id: 4, name: '체험' },
-      { id: 5, name: '미술관' },
+      { id: 1, type: '바다' },
+      { id: 2, type: 'K-POP' },
+      { id: 3, type: '자연' },
+      { id: 4, type: '체험' },
+      { id: 5, type: '미술관' },
     ]);
     setCards(Array(20).fill(0).map((_, index) => ({
       id: index,
@@ -79,10 +84,15 @@ const ListPage = () => {
 
   return (
     <div className={styles.listPage}>
-      <MenuTab />
+      <div className={styles.searchContainer}>
+        <SearchInput variant="list" searchWord={searchWord || ""} />
+      </div>
+      <MenuTab tabs={menuTabs} activeTab={0} isIcon={false} tabOnClick={() => {
+
+      }} />
       <div className={styles.tagContainer} ref={tagContainerRef}>
         {tags.map((tag) => (
-          <HashtagButton key={tag.id} label={tag.name} onClick={() => {
+          <HashtagButton key={tag.id} label={tag.type} onClick={() => {
             handleTagClick(tag.id);
           }} />
         ))}

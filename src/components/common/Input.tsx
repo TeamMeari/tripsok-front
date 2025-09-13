@@ -15,6 +15,7 @@ interface InputProps {
     maxLength?: number;
     readOnly?: boolean;
     onClick?: () => void;
+    onFocusDisabled?: boolean;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(({
@@ -28,7 +29,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
     onChange,
     onKeyDown,
     style,
-    maxLength
+    maxLength,
+    onFocusDisabled = false,
 }, ref) => {
     const containerStyle = {
         width: `${width}px`,
@@ -50,7 +52,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
         className={styles.inputContainer} 
         style={{
             ...containerStyle,
-            borderColor: isFocused ? '#111111' : '#D9D9D9'
+            borderColor: !onFocusDisabled && isFocused ? '#111111' : '#D9D9D9',
+            ...style
         }}
     >
         { leftIcon }
