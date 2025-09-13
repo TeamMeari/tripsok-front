@@ -4,32 +4,45 @@ import { useState } from "react";
 import PasswordInput from "../components/feature/Input/PasswordInput";
 import ValidationBtn from "../components/common/Button/ValidationBtn";
 import { useTranslation, Trans } from "react-i18next";
+import { useApi } from "../hooks/useApi";
+import { login } from "../utils/auth";
 
 const LoginPage = () => {
     const { t } = useTranslation();
     const [email, setEmail] = useState("");
+    const { apiCall, isLoading } = useApi();
     const [password, setPassword] = useState("");
 
     // 에러를 key로 저장
-    const [emailErrorKey, setEmailErrorKey] = useState<null | string>(null);
-    const [passwordErrorKey, setPasswordErrorKey] = useState<null | string>(null);
+    const [errorKey, setErrorKey] = useState<null | string>(null);
 
     const isLoginValid = email !== "" && password !== "";
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
-        setEmailErrorKey(null);
+        setErrorKey(null);
     };
 
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value);
-        setPasswordErrorKey(null);
+        setErrorKey(null);
     };
 
     const handleLogin = () => {
         // 로그인 로직 처리 후 에러 발생 시
-        setEmailErrorKey("unregisteredAccount");
-        setPasswordErrorKey("passwordMismatch");
+        apiCall<{ accessToken: string }>('/auth/login', 'POST', {
+            email,
+            password
+        })
+        .then((response) => {
+            if (response.status === 200 && response.data?.accessToken) {
+                login(response.data.accessToken)
+            } else if (response.status === 401) {
+                setErrorKey("wrongEmailAndPassword");
+            } else {
+                alert("Server Error");
+            }
+        });
     };
 
     return (
@@ -47,7 +60,6 @@ const LoginPage = () => {
                         value={email}
                         rightElement={email && <ResetButton onClick={() => setEmail("")} />}
                     />
-                    {emailErrorKey && <p className={styles.error}>{t(emailErrorKey)}</p>}
                 </div>
 
                 <div className={styles.inputContainer}>
@@ -55,10 +67,10 @@ const LoginPage = () => {
                         onChange={handlePasswordChange}
                         placeholder={t("passwordRule")}
                     />
-                    {passwordErrorKey && <p className={styles.error}>{t(passwordErrorKey)}</p>}
+                    {errorKey && <p className={styles.error}>{t(errorKey)}</p>}
                 </div>
 
-                <ValidationBtn isDisabled={!isLoginValid} onClick={handleLogin}>
+                <ValidationBtn isDisabled={!isLoginValid || isLoading} onClick={handleLogin}>
                     {t("login")}
                 </ValidationBtn>
             </div>
@@ -66,7 +78,7 @@ const LoginPage = () => {
             <div className={styles.linkContainer}>
                 <a href="#" className={styles.link}>{t("resetPassword")}</a>
                 <div className={styles.divider} />
-                <a href="/signup" className={styles.link}>{t("signup")}</a>
+                <a href="/signup/email/1" className={styles.link}>{t("signup")}</a>
             </div>
 
             <div className={styles.orContainer}>
@@ -76,9 +88,7 @@ const LoginPage = () => {
             </div>
 
             <div className={styles.googleButtonContainer}>
-                <button className={styles.googleButton}>
-                    <img src="/googleSignupButton.png" alt="google" />
-                </button>
+                <GoogleButton />
             </div>
         </div>
     );
@@ -93,5 +103,22 @@ const ResetButton = ({ onClick }: { onClick: () => void }) => {
         </button>
     );
 };
+
+const GoogleButton = () => {
+    const loginUrl = "https://accounts.google.com/o/oauth2/v2/auth" +
+        `client_id=${encodeURIComponent(import.meta.env.VITE_PUBLIC_GOOGLE_CLIENT_ID)}` +
+        `&redirect_uri=${encodeURIComponent(import.meta.env.VITE_PUBLIC_GOOGLE_REDIRECT_URI)}` +
+        "&response_type=code" + "&scope=email%20openid" + "&access_type=offline" + "&prompt=select_account";
+
+    const handleGoogleLogin = () => {
+        window.location.href = loginUrl;
+    }
+
+    return (
+        <button className={styles.googleButton} onClick={handleGoogleLogin}>
+            <img src="/googleSignupButton.png" alt="google" />
+        </button>       
+    );
+}
 
 export default LoginPage;

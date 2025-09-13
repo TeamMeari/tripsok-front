@@ -15,7 +15,7 @@ const meta: Meta<typeof Input> = {
         type: { summary: 'React.FC' },
       },
     },
-    rightButton: {
+    rightElement: {
       control: 'object',
       table: {
         type: { summary: 'React.ElementType' },

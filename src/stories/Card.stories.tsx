@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import Card from '../components/common/Card';
 import { BrowserRouter } from 'react-router-dom';
+import '../App.css'
 
 const meta: Meta<typeof Card> = {
   title: 'Components/Card',
