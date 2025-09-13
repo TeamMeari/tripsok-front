@@ -4,7 +4,6 @@ import './App.css';
 import MainPage from './pages/MainPage';
 import ListPage from './pages/ListPage';
 import ContentPage from './pages/ContentPage';
-import SearchListPage from './pages/SearchListPage';
 import LoginPage from './pages/LoginPage';
 import HeaderSelector from "./components/header/HeaderSelector";
 import MyPlan from "./pages/MyPlanPage"
