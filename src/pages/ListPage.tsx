@@ -121,6 +121,7 @@ const ListPage = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && !placeIsLoading) {
+          console.log("fetchPlaces[activeTab]");
           fetchPlaces[activeTab]();
         }
       },
@@ -169,13 +170,19 @@ const ListPage = () => {
           <Dropdown current={selectedOption} options={options} onClickOption={handleOptionClick} />
         </div>
         <div className={styles.list}>
-          {Array(20).fill(0).map((card) => (
-            <Card key={card.id} isLoading={true}/>
+          {activeTab === 0 && tourPlaces.map((card) => (
+            <Card key={card.id} />
+          ))}
+          {activeTab === 1 && restaurantPlaces.map((card) => (
+            <Card key={card.id} />
+          ))}
+          {activeTab === 2 && accommodationPlaces.map((card) => (
+            <Card key={card.id} />
           ))}
         </div>
         <div className={styles.loadMore} ref={loadMoreRef}>
-          {Array(20).fill(0).map((card) => (
-            <Card key={card.id} isLoading={true}/>
+          {Array(20).fill(0).map((_, index) => (
+            <Card key={index} isLoading={true}/>
           ))}
         </div>
       </div>
