@@ -4,7 +4,6 @@ import './App.css';
 import MainPage from './pages/MainPage';
 import ListPage from './pages/ListPage';
 import ContentPage from './pages/ContentPage';
-import SearchListPage from './pages/SearchListPage';
 import LoginPage from './pages/LoginPage';
 import HeaderSelector from "./components/header/HeaderSelector";
 import MyPlan from "./pages/MyPlanPage"
@@ -36,10 +35,9 @@ function App(): JSX.Element {
               <Route path="/signup/email/3" element={<EmailSignupPage />} />
               <Route path="/signup/oauth2" element={<OAuthSignupPage />} />
               <Route path="/signup/complete" element={<SignupCompletePage />} />
-              
+
               <Route path="/list" element={<ListPage />} />
               <Route path="/content/:id" element={<ContentPage />} />
-              <Route path="/search" element={<SearchListPage />} />
               <Route path="/myplan" element={<MyPlan />} />
             </Routes>
           </div>

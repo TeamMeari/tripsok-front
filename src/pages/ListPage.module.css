@@ -32,3 +32,10 @@
     flex-wrap: wrap;
     gap: 16px;
 }
+
+.searchContainer {
+    padding: 16px 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

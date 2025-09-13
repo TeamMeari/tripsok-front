@@ -28,6 +28,7 @@ export const Default: Story = {
   render: () => {
     return <SearchInput
       searchWord=""
+      variant="main"
     />
   }
 }
@@ -36,6 +37,7 @@ export const AfterSearch: Story = {
     render: () => {
       return <SearchInput
         searchWord="검색 결과"
+        variant="list"
       />
     }
   }

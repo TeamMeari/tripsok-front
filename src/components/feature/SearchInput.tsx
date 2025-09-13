@@ -9,13 +9,14 @@ import { animate } from "@motionone/dom";
 import Button from '../common/Button/CommonBtn';
 
 interface SearchInputProps {
+    variant: 'main' | 'list';
     searchWord: string;
 }
 
-const SearchInput = ({ searchWord }: SearchInputProps) => {
+const SearchInput = ({ variant, searchWord }: SearchInputProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
-    const [searchInput, setSearchInput] = useState(searchWord);
+    const [searchInput, setSearchInput] = useState(searchWord || '');
     const [preview, setPreview] = useState<string | null>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
     const imageSearchRef = useRef<HTMLDivElement>(null);
@@ -23,7 +24,7 @@ const SearchInput = ({ searchWord }: SearchInputProps) => {
     const navigate = useNavigate();
 
     const search = () => {
-        navigate('/search');
+        navigate('/list?query=' + searchInput);
     }
 
     const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,7 +95,7 @@ const SearchInput = ({ searchWord }: SearchInputProps) => {
             onClick={toggleSearchImage}
             ref={buttonRef}
         >
-            <CameraIcon filled={isOpen} color={searchWord ? '#FF6B2C' : '#666666'}/>
+            <CameraIcon filled={isOpen} color={variant === 'main' ? '#FF6B2C' : '#666666'}/>
         </button>
     )
 
@@ -136,17 +137,19 @@ const SearchInput = ({ searchWord }: SearchInputProps) => {
         <div className={styles.searchContainer} ref={containerRef}>
             <Input
                 value={searchInput}
-                leftIcon={<SearchIcon color={searchWord ? '#FF6B2C' : '#666666'}/>}
+                leftIcon={<SearchIcon color={variant === 'main' ? '#FF6B2C' : '#666666'}/>}
                 placeholder="이미지를 이용해 더 편하게 검색"
                 rightElement={cameraButton}
                 onChange={handleChangeInput}
                 onKeyDown={handleKeyDown}
-                style={searchWord ? {
+                style={variant === 'list' ? {
                     boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.32)',
                     border: '2px solid #FF6B2C',
-                    backgroundColor: 'white'
-                } : {backgroundColor: 'white'}}
+                    borderColor: '#FF6B2C',
+                    backgroundColor: 'white',
+                } : { backgroundColor: 'white' }}
                 maxLength={100}
+                onFocusDisabled
             />
             {(isOpen || isAnimating) &&
                 <div

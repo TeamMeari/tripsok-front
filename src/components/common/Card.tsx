@@ -2,7 +2,7 @@ import styles from "./Card.module.css";
 import { useNavigate } from "react-router-dom";
 
 interface CardProps {
-    id: number;
+    id?: number;
     image?: string;
     title?: string;
     description?: string;
