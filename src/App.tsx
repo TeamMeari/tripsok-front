@@ -42,7 +42,6 @@ function App(): JSX.Element {
 
               <Route path="/list" element={<ListPage />} />
               <Route path="/content/:id" element={<ContentPage />} />
-              <Route path="/search" element={<SearchListPage />} />
               <Route path="/myplan" element={<MyPlan />} />
               <Route path="/myplan-detail" element={<MyPlanDetailPage/>}/>
             </Routes>
