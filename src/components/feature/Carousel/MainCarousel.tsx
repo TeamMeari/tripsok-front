@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState, useEffect } from "react";
 import styles from "./MainCarousel.module.css";
 import { useNavigate } from "react-router-dom";
 import { animate } from "@motionone/dom";
@@ -17,10 +17,12 @@ interface MainCarouselProps {
 
 const MainCarousel = ({ items, texts = [] }: MainCarouselProps) => {
   const navigate = useNavigate();
-  const [currentIndex, setCurrentIndex] = useState(1);
+  const [imageIndex, setImageIndex] = useState(1);
+  const [textIndex, setTextIndex] = useState(1);
   const [isAnimating, setIsAnimating] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
+
 
   const extendedItems = [
     items[items.length - 1], // cloneLast
@@ -35,16 +37,19 @@ const MainCarousel = ({ items, texts = [] }: MainCarouselProps) => {
     texts[0],
   ] : [];
 
-  // 텍스트 인덱스 계산 (items 기준으로 순환)
-  const getTextIndex = useCallback((itemIndex: number) => {
-    if (texts.length === 0) return 0;
-    return (itemIndex - 1 + texts.length) % texts.length;
-  }, [texts.length]);
+  // 텍스트는 독립적으로 관리 (이미지와 무관)
 
   const getXOfIndex = useCallback((idx: number) => {
     const unit = (window.innerWidth < 360 ? window.innerWidth : 360);
     return idx * unit;
   }, []);
+  
+  // 초기 텍스트 위치 설정
+  useEffect(() => {
+    if (textRef.current && texts.length > 0) {
+      textRef.current.style.transform = `translateX(-${getXOfIndex(1)}px)`;
+    }
+  }, [texts.length, getXOfIndex]);
 
   const moveToNext = useCallback(() => {
     if (isAnimating) return;
@@ -55,24 +60,32 @@ const MainCarousel = ({ items, texts = [] }: MainCarouselProps) => {
     setIsAnimating(true);
 
     // 이미지 슬라이드 애니메이션
-    animate(el, { x: [`-${getXOfIndex(currentIndex)}px`, `-${getXOfIndex(currentIndex + 1)}px`] }, { duration: 0.6, easing: "ease-in-out" })
+    animate(el, { x: [`-${getXOfIndex(imageIndex)}px`, `-${getXOfIndex(imageIndex + 1)}px`] }, { duration: 0.6, easing: "ease-in-out" })
       .finished.then(() => {
         // 마지막 cloneFirst → 원본 첫 슬라이드 점프
-        if (currentIndex === items.length) {
+        if (imageIndex === items.length) {
           el.style.transform = `translateX(-${getXOfIndex(1)}px)`;
-          setCurrentIndex(1);
+          setImageIndex(1);
         } else {
-          setCurrentIndex(currentIndex + 1);
+          setImageIndex(imageIndex + 1);
         }
         setIsAnimating(false);
       });
 
-    // 텍스트 슬라이드 애니메이션 (텍스트가 있을 때만)
+    // 텍스트 슬라이드 애니메이션 (텍스트가 있을 때만, 독립적으로)
     if (textEl && texts.length > 0) {
-      const nextTextIndex = getTextIndex(currentIndex + 1);
-      animate(textEl, { x: [`-${getXOfIndex(currentIndex)}px`, `-${getXOfIndex(currentIndex + 1)}px`] }, { duration: 0.6, easing: "ease-in-out" });
+      const nextTextIdx = textIndex + 1;
+      setTextIndex(nextTextIdx);
+      animate(textEl, { x: [`-${getXOfIndex(textIndex)}px`, `-${getXOfIndex(nextTextIdx)}px`] }, { duration: 0.6, easing: "ease-in-out" })
+        .finished.then(() => {
+          // 텍스트도 무한 루프 처리 (extendedTexts 기준)
+          if (nextTextIdx === texts.length + 1) {
+            textEl.style.transform = `translateX(-${getXOfIndex(1)}px)`;
+            setTextIndex(1);
+          }
+        });
     }
-  }, [isAnimating, items.length, currentIndex, texts.length]);
+  }, [isAnimating, items.length, imageIndex, textIndex, texts.length]);
 
   const moveToPrev = useCallback(() => {
     if (isAnimating) return;
@@ -83,24 +96,32 @@ const MainCarousel = ({ items, texts = [] }: MainCarouselProps) => {
     setIsAnimating(true);
 
     // 이미지 슬라이드 애니메이션
-    animate(el, { x: [`-${getXOfIndex(currentIndex)}px`, `-${getXOfIndex(currentIndex - 1)}px`] }, { duration: 0.6, easing: "ease-in-out" })
+    animate(el, { x: [`-${getXOfIndex(imageIndex)}px`, `-${getXOfIndex(imageIndex - 1)}px`] }, { duration: 0.6, easing: "ease-in-out" })
       .finished.then(() => {
         // 첫 번째 cloneLast → 원본 마지막 슬라이드 점프
-        if (currentIndex === 0) {
+        if (imageIndex === 0) {
           el.style.transform = `translateX(-${getXOfIndex(items.length)}px)`;
-          setCurrentIndex(items.length);
+          setImageIndex(items.length);
         } else {
-          setCurrentIndex(currentIndex - 1);
+          setImageIndex(imageIndex - 1);
         }
         setIsAnimating(false);
       });
 
-    // 텍스트 슬라이드 애니메이션 (텍스트가 있을 때만)
+    // 텍스트 슬라이드 애니메이션 (텍스트가 있을 때만, 독립적으로)
     if (textEl && texts.length > 0) {
-      const prevTextIndex = getTextIndex(currentIndex - 1);
-      animate(textEl, { x: [`-${getXOfIndex(currentIndex)}px`, `-${getXOfIndex(currentIndex - 1)}px`] }, { duration: 0.6, easing: "ease-in-out" });
+      const prevTextIdx = textIndex - 1;
+      setTextIndex(prevTextIdx);
+      animate(textEl, { x: [`-${getXOfIndex(textIndex)}px`, `-${getXOfIndex(prevTextIdx)}px`] }, { duration: 0.6, easing: "ease-in-out" })
+        .finished.then(() => {
+          // 텍스트도 무한 루프 처리 (extendedTexts 기준)
+          if (prevTextIdx === 0) {
+            textEl.style.transform = `translateX(-${getXOfIndex(texts.length)}px)`;
+            setTextIndex(texts.length);
+          }
+        });
     }
-  }, [isAnimating, items.length, currentIndex, texts.length]);
+  }, [isAnimating, items.length, imageIndex, textIndex, texts.length]);
 
   // 스크롤 처리
   const trackRef = useScrollToSlide({ goToNext: moveToNext, goToPrev: moveToPrev });
@@ -122,9 +143,7 @@ const MainCarousel = ({ items, texts = [] }: MainCarouselProps) => {
       <div className={styles.externalContent}>
           {texts.length > 0 && (
             <div className={styles.texts} ref={textRef}>
-              {extendedItems.map((_, idx) => {
-                const textIndex = getTextIndex(idx);
-                const text = texts[textIndex] || texts[0] || '';
+              {extendedTexts.map((text, idx) => {
                 return <span key={idx}>{text}</span>
               })}
             </div>
@@ -132,7 +151,7 @@ const MainCarousel = ({ items, texts = [] }: MainCarouselProps) => {
           <div className={styles.center}>
             <div className={styles.carouselIndicator}>
               {items.map((_, idx) => {
-                return <div className={`${styles.carouselIndicatorDot} ${(currentIndex - 1 + items.length) % items.length === idx ? styles.active : ""}`} key={idx}></div>
+                return <div className={`${styles.carouselIndicatorDot} ${(imageIndex - 1 + items.length) % items.length === idx ? styles.active : ""}`} key={idx}></div>
               })}
             </div>
             <SearchInput variant="main" searchWord={""} />
