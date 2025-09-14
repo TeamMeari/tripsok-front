@@ -16,6 +16,22 @@ const MainPage = () => {
     setActiveTab(tab);
   }
 
+  const fetchMainCarouselPlaces = () => {
+
+  }
+
+  const fetchFirstCardCarouselPlaces = () => {
+  }
+
+  const fetchSecondCardCarouselPlaces = () => {
+  }
+
+  const fetchThirdCardCarouselPlaces = () => {
+  }
+
+  const fetchBannerCarouselPlaces = () => {
+  }
+
   // 예시 데이터
   const mainCarouselItems = [
     {
@@ -30,11 +46,16 @@ const MainPage = () => {
       id: 3,
       image: 'https://picsum.photos/360/360?random=3',
     },
+    {
+      id: 4,
+      image: 'https://picsum.photos/360/360?random=4',
+    },
   ]
   const texts = [
     `목적지를 검색하고\n나만의 여행을 시작해보세요.`,
-    `여행지를 검색하고\n나만의 목적을 시작해보세요.`,
-    `목행지를 검색하고\n나만의 여적을 시작해보세요.`,
+    `강릉으로 떠나는\n가장 쉬운 방법.`,
+    `강릉, 그 설레는 여정을\n시작하세요.`,
+    `여행의 모든 순간을\n함께 만들어가요.`,
   ]
   const cardCarouselItems = [
     {
