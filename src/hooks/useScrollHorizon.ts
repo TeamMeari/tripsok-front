@@ -1,9 +1,10 @@
 import { useRef, useEffect } from "react";
 
-export default function useScrollHorizon() {
+export default function useScrollHorizon(enabled: boolean = true) {
     const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        if (!enabled) return;
         const el = ref.current;
         if (!el) return;
     
@@ -47,7 +48,7 @@ export default function useScrollHorizon() {
             el.removeEventListener("touchstart", handleTouchStart);
             el.removeEventListener("touchmove", handleTouchMove);
         };
-    }, []);
+    }, [enabled]);
 
     return ref;
 }

@@ -29,9 +29,9 @@ const Card = ({
             <div className={`${styles.cardImageContainer} skeleton`}>
             </div>
             <div className={styles.cardBody}>
-                <div className={`${styles.cardTitle} skeleton`}></div>
-                <div className={`${styles.cardDesc} skeleton`}></div>
-                <div className={`${styles.cardDesc} skeleton`}></div>
+                <div className={`${styles.cardTitleSkeleton} skeleton`}></div>
+                <div className={`${styles.cardDescSkeleton} skeleton`}></div>
+                <div className={`${styles.cardDescSkeleton} skeleton`}></div>
             </div>
         </div>
     }
