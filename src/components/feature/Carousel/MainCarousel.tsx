@@ -24,12 +24,11 @@ const MainCarousel = ({ items, texts = [], isLoading = false }: MainCarouselProp
   const carouselRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
 
-
-  const extendedItems = [
+  const extendedItems = items.length > 0 ? [
     items[items.length - 1], // cloneLast
     ...items,
     items[0], // cloneFirst
-  ];
+  ] : [];
 
   // texts가 있을 때만 확장된 배열 생성
   const extendedTexts = texts.length > 0 ? [
