@@ -1,10 +1,12 @@
 import { create } from "zustand";
 
 interface SignupStore {
-    email?: string;
-    password?: string;
-    emailVerifyToken?: string;
-    socialSignUpToken?: string;
+    email: string;
+    password: string;
+    emailVerifyToken: string;
+    socialSignUpToken: string;
+    firstName: string;
+    lastName: string;
     nickname: string;
     termsChecked: boolean;
     privacyChecked: boolean;
@@ -12,6 +14,8 @@ interface SignupStore {
     setPassword: (password: string) => void;
     setEmailVerifyToken: (emailVerifyToken: string) => void;
     setSocialSignUpToken: (socialSignUpToken: string) => void;
+    setFirstName: (firstName: string) => void;
+    setLastName: (lastName: string) => void;
     setNickname: (nickname: string) => void;
     setTermsChecked: (termsChecked: boolean) => void;
     setPrivacyChecked: (privacyChecked: boolean) => void;
@@ -19,10 +23,12 @@ interface SignupStore {
 }
 
 export const useSignupStore = create<SignupStore>((set) => ({
-    email: undefined,
-    password: undefined,
-    emailVerifyToken: undefined,
-    socialSignUpToken: undefined,
+    email: "",
+    password: "",
+    emailVerifyToken: "",
+    socialSignUpToken: "",
+    firstName: "",
+    lastName: "",
     nickname: "",
     termsChecked: false,
     privacyChecked: false,
@@ -30,8 +36,10 @@ export const useSignupStore = create<SignupStore>((set) => ({
     setPassword: (password) => set({ password }),
     setEmailVerifyToken: (emailVerifyToken) => set({ emailVerifyToken }),
     setSocialSignUpToken: (socialSignUpToken) => set({ socialSignUpToken }),
+    setFirstName: (firstName) => set({ firstName }),
+    setLastName: (lastName) => set({ lastName }),
     setNickname: (nickname) => set({ nickname }),
     setTermsChecked: (termsChecked) => set({ termsChecked }),
     setPrivacyChecked: (privacyChecked) => set({ privacyChecked }),
-    reset: () => set({ email: undefined, password: undefined, emailVerifyToken: undefined, socialSignUpToken: undefined, nickname: "", termsChecked: false, privacyChecked: false }),
+    reset: () => set({ email: undefined, password: undefined, emailVerifyToken: undefined, socialSignUpToken: undefined, firstName: undefined, lastName: undefined, nickname: "", termsChecked: false, privacyChecked: false }),
 }));

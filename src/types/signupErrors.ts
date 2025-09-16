@@ -7,9 +7,9 @@ export const EXPIRED_CODE = "expiredCode";
 export const INVALID_CODE = "codeMismatch";
 
 // 비밀번호
-export const PASSWORD_VALIDATION_WARNING = (password: string) => {
+export const PASSWORD_VALIDATION_WARNING = (password: string): { error: string, conditions: string[] } => {
     if (password.length < 8) {
-        return "passwordTooShort";
+        return { error: "passwordTooShort", conditions: [] };
     }
     const notExisting = [];
     if (!password.match(/[a-zA-Z]/)) {
@@ -22,9 +22,9 @@ export const PASSWORD_VALIDATION_WARNING = (password: string) => {
         notExisting.push("specialCharRequired");
     }
     if (notExisting.length > 0) {
-        return "passwordValidationWarning";
+        return { error: "passwordValidationWarning", conditions: notExisting };
     }
-    return "";
+    return { error: "", conditions: [] };
 };
 
 export const PASSWORD_CONFIRM_ERROR = "passwordMismatch";
