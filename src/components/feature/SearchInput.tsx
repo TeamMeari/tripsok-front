@@ -127,19 +127,37 @@ const SearchInput = ({ variant, searchWord }: SearchInputProps) => {
 
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
-        
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [isOpen]);
+
+    const handleTouchStart = useCallback((e: TouchEvent) => {
+        const input = containerRef.current?.querySelector('input');
+        if (input) {
+            input.focus();
+        }
+    }, []);
+
+    useEffect(() => {
+        const container = containerRef.current;
+        if (!container) return;
+
+        container.addEventListener('touchstart', handleTouchStart as EventListener);
+        
+        return () => {
+            container.removeEventListener('touchstart', handleTouchStart as EventListener);
+        };
+    }, [handleTouchStart]);
 
     return (
         <div className={styles.searchContainer} ref={containerRef}>
             <Input
                 value={searchInput}
                 leftIcon={<SearchIcon color={variant === 'main' ? '#FF6B2C' : '#666666'}/>}
-                placeholder="이미지를 이용해 더 편하게 검색"
-                rightElement={cameraButton}
+                // placeholder="이미지를 이용해 더 편하게 검색"
+                placeholder="검색어를 입력해주세요."
+                // rightElement={cameraButton}
                 onChange={handleChangeInput}
                 onKeyDown={handleKeyDown}
                 style={variant === 'list' ? {
@@ -151,7 +169,7 @@ const SearchInput = ({ variant, searchWord }: SearchInputProps) => {
                 maxLength={100}
                 onFocusDisabled
             />
-            {(isOpen || isAnimating) &&
+            {/* {(isOpen || isAnimating) &&
                 <div
                     ref={imageSearchRef}
                     className={styles.imageSearchContainer}
@@ -194,7 +212,7 @@ const SearchInput = ({ variant, searchWord }: SearchInputProps) => {
                     }
                     <input ref={fileInputRef} type="file" onChange={handleChangeDrapAndDrop}/>
                 </div>
-            }
+            } */}
         </div>
     )
 }

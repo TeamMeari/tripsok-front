@@ -168,7 +168,9 @@ const MainCarousel = ({ items, texts = [], isLoading = false }: MainCarouselProp
                 return <div className={`${styles.carouselIndicatorDot} ${(imageIndex - 1 + items.length) % items.length === idx ? styles.active : ""}`} key={idx}></div>
               })}
             </div>
-            <SearchInput variant="main" searchWord={""} />
+            <div onClick={(e) => e.stopPropagation()}>
+              <SearchInput variant="main" searchWord={""} />
+            </div>
           </div>
         </div>
     </div>
