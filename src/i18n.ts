@@ -61,6 +61,8 @@ const resources = {
             totalSearch: "총 {{count}}개 검색",
             // MainPage 텍스트
             mainTopSpots: "지금 주목받는 관광지 TOP 5",
+            mainKeywordSpotsFirst: "강릉의 {{keyword}}, 어때요?",
+            mainKeywordSpotsSecond: "강릉에서 만나는 특별한 {{ keyword }}",
             mainSummerSports: "여름의 스포츠는 어때요?",
             mainMoreSpots: "더 많은 관광지 보기",
             mainNoMissEvent: "이벤트를 놓치지 마세요",
@@ -143,6 +145,8 @@ const resources = {
             totalSearch: "Total {{count}} results",
             // MainPage 텍스트
             mainTopSpots: "Top 5 Trending Tourist Spots",
+            mainKeywordSpotsFirst: "{{keyword}}, how about it?",
+            mainKeywordSpotsSecond: "Gangneung, a special {{ keyword }}",
             mainSummerSports: "How about summer sports?",
             mainMoreSpots: "See more tourist spots",
             mainNoMissEvent: "Don't miss the events",
@@ -226,6 +230,8 @@ const resources = {
             totalSearch: "合計 {{count}} 件の検索結果",
             // MainPage 텍스트
             mainTopSpots: "今注目の観光地TOP5",
+            mainKeywordSpotsFirst: "{{keyword}}, どうですか？",
+            mainKeywordSpotsSecond: "江陵で特別な {{ keyword }}",
             mainSummerSports: "夏のスポーツはいかがですか？",
             mainMoreSpots: "もっと多くの観光地を見る",
             mainNoMissEvent: "イベントを見逃さないでください",
@@ -308,6 +314,8 @@ const resources = {
             totalSearch: "共 {{count}} 个结果",
             // MainPage 텍스트
             mainTopSpots: "当前最受欢迎的旅游地 TOP 5",
+            mainKeywordSpotsFirst: "{{keyword}}, 怎么样？",
+            mainKeywordSpotsSecond: "江陵，特别的 {{ keyword }}",
             mainSummerSports: "夏天的运动怎么样？",
             mainMoreSpots: "查看更多旅游景点",
             mainNoMissEvent: "不要错过活动",

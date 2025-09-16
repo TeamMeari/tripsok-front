@@ -1,152 +1,149 @@
 import styles from './MainPage.module.css';
 import MainCarousel from '../components/feature/Carousel/MainCarousel';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import MenuTab from '../components/feature/Tab/MenuTab';
 import menuTabs from '../types/menuTabs';
 import { useTranslation } from 'react-i18next';
 import CardCarousel from '../components/feature/Carousel/CardCarousel';
 import Footer from '../components/Footer';
 import BannerCarousel from '../components/feature/Carousel/BannerCarousel';
+import { getDailyKeywords } from '../utils/keywordSelector';
+import { useApi } from '../hooks/useApi';
+import CardType from '../types/Card';
+import { BannerType } from '../components/feature/Carousel/BannerCarousel';
+import { MainCarouselItem } from '../components/feature/Carousel/MainCarousel';
+import { PlacesResponse, Place } from '../types/apiResponse';
 
 const MainPage = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [activeTab, setActiveTab] = useState(0);
+  const dailyKeywords = getDailyKeywords();
+  const [mainCarouselItems, setMainCarouselItems] = useState<MainCarouselItem[]>([]);
+  const [top5CardCarouselItems, setTop5CardCarouselItems] = useState<CardType[]>([]);
+  const [firstCardCarouselItems, setFirstCardCarouselItems] = useState<CardType[]>([]);
+  const [secondCardCarouselItems, setSecondCardCarouselItems] = useState<CardType[]>([]);
+  const [bannerCarouselItems, setBannerCarouselItems] = useState<BannerType[]>([]);
+  const { apiCall: MainCarouselApiCall, isLoading: MainCarouselIsLoading } = useApi();
+  const { apiCall: Top5CardCarouselApiCall, isLoading: Top5CardCarouselIsLoading } = useApi();
+  const { apiCall: FirstCardCarouselApiCall, isLoading: FirstCardCarouselIsLoading } = useApi();
+  const { apiCall: SecondCardCarouselApiCall, isLoading: SecondCardCarouselIsLoading } = useApi();
+  const { apiCall: BannerCarouselApiCall, isLoading: BannerCarouselIsLoading } = useApi();
 
   const handleTabClick = (tab: number) => {
     setActiveTab(tab);
   }
 
   const fetchMainCarouselPlaces = () => {
+    // keyword 하나 사용
+    const queryParams = `?page=1&size=5&sortKey=rank&direction=desc&locale=${i18n.language}&typeSearch=embedding&categoryFilter=false&q=${dailyKeywords[0]}`;
+    MainCarouselApiCall<PlacesResponse>("/places/accommodation" + queryParams, "GET").then((response) => {
+      if (response.status === 200) {
+        if (response.data) {
+        setMainCarouselItems(response.data.items.map((v: Place) => ({
+            id: v.id,
+            image: v.thumbnailUrl,
+          })) as MainCarouselItem[]);
+        } else setMainCarouselItems([]);
+      }
+    });
+  }
 
+  const fetchTop5CardCarouselPlaces = () => {
+    const queryParams = `?page=1&size=5&sortKey=rank&direction=desc&locale=${i18n.language}&typeSearch=embedding&categoryFilter=false&q=${dailyKeywords[1]}`;
+    Top5CardCarouselApiCall<PlacesResponse>("/places/accommodation" + queryParams, "GET").then((response) => {
+      if (response.status === 200) {
+        if (response.data) {
+          setTop5CardCarouselItems(response.data.items.map((v: Place, idx: number) => ({
+            id: v.id,
+            image: v.thumbnailUrl,
+            rank: idx + 1,
+            title: v.name,
+            description: v.summary,
+          })) as CardType[]);
+        } else setTop5CardCarouselItems([]);
+      }
+    });
   }
 
   const fetchFirstCardCarouselPlaces = () => {
+    // keyword 하나 사용
+    const queryParams = `?page=1&size=5&sortKey=rank&direction=desc&locale=${i18n.language}&typeSearch=embedding&categoryFilter=false&q=${dailyKeywords[1]}`;
+    FirstCardCarouselApiCall<PlacesResponse>("/places/accommodation" + queryParams, "GET").then((response) => {
+      if (response.status === 200) {
+        if (response.data) {
+          setFirstCardCarouselItems(response.data.items.map((v: Place) => ({
+            id: v.id,
+            image: v.thumbnailUrl,
+            title: v.name,
+            description: v.summary,
+          })) as CardType[]);
+        } else setFirstCardCarouselItems([]);
+      }
+    });
   }
 
   const fetchSecondCardCarouselPlaces = () => {
-  }
-
-  const fetchThirdCardCarouselPlaces = () => {
+    // keyword 하나 사용
+    const queryParams = `?page=1&size=5&sortKey=rank&direction=desc&locale=${i18n.language}&typeSearch=embedding&categoryFilter=false&q=${dailyKeywords[2]}`;
+    SecondCardCarouselApiCall<PlacesResponse>("/places/accommodation" + queryParams, "GET").then((response) => {
+      if (response.status === 200) {
+        if (response.data) {
+          setSecondCardCarouselItems(response.data.items.map((v: Place) => ({
+            id: v.id,
+            image: v.thumbnailUrl,
+            title: v.name,
+            description: v.summary,
+          })) as CardType[]);
+        } else setSecondCardCarouselItems([]);
+      }
+    });
   }
 
   const fetchBannerCarouselPlaces = () => {
+
   }
 
-  // 예시 데이터
-  const mainCarouselItems = [
-    {
-      id: 1,
-      image: 'https://picsum.photos/360/360?random=1',
-    },
-    {
-      id: 2,
-      image: 'https://picsum.photos/360/360?random=2',
-    },
-    {
-      id: 3,
-      image: 'https://picsum.photos/360/360?random=3',
-    },
-    {
-      id: 4,
-      image: 'https://picsum.photos/360/360?random=4',
-    },
-  ]
   const texts = [
     `목적지를 검색하고\n나만의 여행을 시작해보세요.`,
     `강릉으로 떠나는\n가장 쉬운 방법.`,
     `강릉, 그 설레는 여정을\n시작하세요.`,
     `여행의 모든 순간을\n함께 만들어가요.`,
   ]
-  const cardCarouselItems = [
-    {
-        id: 1,
-        title: '카드 제목 1',
-        description: '카드 설명입니다. 이것은 첫 번째 카드입니다.',
-        image: 'https://picsum.photos/200/300',
-    },
-    {
-        id: 2, 
-        title: '카드 제목 2',
-        description: '카드 설명입니다. 이것은 두 번째 카드입니다.',
-        image: 'https://picsum.photos/200/300',
-    },
-    {
-        id: 3,
-        title: '카드 제목 3', 
-        description: '카드 설명입니다. 이것은 세 번째 카드입니다.',
-        image: 'https://picsum.photos/200/300',
-    },
-    {
-        id: 4,
-        title: '카드 제목 4',
-        description: '카드 설명입니다. 이것은 네 번째 카드입니다.',
-        image: 'https://picsum.photos/200/400',
-    },
-    {
-        id: 5,
-        title: '카드 제목 5',
-        description: '카드 설명입니다. 이것은 다섯 번째 카드입니다.',
-        image: 'https://picsum.photos/200/350',
-    },
-    {
-        id: 6,
-        title: '카드 제목 6',
-        description: '카드 설명입니다. 이것은 여섯 번째 카드입니다.',
-        image: 'https://picsum.photos/200/250',
-    }
-  ]
-  const bannerCarouselItems = [
-    {
-      url: '/list',
-      image: 'https://picsum.photos/360/360?random=1',
-    },
-    {
-      url: '/list',
-      image: 'https://picsum.photos/360/360?random=2',
-    },
-    {
-      url: '/list',
-      image: 'https://picsum.photos/360/360?random=3',
-    },
-    {
-      url: '/list',
-      image: 'https://picsum.photos/360/360?random=4',
-    },
-    {
-      url: '/list',
-      image: 'https://picsum.photos/360/360?random=5',
-    },
-    {
-      url: '/list',
-      image: 'https://picsum.photos/360/360?random=6',
-    },
-  ]
+
+  // useEffect(() => {
+  //   fetchMainCarouselPlaces();
+  //   fetchTop5CardCarouselPlaces();
+  //   fetchFirstCardCarouselPlaces();
+  //   fetchSecondCardCarouselPlaces();
+  //   fetchBannerCarouselPlaces();
+  // }, []);
 
   return <div className={styles.page}>
-    <MainCarousel items={mainCarouselItems}
-    texts={texts}
+    <MainCarousel
+      items={mainCarouselItems}
+      texts={texts}
+      isLoading={MainCarouselIsLoading}
     />
     <div className={styles.space}></div>
     <MenuTab tabs={menuTabs} activeTab={activeTab} isIcon={true} tabOnClick={handleTabClick} />
     <div className={styles.section1}>
       <div className={styles.cardList}>
         <TitleLink text={t("mainTopSpots")} link="/list" />
-        <CardCarousel cards={cardCarouselItems}
-        />
+        <CardCarousel cards={top5CardCarouselItems} isLoading={Top5CardCarouselIsLoading} />
       </div>
       <div className={styles.cardList}>
-        <TitleLink text={t("mainSummerSports")} link="/list" />
-        <CardCarousel cards={cardCarouselItems} />
+        <TitleLink text={t("mainKeywordSpotsFirst")} link="/list" />
+        <CardCarousel cards={firstCardCarouselItems} isLoading={FirstCardCarouselIsLoading} />
       </div>
       <div className={styles.listLinkContainer}>
         <a href="/list">{t("mainMoreSpots")}</a>
       </div>
     </div>
     <div className={styles.section2}>
-      <BannerCarousel banners={bannerCarouselItems} />
+      <BannerCarousel banners={bannerCarouselItems} isLoading={BannerCarouselIsLoading} />
       <div className={styles.cardList}>
-        <TitleLink text={t("mainFood")} link="/list" />
-        <CardCarousel cards={cardCarouselItems} />
+        <TitleLink text={t("mainKeywordSpotsSecond")} link="/list" />
+        <CardCarousel cards={secondCardCarouselItems} isLoading={SecondCardCarouselIsLoading} />
       </div>
     </div>
     <Footer />
