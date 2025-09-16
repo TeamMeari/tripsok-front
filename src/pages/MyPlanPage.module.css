@@ -59,7 +59,9 @@
 
 }
 .VisitedPlaces{
-
+    display: flex;
+    gap: 12px;
+    flex-direction: column;
 }
 .LikeTitle{
     font-size: 18px;

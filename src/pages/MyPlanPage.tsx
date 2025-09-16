@@ -7,9 +7,7 @@ import DropdownInput from '../components/common/DropdownInput';
 import CardCarousel from "../components/feature/Carousel/CardCarousel";
 import Button from "../components/common/Button/CommonBtn";
 
-import PersonIcon from '/public/InfoIcon/person.svg';
-import DateIcon from '/public/InfoIcon/date.svg';
-import FlagIcon from '/public/InfoIcon/flag.svg';
+
 
 import styles from "./MyPlanPage.module.css";
 import { useTranslation } from "react-i18next";
@@ -21,22 +19,13 @@ interface Place {
 
 export default function Page() {
     const { t } = useTranslation();
-    
+
 
     const navigate = useNavigate();
     const location = useLocation();
-    const [personValue, setPersonValue] = useState('');
-    const [fromValue, setFromValue] = useState('');
-    const [dateValue, setDateValue] = useState('');
+
     const [visitedPlaces, setVisitedPlaces] = useState<Place[]>([]);
 
-    //인원 수
-    const personOptions = [1, 2, 3, 4].map(num =>
-        t("person", { num, count: num }) // count는 영어 복수 처리용
-    );
-    const from = [
-        t("locations.gangneungStation"),
-    ];
 
     // 버튼 상태 결정
     const isVisitedAdded = visitedPlaces.length > 0;
@@ -45,6 +34,14 @@ export default function Page() {
 
     useEffect(() => {
         const addedPlace = location.state?.addedPlace;
+        console.log("location.state:", location.state);
+        console.log("addedPlace:", addedPlace);
+        const testPlaces: Place[] = [
+            { id: 1, title: 'BTS 버스정류장' },
+            { id: 2, title: '강릉항' },
+            { id: 3, title: '주문진 해변' }
+        ];
+        setVisitedPlaces(testPlaces);
         if (addedPlace) {
             setVisitedPlaces(prev => {
                 if (!prev.find(p => p.id === addedPlace.id)) {
@@ -68,52 +65,35 @@ export default function Page() {
                     <div className={styles.MyPlan}>
                         <div className={styles.MyPlanTitle}>{t('myPlanTitle')}</div>
                         <div className={styles.MyPlanDetail}>
-
-                            <DropdownInput
-                                value={dateValue}
-                                onChange={setDateValue}
-                                options={from}
-                                placeholder={t('myPlanDate')}
-                                leftIcon={<img src={DateIcon} alt="date" style={{height: 19, width: 'auto'}}/>}
-                                type="date"
-                            />
-                            <div className={styles.Myplan_FromPerson}>
-                                <DropdownInput
-                                    value={personValue}
-                                    onChange={setPersonValue}
-                                    options={personOptions}
-                                    placeholder={t('myPlanPeople')}
-                                    width={148}
-                                    leftIcon={<img src={PersonIcon} alt="person" style={{height: 19, width: 'auto'}}/>}
-                                />
-                                <DropdownInput
-                                    value={fromValue}
-                                    onChange={setFromValue}
-                                    options={from}
-                                    placeholder={t('myPlanDeparture')}
-                                    width={148}
-                                    leftIcon={<img src={FlagIcon} alt="flag" style={{height: 19, width: 'auto'}}/>}
-                                />
-                            </div>
-
                             {visitedPlaces.length > 0 && (
                                 <div className={styles.VisitedPlaces}>
                                     {visitedPlaces.map((place) => (
-                                        <Button
-                                            key={place.id}
-                                            variant="blackOutline"
-                                            size="large"
-                                            borderRadius="12px"
-                                        >
-                                            <span className={styles.pinBtn}>
-                                                <img
-                                                    src="/InfoIcon/pinIcon.svg"
-                                                    alt="pin"
-                                                    style={{ width: 18, height: 18 }}
-                                                />
-                                                {place.title}
-                                            </span>
-                                        </Button>
+                                        <div key={place.id} className={styles.placeItemWrapper}>
+                                            <Button
+                                                variant="blackOutline"
+                                                size="large"
+                                                borderRadius="12px"
+                                                style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 12px' }}
+                                            >
+                                                <span className={styles.pinBtn} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                                                    <img
+                                                        src="/InfoIcon/pinIcon.svg"
+                                                        alt="pin"
+                                                        style={{ width: 18, height: 18 }}
+                                                    />
+                                                    {place.title}
+                                                </span>
+                                                <span
+                                                    style={{ cursor: 'pointer', fontWeight: 'bold' }}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        setVisitedPlaces(prev => prev.filter(p => p.id !== place.id));
+                                                    }}
+                                                >
+                                                    ✕
+                                                </span>
+                                            </Button>
+                                        </div>
                                     ))}
                                 </div>
                             )}
@@ -134,16 +114,18 @@ export default function Page() {
                                 </span>
                             </Button>
 
-                            {dateValue && personValue && fromValue && visitedPlaces.length > 0 && (
-                                <Button
-                                    variant="primary"
-                                    size="large"
-                                    borderRadius="12px"
-                                    onClick={() => navigate('/travel-detail')}
-                                >
-                                    {t('viewPlan')}
-                                </Button>
-                            )}
+
+                            <Button
+                                variant={visitedPlaces.length > 0 ? "primary" : "grayDashed"}
+                                size="large"
+                                borderRadius="12px"
+                                onClick={() => navigate('/myplan-detail', { state: { visitedPlaces } })}
+                                disabled={visitedPlaces.length === 0}
+                            >
+                                {t('viewPlan')}
+                            </Button>
+
+
                         </div>
                     </div>
                 </div>
