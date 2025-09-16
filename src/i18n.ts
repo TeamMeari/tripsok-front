@@ -64,6 +64,7 @@ const resources = {
             sortPopular: "인기순",
             sortName: "이름순",
             totalSearch: "총 {{count}}개 검색",
+            noSearchResult: "해당 결과가 없습니다.",
             // MainPage 텍스트
             mainTopSpots: "지금 주목받는 관광지 TOP 5",
             mainKeywordSpotsFirst: "강릉의 {{keyword}}, 어때요?",
@@ -153,6 +154,7 @@ const resources = {
             sortPopular: "Popular",
             sortName: "Name",
             totalSearch: "Total {{count}} results",
+            noSearchResult: "No search results found.",
             // MainPage 텍스트
             mainTopSpots: "Top 5 Trending Tourist Spots",
             mainKeywordSpotsFirst: "{{keyword}}, how about it?",
@@ -243,6 +245,7 @@ const resources = {
             sortPopular: "人気順",
             sortName: "名前順",
             totalSearch: "合計 {{count}} 件の検索結果",
+            noSearchResult: "検索結果が見つかりません。",
             // MainPage 텍스트
             mainTopSpots: "今注目の観光地TOP5",
             mainKeywordSpotsFirst: "{{keyword}}, どうですか？",
@@ -332,6 +335,7 @@ const resources = {
             sortPopular: "人气顺",
             sortName: "名称顺",
             totalSearch: "共 {{count}} 个结果",
+            noSearchResult: "没有搜索结果。",
             // MainPage 텍스트
             mainTopSpots: "当前最受欢迎的旅游地 TOP 5",
             mainKeywordSpotsFirst: "{{keyword}}, 怎么样？",
