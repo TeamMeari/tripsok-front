@@ -60,7 +60,9 @@ const BannerCarousel = ({ banners, isLoading = false }: BannerCarouselProps) => 
 
     return (
         <div>
-            <p className={styles.bannerTitle}>{t("mainNoMissEvent")} <span>{currentIndex + 1}/{banners.length}</span></p>
+            <p className={styles.bannerTitle}>
+                {t("mainNoMissEvent")}
+                {!isLoading && <span>{currentIndex + 1}/{banners.length}</span>}</p>
             <div className={styles.carouselTrack}>
                 <div className={styles.carouselItems} ref={carouselRef}>
                     {isLoading ? (
