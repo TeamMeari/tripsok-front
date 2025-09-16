@@ -5,6 +5,7 @@ type ScrollHandler = () => void;
 interface UseScrollToSlideProps {
   goToNext: ScrollHandler;
   goToPrev: ScrollHandler;
+  enabled?: boolean;
 }
 
 /**
@@ -16,13 +17,15 @@ interface UseScrollToSlideProps {
 export function useScrollToSlide({
   goToNext,
   goToPrev,
+  enabled = true, 
 }: UseScrollToSlideProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const isThrottled = useRef(false);
   const lastWheelTime = useRef<number>(0);
 
   useEffect(() => {
-    const container = containerRef.current;
+    if (!enabled) return;
+    const container = containerRef.current; 
     if (!container) return;
 
     // 데스크톱 휠 이벤트
@@ -93,7 +96,7 @@ export function useScrollToSlide({
         el.removeEventListener('touchstart', preventTouch);
         el.removeEventListener("wheel", handleWheel);
     };
-}, []);
+}, [enabled]);
 
   return containerRef;
 }

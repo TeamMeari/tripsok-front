@@ -125,7 +125,12 @@ const MainCarousel = ({ items, texts = [], isLoading = false }: MainCarouselProp
   }, [isAnimating, items.length, imageIndex, textIndex, texts.length]);
 
   // 스크롤 처리
-  const trackRef = useScrollToSlide({ goToNext: moveToNext, goToPrev: moveToPrev });
+  const trackRef = useScrollToSlide({
+    goToNext: moveToNext,
+    goToPrev: moveToPrev,
+    enabled: !isLoading,
+  });
+
   return (
     <div className={styles.carouselContainer} ref={trackRef}>
       <div className={styles.carouselTrack}>

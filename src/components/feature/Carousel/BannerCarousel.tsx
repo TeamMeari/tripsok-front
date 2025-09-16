@@ -52,7 +52,11 @@ const BannerCarousel = ({ banners, isLoading = false }: BannerCarouselProps) => 
     }, [isAnimating, currentIndex, banners.length]);
 
     // 스크롤 인식
-    const carouselRef = useScrollToSlide({ goToNext: moveToNext, goToPrev: moveToPrev });
+    const carouselRef = useScrollToSlide({
+        goToNext: moveToNext,
+        goToPrev: moveToPrev,
+        enabled: !isLoading,
+    });
 
     useEffect(() => {
         currentInnerWidth.current = window.innerWidth;
