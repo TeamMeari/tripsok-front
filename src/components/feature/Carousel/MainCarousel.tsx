@@ -5,7 +5,7 @@ import { animate } from "@motionone/dom";
 import { useScrollToSlide } from "../../../hooks/useScrollToSlide";
 import SearchInput from "../SearchInput";
 
-interface MainCarouselItem {
+export interface MainCarouselItem {
   id: number;
   image: string;
 }
@@ -13,9 +13,10 @@ interface MainCarouselItem {
 interface MainCarouselProps {
   items: MainCarouselItem[];
   texts?: string[]; // 선택적 속성으로 변경
+  isLoading?: boolean;
 }
 
-const MainCarousel = ({ items, texts = [] }: MainCarouselProps) => {
+const MainCarousel = ({ items, texts = [], isLoading = false }: MainCarouselProps) => {
   const navigate = useNavigate();
   const [imageIndex, setImageIndex] = useState(1);
   const [textIndex, setTextIndex] = useState(1);
@@ -129,15 +130,24 @@ const MainCarousel = ({ items, texts = [] }: MainCarouselProps) => {
     <div className={styles.carouselContainer} ref={trackRef}>
       <div className={styles.carouselTrack}>
         <div className={styles.carouselItems} ref={carouselRef}>
-          {extendedItems.map((item, idx) => (
-            <div className={styles.carouselItem} key={idx}>
-              <img
-                src={item.image}
-                alt=""
-                onClick={() => navigate(`/content/${item.id}`)}
-              />
-            </div>
-          ))}
+          {isLoading ? (
+            // 로딩 중일 때 스켈레톤 표시
+            Array.from({ length: 3 }).map((_, idx) => (
+              <div className={`${styles.carouselItem} skeleton`} key={idx}>
+              </div>
+            ))
+          ) : (
+            // 로딩 완료 시 실제 이미지 표시
+            extendedItems.map((item, idx) => (
+              <div className={styles.carouselItem} key={idx}>
+                <img
+                  src={item.image}
+                  alt=""
+                  onClick={() => navigate(`/content/${item.id}`)}
+                />
+              </div>
+            ))
+          )}
         </div>
       </div>
       <div className={styles.externalContent}>

@@ -4,16 +4,17 @@ import { animate } from "@motionone/dom";
 import { useScrollToSlide } from "../../../hooks/useScrollToSlide";
 import { useTranslation } from "react-i18next";
 
-interface BannerType {
+export interface BannerType {
     url: string
     image: string
 }
 
 interface BannerCarouselProps {
     banners: BannerType[] 
+    isLoading?: boolean;
 }
 
-const BannerCarousel = ({ banners }: BannerCarouselProps) => {
+const BannerCarousel = ({ banners, isLoading = false }: BannerCarouselProps) => {
     const { t } = useTranslation();
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [isAnimating, setIsAnimating] = useState<boolean>(false);
@@ -62,10 +63,18 @@ const BannerCarousel = ({ banners }: BannerCarouselProps) => {
             <p className={styles.bannerTitle}>{t("mainNoMissEvent")} <span>{currentIndex + 1}/{banners.length}</span></p>
             <div className={styles.carouselTrack}>
                 <div className={styles.carouselItems} ref={carouselRef}>
-                    {banners.map((banner, key) => 
-                        <div key={key} className={styles.carouselItem}>
-                            {banner && <img src={banner.image} alt="banner" />}
-                        </div>
+                    {isLoading ? (
+                        // 로딩 중일 때 스켈레톤 표시
+                        Array.from({ length: 3 }).map((_, idx) => (
+                            <div className={`${styles.carouselItem} skeleton`} key={idx}>
+                            </div>
+                        ))
+                    ) : (
+                        banners.map((banner, key) => 
+                            <div key={key} className={styles.carouselItem}>
+                                {banner && <img src={banner.image} alt="banner" />}
+                            </div>
+                        )
                     )}
                 </div>
             </div>
