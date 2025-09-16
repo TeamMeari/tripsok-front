@@ -29,6 +29,8 @@ export const Default: Story = {
 
                 {/* 투명 Header  */}
                 <TransparentHeader />
+
+                <TransparentHeader type="auth" />
             </div>
         </BrowserRouter>
     ),
