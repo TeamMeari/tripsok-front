@@ -11,6 +11,8 @@ import { validatePassword } from "../../utils/validation";
 import styles from "./SignupPage.module.css";
 import { useSignupStore } from "../../stores/signupStores";
 import { useNavigate } from "react-router-dom";
+import { LoginResponse } from "../../types/apiResponse";
+import useAuthStore from "../../stores/authStore";
 
 const EmailSignupPage = () => {
     const { t } = useTranslation();
@@ -23,7 +25,9 @@ const EmailSignupPage = () => {
     const lastName = useSignupStore(state => state.lastName);
     const termsChecked = useSignupStore(state => state.termsChecked);
     const privacyChecked = useSignupStore(state => state.privacyChecked);
+    const { login } = useAuthStore();
     const {
+        email,
         setPassword,
         setNickname: setNicknameStore,
         setFirstName, setLastName,
@@ -92,9 +96,17 @@ const EmailSignupPage = () => {
     const handleSubmit = useCallback(() => {
         submitApiCall("/auth/signup/email", "POST", { emailVerifyToken, nickname, password, firstName, lastName }).then(response => {
             if (response.status === 201) {
-                reset();
-                navigate("/signup/complete", { state: { nickname: nickname } });
+                submitApiCall<LoginResponse>("/auth/login/email", "POST", { email: email, password: password }).then(response => {
+                    if (response.status === 200 && response.data?.accessToken && response.data?.nickname) {
+                        login(response.data?.accessToken as string, response.data?.nickname as string);
+                    }
+                }).then(() => {
+                    reset();
+                    navigate("/signup/complete", { state: { nickname: nickname } });
+                });
             }
+        }).finally(() => {
+            reset();
         });
     }, [nickname, navigate]);
 

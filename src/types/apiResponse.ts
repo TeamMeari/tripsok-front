@@ -1,5 +1,10 @@
 import { Tag } from "./Tag";
 
+export interface LoginResponse {
+    accessToken: string;
+    nickname: string;
+}
+
 export interface PlacesResponse {
     currentPage: number;
     totalPages: number;

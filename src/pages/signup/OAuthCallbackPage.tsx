@@ -1,14 +1,15 @@
 import { useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
-import { login } from "../../utils/auth";
+import useAuthStore from "../../stores/authStore";
 import { useNavigate } from "react-router-dom";
 import { useSignupStore } from "../../stores/signupStores";
+import { LoginResponse } from "../../types/apiResponse";
 
 const OAuthCallbackPage = () => {
   const { apiCall } = useApi();
   const navigate = useNavigate();
   const { setSocialSignUpToken } = useSignupStore();
-
+  const { login } = useAuthStore();
   useEffect(() => {
     const hashParams = new URLSearchParams(window.location.hash.substring(1));
     const accessToken = hashParams.get("access_token");
@@ -16,13 +17,13 @@ const OAuthCallbackPage = () => {
     // redirect
     if (!accessToken) navigate("/login", { replace: true });
 
-    apiCall<{ accessToken: string }>("/auth/login/oauth2", "POST", {
+    apiCall<LoginResponse>("/auth/login/oauth2", "POST", {
       code: accessToken,
       socialType: "GOOGLE",
     }).then((response) => {
-      if (response.status === 200 && response.data?.accessToken) {
+      if (response.status === 200 && response.data?.accessToken && response.data?.nickname) {
         // 로그인 처리
-        login(response.data.accessToken);
+        login(response.data.accessToken, response.data.nickname);
         // 필요하면 홈으로 이동
         navigate("/", { replace: true });
       } else if (response.status === 303) {

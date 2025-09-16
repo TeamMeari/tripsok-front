@@ -7,7 +7,7 @@ import { useApi } from "../../hooks/useApi";
 import { Tag } from "../../types/Tag";
 import styles from "./SignupPage.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
-
+import useAuthStore from "../../stores/authStore";
 const SignupCompletePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -15,25 +15,41 @@ const SignupCompletePage = () => {
 
   const { nickname } = state || {};
   const { t } = useTranslation();
-  const { apiCall, isLoading } = useApi();
+  const { apiCall: fetchApiCall, isLoading: fetchIsLoading } = useApi();
+  const { apiCall: patchApiCall } = useApi();
   const [hashtags, setHashtags] = useState<Tag[]>([]);
+  const { isLoggedIn } = useAuthStore();
 
   const fetchHashtags = () => {
-    apiCall("/theme", "GET").then((response) => {
+    fetchApiCall("/theme", "GET").then((response) => {
       if (response.status === 200) {
         setHashtags(response.data as Tag[]);
       }
     });
   };
 
+  const patchHashtags = () => {
+    patchApiCall("/user/interest-themes", "PATCH", {
+      interestThemeIds: hashtags.map((hashtag) => hashtag.id)
+    })
+  }
+
   useEffect(() => {
     // redirect
-    if (!state || !nickname) {
+    if (!isLoggedIn) {
       navigate("/login", { replace: true });
     }
     // fetch hashtags
     fetchHashtags();
   }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      patchHashtags();
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [hashtags.length]);
 
   return (
     <div className={styles.page}>
@@ -46,7 +62,7 @@ const SignupCompletePage = () => {
           />
         </p>
         <div className={styles.content}>
-          {isLoading ? (
+          {fetchIsLoading ? (
             <div className={styles.hashtagsContainer}>
               {[...Array(10)].map((_, i) => (
                 <HashtagBtnSkeleton key={i} />

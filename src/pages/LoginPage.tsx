@@ -1,17 +1,21 @@
 import styles from "./LoginPage.module.css";
 import Input from "../components/common/Input";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PasswordInput from "../components/feature/Input/PasswordInput";
 import ValidationBtn from "../components/common/Button/ValidationBtn";
 import { useTranslation, Trans } from "react-i18next";
 import { useApi } from "../hooks/useApi";
-import { login } from "../utils/auth";
+import { useNavigate } from "react-router-dom";
+import useAuthStore from "../stores/authStore";
+import { LoginResponse } from "../types/apiResponse";
 
 const LoginPage = () => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const { apiCall, isLoading } = useApi();
     const [password, setPassword] = useState("");
+    const { isLoggedIn, login } = useAuthStore();
 
     // 에러를 key로 저장
     const [errorKey, setErrorKey] = useState<null | string>(null);
@@ -30,13 +34,14 @@ const LoginPage = () => {
 
     const handleLogin = () => {
         // 로그인 로직 처리 후 에러 발생 시
-        apiCall<{ accessToken: string }>('/auth/login', 'POST', {
+        apiCall<LoginResponse>('/auth/login/email', 'POST', {
             email,
             password
         })
         .then((response) => {
             if (response.status === 200 && response.data?.accessToken) {
-                login(response.data.accessToken)
+                login(response.data.accessToken, response.data.nickname);
+                navigate("/");
             } else if (response.status === 401) {
                 setErrorKey("wrongEmailAndPassword");
             } else {
@@ -44,6 +49,12 @@ const LoginPage = () => {
             }
         });
     };
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            navigate("/");
+        }
+    })
 
     return (
         <div className={styles.page}>
@@ -66,6 +77,7 @@ const LoginPage = () => {
                     <PasswordInput
                         onChange={handlePasswordChange}
                         placeholder={t("passwordRule")}
+                        value={password}
                     />
                     {errorKey && <p className={styles.error}>{t(errorKey)}</p>}
                 </div>
