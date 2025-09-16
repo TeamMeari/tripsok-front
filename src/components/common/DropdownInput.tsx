@@ -58,7 +58,7 @@ const DropdownInput = forwardRef<HTMLInputElement, DropdownInputProps>(
                         pointerEvents: 'none',
                     }}
                         onFocus={() => ref && (ref as React.RefObject<HTMLInputElement>).current?.blur()}
-                    // onChange={(e) => onChange(e.target.value)}
+                    onChange={(e) => onChange(e.target.value)}
                     rightElement={
                         <button type="button" className={styles.arrowBtn} onClick={toggleDropdown}>
                             {isOpen ? '▲' : '▼'}
@@ -66,7 +66,8 @@ const DropdownInput = forwardRef<HTMLInputElement, DropdownInputProps>(
                     }
                 />
                 {isOpen && (
-                    <div className={styles.dropdown}>
+                    <div className={styles.dropdown}
+                         style={type === 'date' ? { maxHeight: 'none' } : {}}>
                         {type === 'date' ? (
                             <DatePicker
                                 inline
