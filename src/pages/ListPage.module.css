@@ -54,6 +54,12 @@
     gap: 16px;
 }
 
+.loadMore {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
 .searchContainer {
     padding: 16px 24px;
     display: flex;
