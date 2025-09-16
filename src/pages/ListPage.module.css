@@ -2,6 +2,22 @@
     margin: 84px 0;
 }
 
+.tagSkeletonContainer {
+    padding: 16px 0;
+    border-bottom: 1px solid #F5F5F5;
+    display: flex;
+    width: 100%;
+    gap: 4px;
+    overflow-x: hidden;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.tagSkeletonContainer::before {
+    content: '';
+    min-width: 20px;
+}
+
 .tagContainer {
     padding: 16px 0;
     border-bottom: 1px solid #F5F5F5;
@@ -13,6 +29,11 @@
 }
 
 .tagContainer::before {
+    content: '';
+    min-width: 20px;
+}
+
+.tagContainer::after {
     content: '';
     min-width: 20px;
 }

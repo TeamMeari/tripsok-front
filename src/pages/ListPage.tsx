@@ -12,6 +12,8 @@ import SearchInput from '../components/feature/SearchInput';
 import menuTabs from '../types/menuTabs';
 import { useSearchParams } from 'react-router-dom';
 import { useApi } from '../hooks/useApi';
+import HashtagBtnSkeleton from '../components/common/HashtagBtnSkeleton';
+import useScrollHorizon from '../hooks/useScrollHorizon';
 
 const ListPage = () => {
   const { t, i18n } = useTranslation();
@@ -19,9 +21,9 @@ const ListPage = () => {
   const { apiCall: placeApiCall, isLoading: placeIsLoading } = useApi();
   const [activeTab, setActiveTab] = useState<number>(0);
   const [tags, setTags] = useState<Tag[]>([]);
-  const [selectedTag, setSelectedTag] = useState<Set<number>>(new Set());
+  const [selectedTag, setSelectedTag] = useState<number | null>(null);
   const [selectedOption, setSelectedOption] = useState<number>(1);
-  const tagContainerRef = useRef<HTMLDivElement>(null);
+  const tagContainerRef = useScrollHorizon();
   const [searchParams] = useSearchParams();
   const searchWord = searchParams.get('query');
   const loadMoreRef = useRef<HTMLDivElement>(null);
@@ -87,19 +89,11 @@ const ListPage = () => {
   }
 
   const handleTagClick = (tagId: number) => {
-    if (selectedTag.has(tagId)) {
-      setSelectedTag((prev) => {
-        const newSet = new Set(prev);
-        newSet.delete(tagId);
-        return newSet;
-      });
+    if (selectedTag === tagId) {
+      setSelectedTag(null);
     } else {
-      setSelectedTag((prev) => {
-        const newSet = new Set(prev);
-        newSet.add(tagId);
-        return newSet;
-      });
-    };
+      setSelectedTag(tagId);
+    }
   }
 
   const handleOptionClick = (option: number) => {
@@ -116,12 +110,24 @@ const ListPage = () => {
     fetchTags();
   }, []);
 
+  const expectedTags = [
+    { id: 1, type: "테마1" },
+    { id: 2, type: "테마2" },
+    { id: 3, type: "테마3" },
+    { id: 4, type: "테마4" },
+    { id: 5, type: "테마5" },
+    { id: 6, type: "테마6" },
+    { id: 7, type: "테마7" },
+    { id: 8, type: "테마8" },
+    { id: 9, type: "테마9" },
+    { id: 10, type: "테마10" },
+  ]
+
   // wheel로 넘길수 있도록 설정
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && !placeIsLoading) {
-          console.log("fetchPlaces[activeTab]");
           fetchPlaces[activeTab]();
         }
       },
@@ -155,13 +161,23 @@ const ListPage = () => {
       <MenuTab tabs={menuTabs} activeTab={activeTab} isIcon={false} tabOnClick={(tab) => {
         handleTabClick(tab);
       }} isDot={isDot}/>
-      <div className={styles.tagContainer} ref={tagContainerRef}>
-        {tags.map((tag) => (
-          <HashtagButton key={tag.id} label={tag.type} onClick={() => {
-            handleTagClick(tag.id);
-          }} />
-        ))}
-      </div>
+      {
+        tagIsLoading ? (
+          <div className={styles.tagSkeletonContainer}>
+            {[...Array(10)].map((_, i) => (
+              <HashtagBtnSkeleton key={i} />
+            ))}
+          </div>
+        ) : (
+          <div className={styles.tagContainer} ref={tagContainerRef}>
+            {expectedTags.map((tag) => (
+              <HashtagButton key={tag.id} label={tag.type} onClick={() => {
+                handleTagClick(tag.id);
+              }} isSelected={selectedTag === tag.id} />
+              ))}
+          </div>
+        )
+      }
       <div className={styles.listContainer}>
         <div className={styles.info}>
           <div className={styles.listCount}>
