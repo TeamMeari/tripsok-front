@@ -45,6 +45,36 @@ const MainCarousel = ({ items, texts = [], isLoading = false }: MainCarouselProp
     return idx * unit;
   }, []);
   
+
+  const handleCarouselItemClick = useCallback((e: React.MouseEvent<HTMLDivElement>, type: "restaurant" | "tour" | "accommodation", id: number) => {
+    e.stopPropagation();
+    navigate(`/content/${type}/${id}`);
+  }, [navigate]);
+
+  // 탭/스와이프 구분을 위한 터치 좌표 저장
+  const touchStartXRef = useRef<number>(0);
+  const touchStartYRef = useRef<number>(0);
+
+  const handleCarouselItemTouchStart = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
+    const touch = e.touches[0];
+    touchStartXRef.current = touch.clientX;
+    touchStartYRef.current = touch.clientY;
+    // start에서는 전파를 막지 않아 컨테이너 훅이 시작 좌표를 기록할 수 있게 둔다
+  }, []);
+
+  const handleCarouselItemTouchEnd = useCallback((e: React.TouchEvent<HTMLDivElement>, type: "restaurant" | "tour" | "accommodation", id: number) => {
+    const touch = e.changedTouches[0];
+    const deltaX = Math.abs(touch.clientX - touchStartXRef.current);
+    const deltaY = Math.abs(touch.clientY - touchStartYRef.current);
+    const TAP_THRESHOLD = 10; // px
+    // 이동이 작으면 탭으로 간주하고 클릭과 동일 처리
+    if (deltaX < TAP_THRESHOLD && deltaY < TAP_THRESHOLD) {
+      e.stopPropagation();
+      navigate(`/content/${type}/${id}`);
+    }
+    // 스와이프인 경우 전파를 막지 않아 컨테이너 훅이 슬라이드 처리
+  }, [navigate]);
+
   // 초기 텍스트 위치 설정
   useEffect(() => {
     if (textRef.current && texts.length > 0) {
@@ -144,11 +174,10 @@ const MainCarousel = ({ items, texts = [], isLoading = false }: MainCarouselProp
           ) : (
             // 로딩 완료 시 실제 이미지 표시
             extendedItems.map((item, idx) => (
-              <div className={styles.carouselItem} key={idx}>
+              <div className={styles.carouselItem} key={idx} onClick={(e) => handleCarouselItemClick(e, item.type, item.id)} onTouchStart={(e) => handleCarouselItemTouchStart(e)} onTouchEnd={(e) => handleCarouselItemTouchEnd(e, item.type, item.id)}>
                 <img
                   src={item.image}
                   alt=""
-                  onClick={() => navigate(`/content/${item.type}/${item.id}`)}
                 />
               </div>
             ))
