@@ -72,6 +72,7 @@ const resources = {
             myPlanTitle: "나의 강릉 여행 만들기",
             myPlanDate: "여행 일자를 선택하세요",
             myPlanDeparture: "출발지",
+            myPlanDepartureTime: "출발 시간",
             myPlanPeople: "인원수",
             myPlanStart: "방문지 추가하고 계획 시작하기",
             addPlace: "방문지 추가하기",
@@ -86,6 +87,10 @@ const resources = {
             tabNavigation: "탐색",
             tabMyPlan: "나의 여정",
             tabCustomerService: "고객센터",
+            //myPlanDetail 텍스트
+            itineraryTitle: "계획중인 여행일정",
+            reserveButton: "관광택시 예약 및 결제",
+            upcomingPlaces: "방문 예정 여행지"
         },
     },
     en: {
@@ -156,6 +161,7 @@ const resources = {
             myPlanTitle: "Create My Gangneung Trip",
             myPlanDate: "Select your travel dates",
             myPlanDeparture: "Departure",
+            myPlanDepartureTime: "Departure Time",
             myPlanPeople: "Number of people",
             myPlanStart: "Add places and start planning",
             addPlace: "Add Place",
@@ -171,6 +177,10 @@ const resources = {
             tabNavigation: "Explore",
             tabMyPlan: "My Trip",
             tabCustomerService: "CS",
+            //myPlanDetail 텍스트
+            itineraryTitle: "Planned Itinerary",
+            reserveButton: "Reserve and Pay for Tour Taxi",
+            upcomingPlaces: "Upcoming Places"
         },
     },
     ja: {
@@ -241,6 +251,7 @@ const resources = {
             myPlanTitle: "私の江陵旅行を作る",
             myPlanDate: "旅行日を選択してください",
             myPlanDeparture: "出発地",
+            myPlanDepartureTime: "出発時間",
             myPlanPeople: "人数",
             myPlanStart: "場所を追加して旅行計画を始める",
             addPlace: "場所を追加",
@@ -255,6 +266,10 @@ const resources = {
             tabNavigation: "探索",
             tabMyPlan: "私の旅程",
             tabCustomerService: "サービス",
+            //myPlanDetail 텍스트
+            itineraryTitle: "計画中の旅行日程",
+            reserveButton: "観光タクシーの予約と支払い",
+            upcomingPlaces: "訪問予定の観光地"
         },
     },
     zh: {
@@ -325,6 +340,7 @@ const resources = {
             myPlanTitle: "创建我的江陵旅行",
             myPlanDate: "请选择旅行日期",
             myPlanDeparture: "出发地",
+            myPlanDepartureTime: "出発時間",
             myPlanPeople: "人数",
             myPlanStart: "添加地点并开始规划旅行",
             addPlace: "添加地点",
@@ -339,6 +355,10 @@ const resources = {
             tabNavigation: "探索",
             tabMyPlan: "我的旅程",
             tabCustomerService: "客服中心",
+            //myPlanDetail 텍스트
+            itineraryTitle: "计划中的行程",
+            reserveButton: "旅游出租车预订与支付",
+            upcomingPlaces: "即将访问的景点"
         },
     },
 };

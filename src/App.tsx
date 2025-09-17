@@ -6,7 +6,10 @@ import ListPage from './pages/ListPage';
 import ContentPage from './pages/ContentPage';
 import LoginPage from './pages/LoginPage';
 import HeaderSelector from "./components/header/HeaderSelector";
-import MyPlan from "./pages/MyPlanPage"
+
+import MyPlan from "./pages/MyPlanPage";
+import MyPlanDetailPage from './pages/MyPlanDetail';
+
 import CodePage from "./pages/signup/CodePage";
 import SignupCompletePage from "./pages/signup/CompletePage";
 import EmailPage from "./pages/signup/EmailPage";
@@ -15,6 +18,7 @@ import OAuthCallbackPage from "./pages/signup/OAuthCallbackPage";
 import OAuthSignupPage from "./pages/signup/OAuthSignupPage";
 import TermsPage from "./pages/signup/TermsPage";
 import PrivacyPage from "./pages/signup/PrivacyPage";
+
 
 function App(): JSX.Element {
   return (
@@ -39,6 +43,7 @@ function App(): JSX.Element {
               <Route path="/list" element={<ListPage />} />
               <Route path="/content/:id" element={<ContentPage />} />
               <Route path="/myplan" element={<MyPlan />} />
+              <Route path="/myplan-detail" element={<MyPlanDetailPage/>}/>
             </Routes>
           </div>
         </BrowserRouter>

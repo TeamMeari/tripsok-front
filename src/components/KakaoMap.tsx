@@ -14,7 +14,7 @@ interface KakaoMapProps {
 }
 
 const DEFAULT_LOCATION: Location[] = [
-    { lat: 37.751, lng: 128.876, title: "BTS 버스 정류장" },
+    { title: "강릉", lat: 37.751, lng: 128.876 },
 ];
 
 const KAKAO_MAP_KEY = import.meta.env.VITE_KAKAOMAP_KEY;
