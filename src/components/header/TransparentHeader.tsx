@@ -8,7 +8,7 @@ interface TransparentHeaderProps {
     type?: "default" | "auth"; // 기본 투명 헤더(default) / 로그인 포함(auth)
 }
 
-const TransparentHeader: React.FC<TransparentHeaderProps> = ({ type = "default" }) => {
+const TransparentHeader: React.FC<TransparentHeaderProps> = ({ type = "default"}) => {
     const { t} = useTranslation();
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -47,7 +47,7 @@ const TransparentHeader: React.FC<TransparentHeaderProps> = ({ type = "default" 
     }, []);
 
     return (
-        <header className={styles.header}>
+        <header className={styles.header}  style={ type === "auth" ? { position: "fixed",} : {}}>
             <div className={styles.left}>
                 <IconButton type="arrow" onClick={handleArrowClick} />
             </div>
