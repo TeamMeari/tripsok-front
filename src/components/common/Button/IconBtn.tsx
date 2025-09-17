@@ -70,7 +70,7 @@ const IconButton: React.FC<IconButtonProps> = ({ type, color = "white", onClick 
                 <div className={styles.languageMenu}>
                     <div onClick={() => handleLanguageSelect("ko")}>한국어</div>
                     <div onClick={() => handleLanguageSelect("en")}>English</div>
-                    <div onClick={() => handleLanguageSelect("zh")}>中文</div>
+                    <div onClick={() => handleLanguageSelect("cn")}>中文</div>
                     <div onClick={() => handleLanguageSelect("ja")}>日本語</div>
                 </div>
             )}
