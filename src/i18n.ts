@@ -51,6 +51,7 @@ const resources = {
             placePointTitle: "이 장소의 매력 포인트",
             cardSectionTitle: "과 함께 찾아본 장소",
             addToJourney: "내 여정에 추가",
+            noInfo: "정보 없음",
             // MenuTab 텍스트
             tabTour: "관광지",
             tabFood: "식사",
@@ -140,6 +141,7 @@ const resources = {
             placePointTitle: "Highlights of this place",
             cardSectionTitle: "Places explored together",
             addToJourney: "Add to my journey",
+            noInfo: "No information",
             // MenuTab 텍스트
             tabTour: "Tourist Spot",
             tabFood: "Food",
@@ -230,6 +232,7 @@ const resources = {
             placePointTitle: "この場所の魅力ポイント",
             cardSectionTitle: "と似た場所",
             addToJourney: "私の旅に追加",
+            noInfo: "情報なし",
             // MenuTab 텍스트
             tabTour: "観光地",
             tabFood: "食事",
@@ -272,7 +275,7 @@ const resources = {
             upcomingPlaces: "訪問予定の観光地"
         },
     },
-    zh: {
+    cn: {
         translation: {
             // 로그인 관련 텍스트
             greeting: "Hi, {{name}}",
@@ -319,6 +322,7 @@ const resources = {
             placePointTitle: "这个地方的亮点",
             cardSectionTitle: "一起探索过的地方",
             addToJourney: "添加到我的旅程",
+            noInfo: "暂无信息",
             // MenuTab 텍스트
             tabTour: "旅游景点",
             tabFood: "美食",
