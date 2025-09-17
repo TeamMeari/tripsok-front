@@ -8,6 +8,7 @@ import SearchInput from "../SearchInput";
 export interface MainCarouselItem {
   id: number;
   image: string;
+  type: "restaurant" | "tour" | "accommodation";
 }
 
 interface MainCarouselProps {
@@ -147,7 +148,7 @@ const MainCarousel = ({ items, texts = [], isLoading = false }: MainCarouselProp
                 <img
                   src={item.image}
                   alt=""
-                  onClick={() => navigate(`/content/${item.id}`)}
+                  onClick={() => navigate(`/content/${item.type}/${item.id}`)}
                 />
               </div>
             ))

@@ -16,6 +16,7 @@ import HashtagBtnSkeleton from '../components/common/HashtagBtnSkeleton';
 import useScrollHorizon from '../hooks/useScrollHorizon';
 import { PlacesResponse, Place } from '../types/apiResponse';
 import EmptyList from '../components/common/EmptyList';
+import { convertTypeToLowerCase } from '../utils/converter';
 
 // 예시 데이터
 const expectedTags = [
@@ -102,6 +103,7 @@ const ListPage = () => {
           image: v.thumbnailUrl,
           title: v.name,
           description: v.summary,
+          type: convertTypeToLowerCase(v.type),
         })) as CardType[]]);
         setTotalPages(prev => {
           prev[0] = response.data?.totalPages || 0;
@@ -132,6 +134,7 @@ const ListPage = () => {
           image: v.thumbnailUrl,
           title: v.name,
           description: v.summary,
+          type: convertTypeToLowerCase(v.type),
         })) as CardType[]]);
         setTotalPages(prev => {
           prev[1] = response.data?.totalPages || 0;
@@ -162,6 +165,7 @@ const ListPage = () => {
           image: v.thumbnailUrl,
           title: v.name,
           description: v.summary,
+          type: convertTypeToLowerCase(v.type),
         })) as CardType[]]);
         setTotalPages(prev => {
           prev[2] = response.data?.totalPages || 0;
@@ -279,7 +283,7 @@ const ListPage = () => {
             activeTab === 0 && (!placeIsLoading && tourPlaces.length === 0 ? 
             <EmptyList /> :
             tourPlaces.map((card) => (
-              <Card key={card.id} image={card.image} title={card.title} description={card.description} />
+              <Card key={card.id} image={card.image} title={card.title} description={card.description} type={card.type} />
             )))
           }
           {
