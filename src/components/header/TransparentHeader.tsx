@@ -54,7 +54,12 @@ const TransparentHeader: React.FC<TransparentHeaderProps> = ({ type = "default"}
 
             <div className={styles.right} ref={menuRef} >
 
-                {type === "default" && <IconButton type="search" onClick={() => console.log("검색")} />}
+                {type === "default" && (
+                    <>
+                        <IconButton type="globeIcon" />
+                        <IconButton type="search" onClick={() => console.log("검색")} />
+                    </>
+                    )}
 
                 {type === "auth" && (
                     <>
