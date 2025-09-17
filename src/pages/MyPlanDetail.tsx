@@ -14,6 +14,7 @@ import {arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSor
 import PersonIcon from '/public/InfoIcon/person.svg';
 import DateIcon from '/public/InfoIcon/date.svg';
 import FlagIcon from '/public/InfoIcon/flag.svg';
+import StartTimeIcon from '/public/InfoIcon/starttimeIcon.svg';
 
 
 import {CSS} from '@dnd-kit/utilities';
@@ -160,7 +161,7 @@ export default function MyPlanDetailPage() {
 
     return (
         <div style={{ height: "100vh", position: "relative" }}>
-            <TransparentHeader type="auth" />
+            <TransparentHeader  type="auth" />
 
             <div style={{ height: "100%", width: "100%" }}>
                 <KakaoMap
@@ -171,6 +172,7 @@ export default function MyPlanDetailPage() {
                     }))}
                     width="100%"
                     height="100%"
+                    // showOrderMarker={true}
                 />
             </div>
 
@@ -252,7 +254,7 @@ export default function MyPlanDetailPage() {
                                                 options={timeOptions}
                                                 placeholder={t("myPlanDepartureTime")}
                                                 width={148}
-                                                leftIcon={<img src={FlagIcon} alt="flag"
+                                                leftIcon={<img src={StartTimeIcon} alt="flag"
                                                                style={{height: 19, width: 'auto'}}/>}
                                             />
                                             <DropdownInput
