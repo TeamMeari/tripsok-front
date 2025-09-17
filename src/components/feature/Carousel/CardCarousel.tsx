@@ -6,10 +6,11 @@ import useScrollHorizon from "../../../hooks/useScrollHorizon";
 
 interface CardCarouselProps {
     cards: CardType[]
+    isLoading?: boolean
 }
 
-const CardCarousel = ({ cards }: CardCarouselProps) => {
-    const carouselRef = useScrollHorizon();
+const CardCarousel = ({ cards, isLoading = false }: CardCarouselProps) => {
+    const carouselRef = useScrollHorizon(!isLoading);
 
     return (
         <div 
@@ -17,7 +18,13 @@ const CardCarousel = ({ cards }: CardCarouselProps) => {
             ref={carouselRef}
         >
             <div className={styles.carouselItems}>
-                {cards.map((card) => (
+                {isLoading ? (
+                    // 로딩 중일 때 스켈레톤 표시
+                    Array.from({ length: 3 }).map((_, idx) => (
+                        <Card key={idx} isLoading />
+                    ))
+                ) : (
+                    cards.map((card) => (
                     <Card
                         key={card.id}
                         rank={card.rank}
@@ -25,8 +32,9 @@ const CardCarousel = ({ cards }: CardCarouselProps) => {
                         description={card.description}
                         image={card.image}
                         id={card.id}
-                    />
-                ))}
+                        />
+                    ))
+                )}
             </div>
         </div>
     );

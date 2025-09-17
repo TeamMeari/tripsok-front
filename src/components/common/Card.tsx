@@ -1,9 +1,8 @@
 import styles from "./Card.module.css";
-import '../../styles/skeleton.css'
 import { useNavigate } from "react-router-dom";
 
 interface CardProps {
-    id: number;
+    id?: number;
     image?: string;
     title?: string;
     description?: string;
@@ -30,9 +29,9 @@ const Card = ({
             <div className={`${styles.cardImageContainer} skeleton`}>
             </div>
             <div className={styles.cardBody}>
-                <div className={`${styles.cardTitle} skeleton`}></div>
-                <div className={`${styles.cardDesc} skeleton`}></div>
-                <div className={`${styles.cardDesc} skeleton`}></div>
+                <div className={`${styles.cardTitleSkeleton} skeleton`}></div>
+                <div className={`${styles.cardDescSkeleton} skeleton`}></div>
+                <div className={`${styles.cardDescSkeleton} skeleton`}></div>
             </div>
         </div>
     }
