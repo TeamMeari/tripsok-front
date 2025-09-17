@@ -8,6 +8,7 @@ import ValidationBtn from "../../components/common/Button/ValidationBtn";
 import CheckBox from "../../components/common/CheckBox";
 import Input from "../../components/common/Input";
 import { useApi } from "../../hooks/useApi";
+import OAuthLoginUrl from "../../utils/OAuthLoginUrl";
 
 const OAuthSignupPage = () => {
     const navigate = useNavigate();
@@ -16,7 +17,7 @@ const OAuthSignupPage = () => {
     const { apiCall: nicknameValidateApiCall, isLoading: nicknameValidateIsLoading } = useApi();
     const { apiCall: submitApiCall, isLoading: submitIsLoading } = useApi();
 
-    const { nickname: nicknameStore, setNickname: setNicknameStore, reset } = useSignupStore();
+    const { nickname: nicknameStore, setNickname: setNicknameStore, reset, setTermsChecked, setPrivacyChecked, termsChecked, privacyChecked, setRoutingSignupComplete } = useSignupStore();
 
     const NICKNAME_MAX_LENGTH = 15;
     const [nickname, setNickname] = useState(nicknameStore);
@@ -26,18 +27,17 @@ const OAuthSignupPage = () => {
         setNickname(e.target.value.slice(0, NICKNAME_MAX_LENGTH));
     }, []);
 
-    const [termAndPrivacyVisible, setTermAndPrivacyVisible] = useState(false);
-    const [termsChecked, setTermsChecked] = useState(false);
-    const [privacyChecked, setPrivacyChecked] = useState(false);
+    const [termAndPrivacyVisible, setTermAndPrivacyVisible] = useState(nickname !== "");
 
-    const handleTermsChecked = useCallback(() => setTermsChecked(prev => !prev), []);
-    const handlePrivacyChecked = useCallback(() => setPrivacyChecked(prev => !prev), []);
+    const handleTermsChecked = useCallback(() => setTermsChecked(!termsChecked), []);
+    const handlePrivacyChecked = useCallback(() => setPrivacyChecked(!privacyChecked), []);
 
     const handleSubmit = useCallback(() => {
         submitApiCall("/auth/signup/oauth2", "POST", { socialSignUpToken, nickname }).then(response => {
-            if (response.status === 200) {
+            if (response.status === 200 || response.status === 201) {
+                window.location.href = OAuthLoginUrl;
                 reset();
-                navigate("/signup/complete", { state: { from: "/signup/oauth" } });
+                setRoutingSignupComplete();
             }
         });
     }, [nickname, navigate]);
@@ -71,7 +71,9 @@ const OAuthSignupPage = () => {
     }, [socialSignUpToken, navigate]);
 
     return (<div className={styles.step}>
-        <p className={styles.message} dangerouslySetInnerHTML={{ __html: t("emailVerified") }} />
+        <p className={styles.message}>
+            {t("emailVerified")}
+        </p>
         <div className={styles.content}>
             <div className={styles.inputContainer}>
                 <Input

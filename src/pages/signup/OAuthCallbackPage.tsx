@@ -3,33 +3,34 @@ import { useApi } from "../../hooks/useApi";
 import useAuthStore from "../../stores/authStore";
 import { useNavigate } from "react-router-dom";
 import { useSignupStore } from "../../stores/signupStores";
-import { LoginResponse } from "../../types/apiResponse";
+import { OAuthLoginResponse } from "../../types/apiResponse";
 
 const OAuthCallbackPage = () => {
-  const { apiCall } = useApi();
+  const { apiCall, isLoading } = useApi();
   const navigate = useNavigate();
-  const { setSocialSignUpToken } = useSignupStore();
+  const { setSocialSignUpToken, routing } = useSignupStore();
   const { login } = useAuthStore();
   useEffect(() => {
-    const hashParams = new URLSearchParams(window.location.hash.substring(1));
-    const accessToken = hashParams.get("access_token");
+    if (isLoading) return;
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get("code");
 
     // redirect
-    if (!accessToken) navigate("/login", { replace: true });
+    if (!code) navigate("/login", { replace: true });
 
-    apiCall<LoginResponse>("/auth/login/oauth2", "POST", {
-      code: accessToken,
+    apiCall<OAuthLoginResponse>("/auth/login/oauth2", "POST", {
+      code: code,
       socialType: "GOOGLE",
     }).then((response) => {
-      if (response.status === 200 && response.data?.accessToken && response.data?.nickname) {
+      if (response.status === 200 && response.data && typeof response.data === 'object' && 'nickname' in response.data) {
         // 로그인 처리
-        login(response.data.accessToken, response.data.nickname);
+        login(response.data?.accessToken as string, response.data?.nickname as string);
         // 필요하면 홈으로 이동
-        navigate("/", { replace: true });
+        navigate(routing, { replace: true });
       } else if (response.status === 303) {
         // 회원가입이 필요한 경우 signup 페이지로 token 전달
-        setSocialSignUpToken(accessToken as string);
-        navigate("/signup/oauth", { replace: true });
+        setSocialSignUpToken(response?.data?.accessToken as string);
+        navigate("/signup/oauth2", { replace: true });
       } else {
         navigate("/login", { replace: true });
       }

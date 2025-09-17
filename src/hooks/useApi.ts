@@ -25,7 +25,7 @@ export function useApi() {
       }
     } catch (err: any) {
       return {
-        data: null,
+        data: err.response.data,
         status: err.response.status,
         error: err
       }

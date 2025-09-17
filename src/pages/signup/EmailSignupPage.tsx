@@ -95,7 +95,7 @@ const EmailSignupPage = () => {
 
     const handleSubmit = useCallback(() => {
         submitApiCall("/auth/signup/email", "POST", { emailVerifyToken, nickname, password, firstName, lastName }).then(response => {
-            if (response.status === 201) {
+            if (response.status === 201 || response.status === 200) {
                 submitApiCall<LoginResponse>("/auth/login/email", "POST", { email: email, password: password }).then(response => {
                     if (response.status === 200 && response.data?.accessToken && response.data?.nickname) {
                         login(response.data?.accessToken as string, response.data?.nickname as string);
