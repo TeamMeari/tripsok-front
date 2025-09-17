@@ -8,17 +8,23 @@ import { Tag } from "../../types/Tag";
 import styles from "./SignupPage.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import useAuthStore from "../../stores/authStore";
+
 const SignupCompletePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const state = location.state as { nickname?: string } | undefined;
+  // 회원가입 완료 페이지 접근 경로 체크
+  useEffect(() => {
+    const prevPath = location.state?.from;
+    if (prevPath !== '/signup/email/3' && prevPath !== '/signup/oauth') {
+      navigate('/', { replace: true });
+    }
+  }, []);
 
-  const { nickname } = state || {};
   const { t } = useTranslation();
   const { apiCall: fetchApiCall, isLoading: fetchIsLoading } = useApi();
   const { apiCall: patchApiCall } = useApi();
   const [hashtags, setHashtags] = useState<Tag[]>([]);
-  const { isLoggedIn } = useAuthStore();
+  const { isLoggedIn, nickname } = useAuthStore();
 
   const fetchHashtags = () => {
     fetchApiCall("/theme", "GET").then((response) => {
@@ -58,7 +64,7 @@ const SignupCompletePage = () => {
           <Trans
             i18nKey="welcomeNickname"
             components={{ br: <br />, span: <span /> }}
-            values={{ name: nickname }}
+            values={{ name: nickname || "" }}
           />
         </p>
         <div className={styles.content}>

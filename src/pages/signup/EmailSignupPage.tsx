@@ -102,7 +102,7 @@ const EmailSignupPage = () => {
                     }
                 }).then(() => {
                     reset();
-                    navigate("/signup/complete", { state: { nickname: nickname } });
+                    navigate("/signup/complete", { state: { from: "/signup/email/3" } });
                 });
             }
         }).finally(() => {

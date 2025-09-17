@@ -37,7 +37,7 @@ const OAuthSignupPage = () => {
         submitApiCall("/auth/signup/oauth2", "POST", { socialSignUpToken, nickname }).then(response => {
             if (response.status === 200) {
                 reset();
-                navigate("/signup/complete", { state: { nickname: nickname } });
+                navigate("/signup/complete", { state: { from: "/signup/oauth" } });
             }
         });
     }, [nickname, navigate]);
