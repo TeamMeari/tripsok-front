@@ -40,7 +40,7 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
                 const map = new kakao.maps.Map(mapRef.current, {
                     center: new kakao.maps.LatLng(locations[0].lat, locations[0].lng),
                     level: 4,
-                    mapTypeId: kakao.maps.MapTypeId.SKYVIEW,
+                    // mapTypeId: kakao.maps.MapTypeId.SKYVIEW,
                 });
 
                 locations.forEach((loc) => {
