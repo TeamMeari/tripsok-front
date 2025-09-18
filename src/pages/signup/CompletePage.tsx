@@ -15,7 +15,6 @@ const SignupCompletePage = () => {
   // 회원가입 완료 페이지 접근 경로 체크
   useEffect(() => {
     const prevPath = location.state?.from;
-    console.log(prevPath);
     if (prevPath !== '/signup/email/3' && prevPath !== '/signup/oauth2') {
       navigate('/', { replace: true });
     }

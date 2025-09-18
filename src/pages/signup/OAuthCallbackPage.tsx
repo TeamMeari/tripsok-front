@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useApi } from "../../hooks/useApi";
 import useAuthStore from "../../stores/authStore";
 import { useNavigate } from "react-router-dom";
@@ -12,11 +12,15 @@ const OAuthCallbackPage = () => {
   const { login } = useAuthStore();
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get("code");
-  useEffect(() => {
+
+  const tryLogin = () => {
     if (isLoading) return;
 
     // redirect
-    if (!code) navigate("/login", { replace: true });
+    if (!code) {
+      navigate("/login", { replace: true });
+      return;
+    }
 
     apiCall<OAuthLoginResponse>("/auth/login/oauth2", "POST", {
       code: code,
@@ -29,13 +33,24 @@ const OAuthCallbackPage = () => {
         navigate("/", { replace: true });
       } else if (response.status === 303) {
         // 회원가입이 필요한 경우 signup 페이지로 token 전달
-        setSocialSignUpToken(response?.data?.accessToken as string);
-        navigate("/signup/oauth2", { replace: true });
+        const data: any = response.data || {};
+        const token = data.accessToken || data.socialSignUpToken || data.signUpToken || data.token;
+        if (token) {
+          setSocialSignUpToken(token as string);
+          // 라우터 state로도 함께 전달하여 반영 타이밍 이슈 제거
+          navigate("/signup/oauth2", { replace: true, state: { socialSignUpToken: token } });
+        } else {
+          navigate("/login", { replace: true });
+        }
       } else {
         navigate("/login", { replace: true });
       }
     });
-  }, [apiCall, navigate, setSocialSignUpToken]);
+  }
+
+  useEffect(() => {
+    tryLogin();
+  }, []);
 
   return <div>Loading...</div>;
 };

@@ -1,5 +1,5 @@
 import { t } from "i18next";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./SignupPage.module.css";
 import { useSignupStore } from "../../stores/signupStores";
@@ -10,10 +10,13 @@ import Input from "../../components/common/Input";
 import { useApi } from "../../hooks/useApi";
 import { OAuthSignupResponse } from "../../types/apiResponse";
 import useAuthStore from "../../stores/authStore";
+import { useLocation } from "react-router-dom";
 
 const OAuthSignupPage = () => {
     const navigate = useNavigate();
-    const { socialSignUpToken } = useSignupStore();
+    const location = useLocation();
+    const state = location.state;
+    const socialSignUpToken = state?.socialSignUpToken;
     const { login } = useAuthStore();
     const { apiCall: nicknameValidateApiCall, isLoading: nicknameValidateIsLoading } = useApi();
     const { apiCall: submitApiCall, isLoading: submitIsLoading } = useApi();
@@ -33,15 +36,30 @@ const OAuthSignupPage = () => {
     const handleTermsChecked = useCallback(() => setTermsChecked(!termsChecked), []);
     const handlePrivacyChecked = useCallback(() => setPrivacyChecked(!privacyChecked), []);
 
+    const skipResetRef = useRef(false);
+
     const handleSubmit = useCallback(() => {
         submitApiCall<OAuthSignupResponse>("/auth/signup/oauth2", "POST", { socialSignUpToken, nickname }).then(response => {
             if ((response.status === 200 || response.status === 201) && response.data?.accessToken && response.data?.nickname) {
                 login(response.data?.accessToken as string, response.data?.nickname as string);
-                reset();
+                // 완료 페이지로 이동하는 경우에는 reset을 건너뛴다
+                skipResetRef.current = true;
                 navigate("/signup/complete", { state: { from: "/signup/oauth2" } });
+            } else {
+                reset();
+                navigate("/login");
             }
         });
     }, [nickname, navigate]);
+
+    // 완료 페이지로 이동하지 않고 이 페이지에서 벗어나는 경우에만 reset 실행
+    useEffect(() => {
+        return () => {
+            if (!skipResetRef.current) {
+                reset();
+            }
+        };
+    }, []);
 
     const nicknameValid = nickname.length > 0 && nickname.length <= NICKNAME_MAX_LENGTH;
     const validateInfo = nicknameValid && termsChecked && privacyChecked;
@@ -68,8 +86,8 @@ const OAuthSignupPage = () => {
 
     // redirect
     useEffect(() => {
-        if (!socialSignUpToken) navigate("/login", { replace: true });
-    }, [socialSignUpToken, navigate]);
+        if (!state || !socialSignUpToken) navigate("/login", { replace: true });
+    }, [socialSignUpToken, navigate, state]);
 
     return (<div className={styles.step}>
         <p className={styles.message}>
