@@ -55,7 +55,7 @@ const LoginPage = () => {
         if (isLoggedIn) {
             navigate("/");
         }
-    })
+    }, [isLoggedIn, navigate]);
 
     return (
         <div className={styles.page}>

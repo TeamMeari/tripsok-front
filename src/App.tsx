@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './App.css';
 import MainPage from './pages/MainPage';
@@ -20,8 +20,16 @@ import TermsPage from "./pages/signup/TermsPage";
 import PrivacyPage from "./pages/signup/PrivacyPage";
 import PaymentPage from "./pages/PaymentPage";
 import PaymentSuccessPage from "./pages/payment_successPage";
+import useAuthStore from "./stores/authStore";
 
 function App(): JSX.Element {
+
+  const { checkLogin } = useAuthStore();
+
+  useEffect(() => {
+    checkLogin();
+  }, [])
+
   return (
     <div className="App">
       <div className="app-area">

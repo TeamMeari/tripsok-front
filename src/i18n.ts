@@ -118,7 +118,10 @@ const resources = {
             history: "역사",
             nature: "자연",
             leisure: "레저",
-            sports: "스포츠"
+            sports: "스포츠",
+            // Summary 비어있음 오류 메세지
+            emptySummary: "응답을 불러올 수 없습니다.",
+            substituteSummary: "사진을 눌러 상세 정보를 확인해보세요."
         },
     },
     en: {
@@ -236,7 +239,10 @@ const resources = {
             history: "history",
             nature: "nature",
             leisure: "leisure",
-            sports: "sports"
+            sports: "sports",
+            // Summary 비어있음 오류 메세지
+            emptySummary: "Unable to retrieve response.",
+            substituteSummary: "Click the photo to check the detailed information."
         },
     },
     ja: {
@@ -353,7 +359,10 @@ const resources = {
             history: "歴史",
             nature: "自然",
             leisure: "レジャー",
-            sports: "スポーツ"
+            sports: "スポーツ",
+            // Summary 비어있음 오류 메세지
+            emptySummary: "応答を呼び出せません。",
+            substituteSummary: "写真をクリックして詳細情報を確認してください。"
         },
     },
     cn: {
@@ -470,7 +479,10 @@ const resources = {
             history: "历史",
             nature: "自然",
             leisure: "休闲",
-            sports: "运动"
+            sports: "运动",
+            // Summary 비어있음 오류 메세지
+            emptySummary: "無法檢索回應。",
+            substituteSummary: "请点击照片查看详细信息。"
         },
     },
 };

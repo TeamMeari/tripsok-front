@@ -35,6 +35,10 @@ axiosInstance.interceptors.response.use(
     },
     error => {
         const config = error.config;
+        // /auth/login에서 401 에러가 발생한 경우 바로 에러 반환
+        if (error.response?.status === 401 && config.url === '/auth/login/email') {
+            return Promise.reject(error);
+        }
         
         // 401 Unauthorized 에러 처리 - 토큰 갱신 시도
         if (error.response?.status === 401 && !config._retry) {

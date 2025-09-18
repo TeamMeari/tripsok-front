@@ -84,9 +84,10 @@ const EmailSignupPage = () => {
     const [nicknameError, setNicknameError] = useState("");
 
     const handleNicknameChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        setNickname(e.target.value.slice(0, NICKNAME_MAX_LENGTH));
-        if (nickname === "") setNicknameError(_ => "nicknameError");
-        else if (useSignupStore.getState().firstName !== "" && useSignupStore.getState().lastName !== "") setNicknameError("");
+        const newNickname = e.target.value.slice(0, NICKNAME_MAX_LENGTH);
+        setNickname(newNickname);
+        if (newNickname === "") setNicknameError(_ => "nicknameError");
+        else setNicknameError("");
     }, []);
 
     // 약관 및 개인정보 동의
