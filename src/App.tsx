@@ -19,6 +19,7 @@ import OAuthSignupPage from "./pages/signup/OAuthSignupPage";
 import TermsPage from "./pages/signup/TermsPage";
 import PrivacyPage from "./pages/signup/PrivacyPage";
 import PaymentPage from "./pages/PaymentPage";
+import PaymentSuccessPage from "./pages/payment_successPage";
 
 function App(): JSX.Element {
   return (
@@ -45,6 +46,7 @@ function App(): JSX.Element {
               <Route path="/myplan" element={<MyPlan />} />
               <Route path="/myplan-detail" element={<MyPlanDetailPage/>}/>
               <Route path="/payment" element={<PaymentPage/>}/>
+              <Route path="/success" element={<PaymentSuccessPage />} />
 
             </Routes>
           </div>
