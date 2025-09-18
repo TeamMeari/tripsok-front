@@ -18,7 +18,7 @@ import MenuApp from '../components/MenuApp';
 
 const MainPage = () => {
   const { t, i18n } = useTranslation();
-  const [activeTab, setActiveTab] = useState(0);
+  // const [activeTab, setActiveTab] = useState(0);
   const dailyKeywords = getDailyKeywords();
   const [mainCarouselItems, setMainCarouselItems] = useState<MainCarouselItem[]>([]);
   const [top5CardCarouselItems, setTop5CardCarouselItems] = useState<CardType[]>([]);
@@ -29,9 +29,9 @@ const MainPage = () => {
   const { apiCall: FirstCardCarouselApiCall, isLoading: FirstCardCarouselIsLoading } = useApi();
   const { apiCall: SecondCardCarouselApiCall, isLoading: SecondCardCarouselIsLoading } = useApi();
 
-  const handleTabClick = (tab: number) => {
-    setActiveTab(tab);
-  }
+  // const handleTabClick = (tab: number) => {
+  //   setActiveTab(tab);
+  // }
 
   const fetchMainCarouselPlaces = () => {
     // keyword 하나 사용
@@ -140,7 +140,7 @@ const MainPage = () => {
       isLoading={MainCarouselIsLoading}
     />
     <div className={styles.space}></div>
-    <MenuTab tabs={menuTabs} activeTab={activeTab} isIcon={true} tabOnClick={handleTabClick} />
+    {/* <MenuTab tabs={menuTabs} activeTab={activeTab} isIcon={true} tabOnClick={handleTabClick} /> */}
     <div className={styles.section1}>
       <div className={styles.cardList}>
         <TitleLink i18nKey="mainTopSpots" link="/list" />
