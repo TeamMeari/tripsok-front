@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, CSSProperties } from "react";
 import styles from "./TransparentHeader.module.css";
 import IconButton from "../common/Button/IconBtn";
 import Button from "../common/Button/CommonBtn";
@@ -6,10 +6,11 @@ import { useTranslation } from "react-i18next";
 
 interface TransparentHeaderProps {
     type?: "default" | "auth"; // 기본 투명 헤더(default) / 로그인 포함(auth)
+    fixed?: boolean; //  고정 여부
 }
 
-const TransparentHeader: React.FC<TransparentHeaderProps> = ({ type = "default"}) => {
-    const { t} = useTranslation();
+const TransparentHeader: React.FC<TransparentHeaderProps> = ({ type = "default", fixed = false }) => {
+    const { t } = useTranslation();
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [showLogoutMenu, setShowLogoutMenu] = useState(false);
@@ -46,27 +47,29 @@ const TransparentHeader: React.FC<TransparentHeaderProps> = ({ type = "default"}
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
+    const headerStyle: CSSProperties = fixed
+        ? { position: "fixed",  zIndex: 500 }
+        : {};
+
     return (
-        <header className={styles.header}  style={ type === "auth" ? { position: "fixed",} : {}}>
+        <header className={styles.header} style={headerStyle}>
             <div className={styles.left}>
                 <IconButton type="arrow" onClick={handleArrowClick} />
             </div>
 
-            <div className={styles.right} ref={menuRef} >
-
+            <div className={styles.right} ref={menuRef}>
                 {type === "default" && (
                     <>
                         <IconButton type="globeIcon" />
                         <IconButton type="search" onClick={() => console.log("검색")} />
                     </>
-                    )}
+                )}
 
                 {type === "auth" && (
                     <>
                         <IconButton type="globeIcon" />
                         <div className={styles.userMenuWrapper}>
                             <Button variant="secondary" borderRadius="48px" onClick={handleAuthClick}>
-
                                 {isLoggedIn ? t("greeting", { name: userName }) : t("login")}
                             </Button>
                             {isLoggedIn && showLogoutMenu && (
