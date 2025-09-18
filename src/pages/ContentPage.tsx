@@ -10,6 +10,8 @@ import LikeButton from '../components/common/Button/LikeBtn';
 import KakaoMap from "../components/KakaoMap";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
+import { useApi } from '../hooks/useApi';
+import axiosInstance from "../utils/axios";
 
 
 interface Tag {
@@ -39,7 +41,7 @@ const ContentPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { t, i18n } = useTranslation(); // i18n.language 사용
-
+    const { apiCall: fetchApi, isLoading } = useApi();
 
 
     const [place, setPlace] = useState<PlaceResponse | null>(null);
@@ -51,27 +53,17 @@ const ContentPage = () => {
     console.log("URL 파라미터 id:", id);
 
     useEffect(() => {
-        const fetchPlace = async () => {
-            try {
+        if (!type || !id) return;
+        const locale = i18n.language || "ko";
 
-                const locale = i18n.language || "ko"; // 현재 언어
-                const res = await fetch(
-                    `https://trip-sok.jayden-bin.cc/api/v1/places/${type}/${id}?locale=${locale}`
-                );
-                if (!res.ok) throw new Error("데이터 불러오기 실패");
-
-                const data: PlaceResponse = await res.json();
-                console.log("✅ API 데이터:", data);
-                setPlace(data);
-            } catch (error) {
-                console.error("❌ API 호출 오류:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchPlace();
-    }, [i18n.language]); // i18n.language가 바뀌면 재호출
+        setLoading(true);
+        fetchApi<PlaceResponse>(`/places/${type}/${id}?locale=${locale}`, "GET")
+            .then((res) => {
+                if (res.status === 200) setPlace(res.data);
+            })
+            .catch(err => console.error(err))
+            .finally(() => setLoading(false));
+    }, [type, id, i18n.language]);
 
     const handleAddToMyPlan = () => {
         if (!place) return;

@@ -93,6 +93,8 @@ const resources = {
             locations: {
             gangneungStation: "강남역",
                 },
+            savedPlanContinue: "저장한 계획 이어하기",
+            savedPlanAdd: "저장된 계획에 추가",
             // MenuApp 텍스트
             tabNavigation: "탐색",
             tabMyPlan: "나의 여정",
@@ -121,7 +123,23 @@ const resources = {
             sports: "스포츠",
             // Summary 비어있음 오류 메세지
             emptySummary: "응답을 불러올 수 없습니다.",
-            substituteSummary: "사진을 눌러 상세 정보를 확인해보세요."
+            substituteSummary: "사진을 눌러 상세 정보를 확인해보세요.",
+            //결제 관련 텍스트
+            foreignTourTaxi: "외국인 관광택시 1일(3시간) 이용권",
+            agreeTerms: "필수 약관에 동의해주세요.",
+            paymentFailed: "결제 요청에 실패했습니다. 다시 시도해주세요.",
+            paymentCost: "관광택시 결제 비용",
+            passengerInfo: "탑승자 정보",
+            name: "이름",
+            email: "이메일 주소",
+            realNameInfo: "신분증 대조가 가능한 실명을 넣어주세요.",
+            receiptEmailInfo: "영수증을 받아볼 올바른 주소를 입력해주세요.",
+            sameAsAccount: "계정 주인과 동일",
+            payButton: "결제하기",
+            departure: "출발",
+            price: "30,000원",
+            paymentSuccess: "결제가 완료되었습니다",
+            receiptSent: "결제된 영수증은 이메일로 보냈어요.",
         },
     },
     en: {
@@ -214,6 +232,8 @@ const resources = {
             locations: {
                 gangneungStation: "강릉역",
             },
+            savedPlanContinue: "Continue saved plan",
+            savedPlanAdd: "Add to saved plan",
             // MenuApp 텍스트
             tabNavigation: "Explore",
             tabMyPlan: "My Trip",
@@ -242,7 +262,23 @@ const resources = {
             sports: "sports",
             // Summary 비어있음 오류 메세지
             emptySummary: "Unable to retrieve response.",
-            substituteSummary: "Click the photo to check the detailed information."
+            substituteSummary: "Click the photo to check the detailed information.",
+            //결제 관련 텍스트
+            foreignTourTaxi: "Foreign Tour Taxi 1-Day (3 Hours) Ticket",
+            agreeTerms: "Please agree to the required terms.",
+            paymentFailed: "Payment request failed. Please try again.",
+            paymentCost: "Tour Taxi Payment Amount",
+            passengerInfo: "Passenger Information",
+            name: "Name",
+            email: "Email Address",
+            realNameInfo: "Please enter the real name matching your ID.",
+            receiptEmailInfo: "Enter a valid address to receive the receipt.",
+            sameAsAccount: "Same as account owner",
+            payButton: "Pay",
+            departure: "Departure",
+            price: "$30.00",
+            paymentSuccess: "Payment has been completed",
+            receiptSent: "The receipt has been sent to your email.",
         },
     },
     ja: {
@@ -334,6 +370,8 @@ const resources = {
             locations: {
                 gangneungStation: "江陵駅",
             },
+            savedPlanContinue: "保存した計画を続ける",
+            savedPlanAdd: "保存された計画に追加",
             // MenuApp 텍스트
             tabNavigation: "探索",
             tabMyPlan: "私の旅程",
@@ -362,7 +400,23 @@ const resources = {
             sports: "スポーツ",
             // Summary 비어있음 오류 메세지
             emptySummary: "応答を呼び出せません。",
-            substituteSummary: "写真をクリックして詳細情報を確認してください。"
+            substituteSummary: "写真をクリックして詳細情報を確認してください。",
+            //결제관련 텍스트
+            foreignTourTaxi: "外国人観光タクシー1日（3時間）利用券",
+            agreeTerms: "必須の規約に同意してください。",
+            paymentFailed: "決済リクエストに失敗しました。もう一度お試しください。",
+            paymentCost: "観光タクシー決済金額",
+            passengerInfo: "乗客情報",
+            name: "名前",
+            email: "メールアドレス",
+            realNameInfo: "身分証と照合可能な実名を入力してください。",
+            receiptEmailInfo: "領収書を受け取る正しいアドレスを入力してください。",
+            sameAsAccount: "アカウント所有者と同じ",
+            payButton: "支払う",
+            departure: "出发",
+            price: "¥30,000",
+            paymentSuccess: "支付已完成",
+            receiptSent: "收据已发送到您的电子邮箱。",
         },
     },
     cn: {
@@ -454,6 +508,8 @@ const resources = {
             locations: {
                 gangneungStation: "江陵站",
             },
+            savedPlanContinue: "继续已保存的计划",
+            savedPlanAdd: "添加到已保存的计划",
             // MenuApp 텍스트
             tabNavigation: "探索",
             tabMyPlan: "我的旅程",
@@ -482,7 +538,24 @@ const resources = {
             sports: "运动",
             // Summary 비어있음 오류 메세지
             emptySummary: "無法檢索回應。",
-            substituteSummary: "请点击照片查看详细信息。"
+            substituteSummary: "请点击照片查看详细信息。",
+            //결제 관련 텍스트
+            foreignTourTaxi: "外国游客观光出租车1日（3小时）使用券",
+            agreeTerms: "请同意必填条款。",
+            paymentFailed: "付款请求失败。请重试。",
+            paymentCost: "观光出租车付款金额",
+            passengerInfo: "乘客信息",
+            name: "姓名",
+            email: "电子邮箱地址",
+            realNameInfo: "请输入与身份证一致的真实姓名。",
+            receiptEmailInfo: "请输入接收收据的正确地址。",
+            sameAsAccount: "与账户持有人相同",
+            payButton: "付款",
+            departure: "出发",
+            price: "¥30,000",
+            paymentSuccess: "お支払いが完了しました",
+            receiptSent: "領収書をメールに送信しました。",
+
         },
     },
 };
