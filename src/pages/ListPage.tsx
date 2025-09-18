@@ -206,9 +206,11 @@ const ListPage = () => {
 
   // wheel로 넘길수 있도록 설정
   useEffect(() => {
+    if (placeIsLoading) return;
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && !placeIsLoading) {
+          console.log(placeIsLoading)
           fetchPlaces[activeTab]();
         }
       },
@@ -237,24 +239,25 @@ const ListPage = () => {
 
   const List = () => {
     const list = [tourPlaces, restaurantPlaces, accommodationPlaces];
-    if (placeIsLoading) {
+
+    if (!placeIsLoading && list[activeTab].length === 0 && !isMorePage) {
       return (
         <div className={styles.list}>
-          {Array(10).fill(0).map((_, index) => (
-            <Card key={index} isLoading={true}/>
-          ))}
+          <EmptyList />
         </div>
       )
-      
     }
-    if (!placeIsLoading && list[activeTab].length === 0) {
-      return <div className={styles.list}><EmptyList /></div>;
-    }
+
     return (
       <div className={styles.list}>
         {list[activeTab].map((card) => (
           <Card key={card.id} id={card.id} image={card.image} title={card.title} description={card.description} type={card.type} />
         ))}
+        {isMorePage && <div className={styles.loadMore} ref={loadMoreRef}>
+          {Array(20).fill(0).map((_, index) => (
+            <Card key={index} isLoading={true}/>
+          ))}
+        </div>}
       </div>
     )
   }

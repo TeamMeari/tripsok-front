@@ -1,5 +1,6 @@
 import styles from "./Card.module.css";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 interface CardProps {
     id?: number;
@@ -21,6 +22,7 @@ const Card = ({
     type,
 }: CardProps) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const RankBadge = () => {
         if (rank) return <div className={styles.rankBadge}>{rank}</div>
         return null;
@@ -45,7 +47,7 @@ const Card = ({
         </div>
         <div className={styles.cardBody}>
             <h5 className={styles.cardTitle}>{title}</h5>
-            <p className={styles.cardDesc}>{description}</p>
+            <p className={styles.cardDesc}>{description === t("emptySummary") ? t("substituteSummary") : description}</p>
         </div>
     </div>
   )
