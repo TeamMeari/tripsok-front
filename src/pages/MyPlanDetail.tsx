@@ -15,6 +15,7 @@ import DateIcon from "/public/InfoIcon/date.svg";
 import FlagIcon from "/public/InfoIcon/flag.svg";
 import StartTimeIcon from "/public/InfoIcon/starttimeIcon.svg";
 import { CSS } from "@dnd-kit/utilities";
+import { useApi } from "../hooks/useApi";
 
 interface Place {
     id: number;
@@ -104,11 +105,8 @@ export default function MyPlanDetailPage() {
     const { t } = useTranslation();
     const location = useLocation();
     const navigate = useNavigate();
-    // const visitedPlaces: Place[] = [    //테스트 용입니다 실제 사용은 아래 주석 처리된 코드로 진행
-    //     { id: 1, title: "BTS 버스정류장", lat: 37.751, lng: 128.876 },
-    //     { id: 2, title: "강릉항", lat: 37.752, lng: 128.874 },
-    //     { id: 3, title: "주문진 해변", lat: 37.776, lng: 128.89 },
-    // ];
+    const { apiCall: fetchApi, isLoading } = useApi();
+
     const visitedPlaces: Place[] = location.state?.visitedPlaces || [];
     const [places, setPlaces] = useState<Place[]>(visitedPlaces);
 
@@ -121,6 +119,7 @@ export default function MyPlanDetailPage() {
     const [timeValue, setTimeValue] = useState("");
     const [personValue, setPersonValue] = useState("");
 
+    const isFormComplete = dateValue && fromValue && timeValue && personValue;
     const personOptions = [1, 2, 3, 4].map(num =>
         t("person", { num, count: num }) // count는 영어 복수 처리용
     );
@@ -175,12 +174,42 @@ export default function MyPlanDetailPage() {
 
     const sensors = useSensors(useSensor(PointerSensor));
 
+      const handleSavePlan = async () => {
+        const body = {
+            tripPlan: {
+                tripDate: dateValue,
+                startTime: timeValue,
+                numberOfPeople: personValue ? Number(personValue) : null,
+            },
+            visitSpotSet: places.map((p, index) => ({
+                placeId: p.id,
+                memo: "",
+                orderIndex: index + 1,
+            })),
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken") || ""}`,
+            },
+        };
+
+        try {
+            const res = await fetchApi(`/trip-plan?locale=KO`, "POST", body);
+            console.log("저장 성공:", res);
+            localStorage.removeItem("visitedPlaces");
+            setPlaces([]);
+            setShowExitModal(false);
+            navigate("/");
+        } catch (err) {
+            console.error("저장 실패:", err);
+        }
+        console.log("전송할 body:", body);
+    };
+
     return (
         <div style={{ height: "100vh", position: "relative" }}>
             <TransparentHeader
-            type="auth"
-            fixed
-            onBackClick={() => setShowExitModal(true)}
+                type="auth"
+                fixed
+                onBackClick={() => setShowExitModal(true)}
             />
 
             <ExitModal
@@ -189,10 +218,8 @@ export default function MyPlanDetailPage() {
                     setShowExitModal(false);
                     navigate(-1);
                 }}
-                onSave={() => {
-                    setShowExitModal(false);
-                    navigate("/");
-                }}
+
+                onSave={handleSavePlan}
             />
             <div style={{ height: "100%", width: "100%" }}>
                 <KakaoMap
@@ -303,23 +330,33 @@ export default function MyPlanDetailPage() {
 
             {/* 하단 고정 버튼 */}
             <div className={styles.fixedBottomArea}>
-                <Button variant="primary" size="large" borderRadius="12px"
-                        onClick={() =>
-                            navigate("/payment", {
-                                state: {
-                                        places,
-                                        date: dateValue,
-                                        from: fromValue,
-                                        time: timeValue,
-                                        person: personValue,
-                                        mapLocations: visitedPlaces.map(p => ({
-                                            lat: p.lat || 37.751,
-                                            lng: p.lng || 128.876,
-                                            title: p.title
-                                        }))
-                                    }
-                            })
-                        }>
+                <Button  variant={isFormComplete ? "primary" : "grayPrimary"}
+                         size="large"
+                         borderRadius="12px"
+                         disabled={!isFormComplete}
+
+                         onClick={() => {
+                             // 결제 페이지로 이동
+                             navigate("/payment", {
+                                 state: {
+                                     places,
+                                     date: dateValue,
+                                     from: fromValue,
+                                     time: timeValue,
+                                     person: personValue,
+                                     mapLocations: visitedPlaces.map(p => ({
+                                         lat: p.lat || 37.751,
+                                         lng: p.lng || 128.876,
+                                         title: p.title
+                                     })),
+                                     clearVisited: true
+                                 }
+                             });
+
+                             localStorage.removeItem("myPlan");
+                             localStorage.removeItem("visitedPlaces");
+                         }}
+                         >
                     {t("reserveButton")}
                 </Button>
             </div>

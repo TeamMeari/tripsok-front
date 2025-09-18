@@ -2,15 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Header from "../components/header/Header";
 import MenuApp from "../components/MenuApp";
-
-import DropdownInput from '../components/common/DropdownInput';
-import CardCarousel from "../components/feature/Carousel/CardCarousel";
 import Button from "../components/common/Button/CommonBtn";
-
-
-
 import styles from "./MyPlanPage.module.css";
 import { useTranslation } from "react-i18next";
+import { useApi } from "../hooks/useApi";
 
 interface Place {
     id: number;
@@ -18,29 +13,34 @@ interface Place {
 }
 
 export default function Page() {
-    const { t } = useTranslation();
-
-
+    const { t, i18n } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
+    const { apiCall, isLoading } = useApi();
 
     const [visitedPlaces, setVisitedPlaces] = useState<Place[]>(() => {
         const saved = localStorage.getItem('visitedPlaces');
         return saved ? JSON.parse(saved) : [];
     });
+    const [hasSavedPlan, setHasSavedPlan] = useState(false);
+    const [savedPlan, setSavedPlan] = useState<Place[]>([]);
+    // const [savedButtonText, setSavedButtonText] = useState(t('savedPlanContinue'));
 
-
-
-    // 버튼 상태 결정
     const isVisitedAdded = visitedPlaces.length > 0;
     const buttonVariant = isVisitedAdded ? 'grayDashed' : 'orangeOutline';
     const buttonText = isVisitedAdded ? t('addPlace') : t('myPlanStart');
 
-    useEffect(() => {
-        const addedPlace = location.state?.addedPlace;
-        console.log("location.state:", location.state);
-        console.log("addedPlace:", addedPlace);
 
+    const [savedButtonText, setSavedButtonText] = useState("저장한 계획 이어하기");
+
+
+    useEffect(() => {
+
+        if (location.state?.clearVisited) {
+            setVisitedPlaces([]);                   // 상태 초기화
+            localStorage.removeItem('visitedPlaces'); // 로컬 초기화
+        }
+        const addedPlace = location.state?.addedPlace;
         if (addedPlace) {
             setVisitedPlaces(prev => {
                 if (!prev.find(p => p.id === addedPlace.id)) {
@@ -51,10 +51,63 @@ export default function Page() {
                 return prev;
             });
         }
-    }, [location.state]);
 
-    const handleStartTravel = () => {
-        navigate('/list');
+        // 서버에 저장된 플랜이 있는지 확인
+        const checkSavedPlan = async () => {
+            try {
+                const res = await apiCall<{
+                    tripPlan: { tripDate: string | null; startTime: string | null; numberOfPeople: number | null };
+                    visitSpotSet: Array<{ id: number; name: string }>;
+                    updatedAt: string | null; }>("/trip-plan?locale=KO", "GET");
+                console.log("checkSavedPlan res:", res)
+                if (res.status === 200 && res.data?.visitSpotSet?.length) {
+                    const serverPlaces = res.data.visitSpotSet.map(p => ({ id: p.id, title: p.name }));
+                    setSavedPlan(serverPlaces);
+                    setHasSavedPlan(true);
+
+                    const updatedAt = res.data.updatedAt ? new Date(res.data.updatedAt) : null;
+                    let dateText = "";
+                    if (updatedAt) {
+                        const month = (updatedAt.getMonth() + 1).toString().padStart(2, "0");
+                        const day = updatedAt.getDate().toString().padStart(2, "0");
+                        dateText = `${month}.${day} `;
+                    }
+
+
+
+                    if (visitedPlaces.length > 0) {
+                        setSavedButtonText(`${dateText}${t('savedPlanAdd')}`);
+                    } else {
+                        setSavedButtonText(`${dateText}${t('savedPlanContinue')}`);
+                    }
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        };
+        checkSavedPlan();
+    }, [location.state]);
+    useEffect(() => {
+        setSavedButtonText(prev => {
+            if (!hasSavedPlan) return prev;
+            const dateText = savedPlan.length > 0 ? savedButtonText.split(' ')[0] + ' ' : '';
+            return visitedPlaces.length > 0
+                ? `${dateText}${t('savedPlanAdd')}`
+                : `${dateText}${t('savedPlanContinue')}`;
+        });
+    }, [i18n.language]);
+    const handleStartTravel = () => navigate('/list');
+
+    // 저장된 플랜 불러오기
+    const handleLoadSavedPlan = () => {
+        const combinedPlaces = hasSavedPlan
+            ? [
+                ...savedPlan,
+                ...visitedPlaces.filter(vp => !savedPlan.some(sp => sp.id === vp.id))
+            ]
+            : [...visitedPlaces];
+
+        navigate('/myplan-detail', { state: { visitedPlaces: combinedPlaces } });
     };
 
     return (
@@ -65,6 +118,9 @@ export default function Page() {
                 <div className={styles.MyPlanCreate}>
                     <div className={styles.MyPlan}>
                         <div className={styles.MyPlanTitle}>{t('myPlanTitle')}</div>
+
+
+
                         <div className={styles.MyPlanDetail}>
                             {visitedPlaces.length > 0 && (
                                 <div className={styles.VisitedPlaces}>
@@ -90,7 +146,7 @@ export default function Page() {
                                                         e.stopPropagation();
                                                         setVisitedPlaces(prev => {
                                                             const newList = prev.filter(p => p.id !== place.id);
-                                                            localStorage.setItem('visitedPlaces', JSON.stringify(newList)); // 삭제 후 로컬스토리지에도 반영
+                                                            localStorage.setItem('visitedPlaces', JSON.stringify(newList));
                                                             return newList;
                                                         });
                                                     }}
@@ -113,19 +169,18 @@ export default function Page() {
                                     <img
                                         src="/InfoIcon/plusColorIcon.svg"
                                         alt="plus"
-                                        style={{width: 18, height: 18}}
+                                        style={{ width: 18, height: 18 }}
                                     />
                                     {buttonText}
                                 </span>
                             </Button>
-
 
                             <Button
                                 variant={visitedPlaces.length > 0 ? "primary" : "grayPrimary"}
                                 size="large"
                                 borderRadius="12px"
                                 onClick={() => {
-                                    if (visitedPlaces.length === 0) return; // 여행지 없으면 실행 안 함
+                                    if (visitedPlaces.length === 0) return;
                                     navigate('/myplan-detail', { state: { visitedPlaces } });
                                 }}
                                 disabled={visitedPlaces.length === 0}
@@ -133,25 +188,29 @@ export default function Page() {
                                 {t('viewPlan')}
                             </Button>
 
+                            {/* 저장된 플랜 버튼 */}
+                            {hasSavedPlan && (
+                                <Button
+                                    variant="orangeOutline"
+                                    size="large"
+                                    borderRadius="12px"
+                                    onClick={handleLoadSavedPlan}
+                                    style={{ marginBottom: 12 }}
+                                >
+                                    <img src="/InfoIcon/orangeArrow.svg" alt="arrow"
+                                         style={{width: 15, height: 13, marginRight: 12}}/>
+                                    {savedButtonText}
 
+
+                                </Button>
+                            )}
                         </div>
                     </div>
                 </div>
 
                 <div className={styles.MyPlanLikeContent}>
                     <div className={styles.LikeTitle}>{t('likedSpots')}</div>
-                    <div className={styles.LikeList}>
-                        {/*<CardCarousel*/}
-                        {/*    cards={[*/}
-                        {/*        { id: 1, title: '카드 제목 1', description: '카드 설명입니다. 첫 번째 카드입니다.', image: 'https://picsum.photos/200/300' },*/}
-                        {/*        { id: 2, title: '카드 제목 2', description: '카드 설명입니다. 두 번째 카드입니다.', image: 'https://picsum.photos/200/300' },*/}
-                        {/*        { id: 3, title: '카드 제목 3', description: '카드 설명입니다. 세 번째 카드입니다.', image: 'https://picsum.photos/200/300' },*/}
-                        {/*        { id: 4, title: '카드 제목 4', description: '카드 설명입니다. 네 번째 카드입니다.', image: 'https://picsum.photos/200/400' },*/}
-                        {/*        { id: 5, title: '카드 제목 5', description: '카드 설명입니다. 다섯 번째 카드입니다.', image: 'https://picsum.photos/200/350' },*/}
-                        {/*        { id: 6, title: '카드 제목 6', description: '카드 설명입니다. 여섯 번째 카드입니다.', image: 'https://picsum.photos/200/250' },*/}
-                        {/*    ]}*/}
-                        {/*/>*/}
-                    </div>
+                    <div className={styles.LikeList}></div>
                 </div>
 
                 <MenuApp defaultIndex={1} />
