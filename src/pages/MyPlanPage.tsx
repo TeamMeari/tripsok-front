@@ -24,7 +24,11 @@ export default function Page() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const [visitedPlaces, setVisitedPlaces] = useState<Place[]>([]);
+    const [visitedPlaces, setVisitedPlaces] = useState<Place[]>(() => {
+        const saved = localStorage.getItem('visitedPlaces');
+        return saved ? JSON.parse(saved) : [];
+    });
+
 
 
     // 버튼 상태 결정
@@ -36,16 +40,13 @@ export default function Page() {
         const addedPlace = location.state?.addedPlace;
         console.log("location.state:", location.state);
         console.log("addedPlace:", addedPlace);
-        const testPlaces: Place[] = [
-            { id: 1, title: 'BTS 버스정류장' },
-            { id: 2, title: '강릉항' },
-            { id: 3, title: '주문진 해변' }
-        ];
-        setVisitedPlaces(testPlaces);
+
         if (addedPlace) {
             setVisitedPlaces(prev => {
                 if (!prev.find(p => p.id === addedPlace.id)) {
-                    return [...prev, addedPlace];
+                    const newList = [...prev, addedPlace];
+                    localStorage.setItem('visitedPlaces', JSON.stringify(newList));
+                    return newList;
                 }
                 return prev;
             });
@@ -87,7 +88,11 @@ export default function Page() {
                                                     style={{ cursor: 'pointer', fontWeight: 'bold' }}
                                                     onClick={(e) => {
                                                         e.stopPropagation();
-                                                        setVisitedPlaces(prev => prev.filter(p => p.id !== place.id));
+                                                        setVisitedPlaces(prev => {
+                                                            const newList = prev.filter(p => p.id !== place.id);
+                                                            localStorage.setItem('visitedPlaces', JSON.stringify(newList)); // 삭제 후 로컬스토리지에도 반영
+                                                            return newList;
+                                                        });
                                                     }}
                                                 >
                                                     ✕
@@ -116,10 +121,13 @@ export default function Page() {
 
 
                             <Button
-                                variant={visitedPlaces.length > 0 ? "primary" : "grayDashed"}
+                                variant={visitedPlaces.length > 0 ? "primary" : "grayPrimary"}
                                 size="large"
                                 borderRadius="12px"
-                                onClick={() => navigate('/myplan-detail', { state: { visitedPlaces } })}
+                                onClick={() => {
+                                    if (visitedPlaces.length === 0) return; // 여행지 없으면 실행 안 함
+                                    navigate('/myplan-detail', { state: { visitedPlaces } });
+                                }}
                                 disabled={visitedPlaces.length === 0}
                             >
                                 {t('viewPlan')}

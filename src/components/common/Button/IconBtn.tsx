@@ -3,6 +3,7 @@ import { ArrowLeft, Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import styles from "./IconBtn.module.css";
 import GlobeIcon from "../../Icons/globeIcon";
+import { useNavigate } from "react-router-dom";
 
 type IconType = "search" | "arrow" | "globeIcon";
 type ColorType = "white" | "gray";
@@ -17,6 +18,7 @@ const IconButton: React.FC<IconButtonProps> = ({ type, color = "white", onClick 
     const { i18n } = useTranslation();
     const [showMenu, setShowMenu] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate();
 
     // 글로브 클릭 시 언어 토글
     const handleGlobeClick = () => {
@@ -46,6 +48,7 @@ const IconButton: React.FC<IconButtonProps> = ({ type, color = "white", onClick 
     const handleClick = () => {
         if (type === "globeIcon") handleGlobeClick();
         if (onClick) onClick();
+        if (type === "arrow") navigate(-1);
     };
 
     return (

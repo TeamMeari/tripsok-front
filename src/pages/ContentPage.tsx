@@ -9,6 +9,8 @@ import Button from '../components/common/Button/CommonBtn';
 import LikeButton from '../components/common/Button/LikeBtn';
 import KakaoMap from "../components/KakaoMap";
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+
 
 interface Tag {
     id: number;
@@ -38,17 +40,23 @@ const ContentPage = () => {
     const location = useLocation();
     const { t, i18n } = useTranslation(); // i18n.language 사용
 
+
+
     const [place, setPlace] = useState<PlaceResponse | null>(null);
     const [loading, setLoading] = useState(true);
+    const { type, id } = useParams<{ type: string; id: string }>();
+
+
+    console.log("URL 파라미터 type:", type);
+    console.log("URL 파라미터 id:", id);
 
     useEffect(() => {
         const fetchPlace = async () => {
             try {
-                const category = "accommodation"; // 예시 카테고리
-                const id = 2245; // 예시 ID
+
                 const locale = i18n.language || "ko"; // 현재 언어
                 const res = await fetch(
-                    `https://trip-sok.jayden-bin.cc/api/v1/places/${category}/${id}?locale=${locale}`
+                    `https://trip-sok.jayden-bin.cc/api/v1/places/${type}/${id}?locale=${locale}`
                 );
                 if (!res.ok) throw new Error("데이터 불러오기 실패");
 
