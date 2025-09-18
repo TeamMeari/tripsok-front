@@ -5,6 +5,7 @@ import styles from "./PaymentPage.module.css";
 import "./paymentPage_toss.css"
 import TransparentHeader from "../components/header/TransparentHeader";
 import Button from "../components/common/Button/CommonBtn";
+import { useLocation } from "react-router-dom";
 
 const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm"; // 테스트용 클라이언트 키
 const customerKey = "customer_1234"; // 유저를 구분할 수 있는 고유값
@@ -15,7 +16,9 @@ const PaymentPage: React.FC = () => {
     const [paymentWidget, setPaymentWidget] = useState<PaymentWidgetInstance | null>(null);
     const [isSameAccount, setIsSameAccount] = useState(false);
     const [agreementsChecked, setAgreementsChecked] = useState(false);
-
+    const location = useLocation();
+    const state = location.state as any;
+    console.log("넘겨받은 state:", state);
     const isFormValid =
         passengerName.trim() !== "" &&
         email.trim() !== "" &&
