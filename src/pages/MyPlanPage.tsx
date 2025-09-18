@@ -133,16 +133,16 @@ export default function Page() {
                 <div className={styles.MyPlanLikeContent}>
                     <div className={styles.LikeTitle}>{t('likedSpots')}</div>
                     <div className={styles.LikeList}>
-                        <CardCarousel
-                            cards={[
-                                { id: 1, title: '카드 제목 1', description: '카드 설명입니다. 첫 번째 카드입니다.', image: 'https://picsum.photos/200/300' },
-                                { id: 2, title: '카드 제목 2', description: '카드 설명입니다. 두 번째 카드입니다.', image: 'https://picsum.photos/200/300' },
-                                { id: 3, title: '카드 제목 3', description: '카드 설명입니다. 세 번째 카드입니다.', image: 'https://picsum.photos/200/300' },
-                                { id: 4, title: '카드 제목 4', description: '카드 설명입니다. 네 번째 카드입니다.', image: 'https://picsum.photos/200/400' },
-                                { id: 5, title: '카드 제목 5', description: '카드 설명입니다. 다섯 번째 카드입니다.', image: 'https://picsum.photos/200/350' },
-                                { id: 6, title: '카드 제목 6', description: '카드 설명입니다. 여섯 번째 카드입니다.', image: 'https://picsum.photos/200/250' },
-                            ]}
-                        />
+                        {/*<CardCarousel*/}
+                        {/*    cards={[*/}
+                        {/*        { id: 1, title: '카드 제목 1', description: '카드 설명입니다. 첫 번째 카드입니다.', image: 'https://picsum.photos/200/300' },*/}
+                        {/*        { id: 2, title: '카드 제목 2', description: '카드 설명입니다. 두 번째 카드입니다.', image: 'https://picsum.photos/200/300' },*/}
+                        {/*        { id: 3, title: '카드 제목 3', description: '카드 설명입니다. 세 번째 카드입니다.', image: 'https://picsum.photos/200/300' },*/}
+                        {/*        { id: 4, title: '카드 제목 4', description: '카드 설명입니다. 네 번째 카드입니다.', image: 'https://picsum.photos/200/400' },*/}
+                        {/*        { id: 5, title: '카드 제목 5', description: '카드 설명입니다. 다섯 번째 카드입니다.', image: 'https://picsum.photos/200/350' },*/}
+                        {/*        { id: 6, title: '카드 제목 6', description: '카드 설명입니다. 여섯 번째 카드입니다.', image: 'https://picsum.photos/200/250' },*/}
+                        {/*    ]}*/}
+                        {/*/>*/}
                     </div>
                 </div>
 
