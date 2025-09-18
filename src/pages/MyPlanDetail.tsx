@@ -86,12 +86,12 @@ function SortableItem({ place, index }: { place: Place; index: number }) {
 export default function MyPlanDetailPage() {
     const { t } = useTranslation();
     const location = useLocation();
-    const visitedPlaces: Place[] = [    //테스트 용입니다 실제 사용은 아래 주석 처리된 코드로 진행
-        { id: 1, title: "BTS 버스정류장", lat: 37.751, lng: 128.876 },
-        { id: 2, title: "강릉항", lat: 37.752, lng: 128.874 },
-        { id: 3, title: "주문진 해변", lat: 37.776, lng: 128.89 },
-    ];
-    // const visitedPlaces: Place[] = location.state?.visitedPlaces || [];
+    // const visitedPlaces: Place[] = [    //테스트 용입니다 실제 사용은 아래 주석 처리된 코드로 진행
+    //     { id: 1, title: "BTS 버스정류장", lat: 37.751, lng: 128.876 },
+    //     { id: 2, title: "강릉항", lat: 37.752, lng: 128.874 },
+    //     { id: 3, title: "주문진 해변", lat: 37.776, lng: 128.89 },
+    // ];
+    const visitedPlaces: Place[] = location.state?.visitedPlaces || [];
     const [places, setPlaces] = useState<Place[]>(visitedPlaces);
 
 
