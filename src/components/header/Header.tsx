@@ -6,6 +6,7 @@ import Button from "../common/Button/CommonBtn";
 import IconButton from "../common/Button/IconBtn";
 import { ArrowLeftIcon } from "lucide-react";
 import useAuthStore from "../../stores/authStore";
+import { useApi } from "../../hooks/useApi";
 
 interface HeaderProps {
     isLogo?: boolean;
@@ -16,6 +17,7 @@ const Header: React.FC<HeaderProps> = ({ useBackground = false, isLogo = true })
     const { t } = useTranslation(); // i18next 훅
 
     const navigate = useNavigate();
+    const { apiCall: logoutApiCall } = useApi();
     const { isLoggedIn, logout, nickname } = useAuthStore();
     const [showLogoutMenu, setShowLogoutMenu] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
@@ -34,7 +36,9 @@ const Header: React.FC<HeaderProps> = ({ useBackground = false, isLogo = true })
     };
 
     const handleLogout = () => {
-        logout();
+        logoutApiCall('/auth/logout', 'POST').then(() => {
+            logout();
+        });
         setShowLogoutMenu(false);
     };
 

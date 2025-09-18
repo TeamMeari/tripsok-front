@@ -8,6 +8,7 @@ import { validateEmail } from "../../utils/validation";
 import { useNavigate } from "react-router-dom";
 import styles from "./SignupPage.module.css";
 import { useSignupStore } from "../../stores/signupStores";
+import { Link } from "react-router-dom";
 
 const EmailPage = () => {
     const { t } = useTranslation();
@@ -53,9 +54,9 @@ const EmailPage = () => {
                             <div className={styles.errorContainer}>
                                 <p className={styles.error}>{t(emailError)}</p>
                                 {emailError === EXISTING_EMAIL && (
-                                    <a href="/login" className={styles.link}>
+                                    <Link to="/login" className={styles.link}>
                                         {t("login")}
-                                    </a>
+                                    </Link>
                                 )}
                             </div>
                         )}

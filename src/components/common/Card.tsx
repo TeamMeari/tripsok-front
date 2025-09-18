@@ -13,7 +13,7 @@ interface CardProps {
 
 const Card = ({
     id,
-    image = "https://via.placeholder.com/150",
+    image = "src/assets/images/card/card.png",
     title,
     description,
     isLoading = false,

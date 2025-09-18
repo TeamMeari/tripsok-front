@@ -13,10 +13,12 @@ import CardType from '../types/Card';
 import { MainCarouselItem } from '../components/feature/Carousel/MainCarousel';
 import { PlacesResponse, Place } from '../types/apiResponse';
 import { convertTypeToLowerCase } from '../utils/converter';
+import { Link } from 'react-router-dom';
+import MenuApp from '../components/MenuApp';
 
 const MainPage = () => {
   const { t, i18n } = useTranslation();
-  const [activeTab, setActiveTab] = useState(0);
+  // const [activeTab, setActiveTab] = useState(0);
   const dailyKeywords = getDailyKeywords();
   const [mainCarouselItems, setMainCarouselItems] = useState<MainCarouselItem[]>([]);
   const [top5CardCarouselItems, setTop5CardCarouselItems] = useState<CardType[]>([]);
@@ -27,9 +29,9 @@ const MainPage = () => {
   const { apiCall: FirstCardCarouselApiCall, isLoading: FirstCardCarouselIsLoading } = useApi();
   const { apiCall: SecondCardCarouselApiCall, isLoading: SecondCardCarouselIsLoading } = useApi();
 
-  const handleTabClick = (tab: number) => {
-    setActiveTab(tab);
-  }
+  // const handleTabClick = (tab: number) => {
+  //   setActiveTab(tab);
+  // }
 
   const fetchMainCarouselPlaces = () => {
     // keyword 하나 사용
@@ -111,16 +113,16 @@ const MainPage = () => {
   // 수정 필요
   const bannerCarouselItems = [
     {
-      url: "/",
-      image: "https://cdn.pixabay.com/photo/2025/06/13/14/48/bird-9658215_1280.jpg",
+      url: "https://www.instagram.com/gn.coffeefestival/",
+      image: "bannerImage/banner1.png",
     },
     {
-      url: "/",
-      image: "https://cdn.pixabay.com/photo/2022/11/17/09/49/fog-7597710_1280.jpg",
+      url: "https://www.instagram.com/gangneung_noodle/",
+      image: "bannerImage/banner2.png",
     },
     {
-      url: "/",
-      image: "https://cdn.pixabay.com/photo/2020/11/04/18/59/leaves-5713290_1280.jpg",
+      url: "https://www.instagram.com/culture_tour_/",
+      image: "bannerImage/banner3.png",
     }
   ]
 
@@ -138,7 +140,7 @@ const MainPage = () => {
       isLoading={MainCarouselIsLoading}
     />
     <div className={styles.space}></div>
-    <MenuTab tabs={menuTabs} activeTab={activeTab} isIcon={true} tabOnClick={handleTabClick} />
+    {/* <MenuTab tabs={menuTabs} activeTab={activeTab} isIcon={true} tabOnClick={handleTabClick} /> */}
     <div className={styles.section1}>
       <div className={styles.cardList}>
         <TitleLink i18nKey="mainTopSpots" link="/list" />
@@ -149,7 +151,7 @@ const MainPage = () => {
         <CardCarousel cards={firstCardCarouselItems} isLoading={FirstCardCarouselIsLoading} />
       </div>
       <div className={styles.listLinkContainer}>
-        <a href="/list">{t("mainMoreSpots")}</a>
+        <Link to="/list">{t("mainMoreSpots")}</Link>
       </div>
     </div>
     <div className={styles.section2}>
@@ -160,13 +162,16 @@ const MainPage = () => {
       </div>
     </div>
     <Footer />
+    <div>
+        <MenuApp/>
+    </div>
   </div>;
 };
 
 const TitleLink = ({ i18nKey, values, link }: { i18nKey: string, values?: any, link: string }) => {
-  return <a href={link} className={styles.titleLink}>
+  return <Link to={link} className={styles.titleLink}>
     {<Trans i18nKey={i18nKey} values={values} />} <span>&gt;</span>
-  </a>
+  </Link>
 }
 
 export default MainPage;
