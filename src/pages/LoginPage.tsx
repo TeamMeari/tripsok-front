@@ -5,7 +5,7 @@ import PasswordInput from "../components/feature/Input/PasswordInput";
 import ValidationBtn from "../components/common/Button/ValidationBtn";
 import { useTranslation, Trans } from "react-i18next";
 import { useApi } from "../hooks/useApi";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuthStore from "../stores/authStore";
 import { LoginResponse } from "../types/apiResponse";
 import OAuthLoginUrl from "../utils/OAuthLoginUrl";
@@ -89,9 +89,10 @@ const LoginPage = () => {
             </div>
 
             <div className={styles.linkContainer}>
-                <a href="#" className={styles.link}>{t("resetPassword")}</a>
-                <div className={styles.divider} />
-                <a href="/signup/email/1" className={styles.link}>{t("signup")}</a>
+                {/* <Link to="/password/reset" className={styles.link}>{t("resetPassword")}</Link>
+                <div className={styles.divider} /> */}
+                <p className={styles.link} style={{ fontSize: "14px", margin: "0" }}>{t("ifNoAccount")} </p>
+                <Link to="/signup/email/1" className={styles.link}>{t("signup")}</Link>
             </div>
 
             <div className={styles.orContainer}>

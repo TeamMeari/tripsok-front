@@ -13,6 +13,7 @@ import CardType from '../types/Card';
 import { MainCarouselItem } from '../components/feature/Carousel/MainCarousel';
 import { PlacesResponse, Place } from '../types/apiResponse';
 import { convertTypeToLowerCase } from '../utils/converter';
+import { Link } from 'react-router-dom';
 
 const MainPage = () => {
   const { t, i18n } = useTranslation();
@@ -149,7 +150,7 @@ const MainPage = () => {
         <CardCarousel cards={firstCardCarouselItems} isLoading={FirstCardCarouselIsLoading} />
       </div>
       <div className={styles.listLinkContainer}>
-        <a href="/list">{t("mainMoreSpots")}</a>
+        <Link to="/list">{t("mainMoreSpots")}</Link>
       </div>
     </div>
     <div className={styles.section2}>
@@ -164,9 +165,9 @@ const MainPage = () => {
 };
 
 const TitleLink = ({ i18nKey, values, link }: { i18nKey: string, values?: any, link: string }) => {
-  return <a href={link} className={styles.titleLink}>
+  return <Link to={link} className={styles.titleLink}>
     {<Trans i18nKey={i18nKey} values={values} />} <span>&gt;</span>
-  </a>
+  </Link>
 }
 
 export default MainPage;
