@@ -176,7 +176,7 @@ const MainCarousel = ({ items, texts = [], isLoading = false }: MainCarouselProp
             extendedItems.map((item, idx) => (
               <div className={styles.carouselItem} key={idx} onClick={(e) => handleCarouselItemClick(e, item.type, item.id)} onTouchStart={(e) => handleCarouselItemTouchStart(e)} onTouchEnd={(e) => handleCarouselItemTouchEnd(e, item.type, item.id)}>
                 <img
-                  src={item.image}
+                  src={item.image || "src/assets/images/card/card.png"}
                   alt=""
                 />
               </div>

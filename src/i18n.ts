@@ -13,6 +13,7 @@ const resources = {
             loginSlogan: "투앙으로 더 편하게<br /> 강릉을 여행해요",
             passwordRule: "영문, 숫자, 특수문자 포함 8-20자",
             resetPassword: "비밀번호 재설정",
+            ifNoAccount: "계정이 없다면?",
             signup: "회원가입",
             emailVerification: "이메일 인증",
             emailAddress: "이메일 주소",
@@ -117,7 +118,10 @@ const resources = {
             history: "역사",
             nature: "자연",
             leisure: "레저",
-            sports: "스포츠"
+            sports: "스포츠",
+            // Summary 비어있음 오류 메세지
+            emptySummary: "응답을 불러올 수 없습니다.",
+            substituteSummary: "사진을 눌러 상세 정보를 확인해보세요."
         },
     },
     en: {
@@ -129,6 +133,7 @@ const resources = {
             loginSlogan: "Travel Gangneung more easily<br />with 'touang'",
             passwordRule: "8-20 characters including letters, numbers, and symbols",
             resetPassword: "Reset Password",
+            ifNoAccount: "No account?",
             signup: "Sign Up",
             emailVerification: "Email Verification",
             emailAddress: "Email Address",
@@ -234,7 +239,10 @@ const resources = {
             history: "history",
             nature: "nature",
             leisure: "leisure",
-            sports: "sports"
+            sports: "sports",
+            // Summary 비어있음 오류 메세지
+            emptySummary: "Unable to retrieve response.",
+            substituteSummary: "Click the photo to check the detailed information."
         },
     },
     ja: {
@@ -246,6 +254,7 @@ const resources = {
             loginSlogan: "'touang'でもっと便利に<br />江陵を旅行しましょう",
             passwordRule: "英字、数字、記号を含む8〜20文字",
             resetPassword: "パスワード再設定",
+            ifNoAccount: "アカウントがない場合は",
             signup: "会員登録",
             emailVerification: "メール認証",
             emailAddress: "メールアドレス",
@@ -350,7 +359,10 @@ const resources = {
             history: "歴史",
             nature: "自然",
             leisure: "レジャー",
-            sports: "スポーツ"
+            sports: "スポーツ",
+            // Summary 비어있음 오류 메세지
+            emptySummary: "応答を呼び出せません。",
+            substituteSummary: "写真をクリックして詳細情報を確認してください。"
         },
     },
     cn: {
@@ -362,6 +374,7 @@ const resources = {
             loginSlogan: "用 'touang' 更轻松地<br />游江陵",
             passwordRule: "8-20位，必须包含字母、数字和符号",
             resetPassword: "重置密码",
+            ifNoAccount: "没有账号？",
             signup: "注册",
             emailVerification: "邮箱验证",
             emailAddress: "邮箱地址",
@@ -466,7 +479,10 @@ const resources = {
             history: "历史",
             nature: "自然",
             leisure: "休闲",
-            sports: "运动"
+            sports: "运动",
+            // Summary 비어있음 오류 메세지
+            emptySummary: "無法檢索回應。",
+            substituteSummary: "请点击照片查看详细信息。"
         },
     },
 };

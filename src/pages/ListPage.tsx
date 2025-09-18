@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import MenuApp from "../components/MenuApp";
 import SearchInput from '../components/feature/SearchInput';
 import menuTabs from '../types/menuTabs';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useLocation } from 'react-router-dom';
 import { useApi } from '../hooks/useApi';
 import HashtagBtnSkeleton from '../components/common/HashtagBtnSkeleton';
 import useScrollHorizon from '../hooks/useScrollHorizon';
@@ -22,7 +22,10 @@ const ListPage = () => {
   const { t, i18n } = useTranslation();
   const { apiCall: tagApiCall, isLoading: tagIsLoading } = useApi();
   const { apiCall: placeApiCall, isLoading: placeIsLoading } = useApi();
-  const [activeTab, setActiveTab] = useState<number>(0);
+  const location = useLocation();
+  const state = location.state;
+  const initialTab = state?.tab;
+  const [activeTab, setActiveTab] = useState<number>(initialTab ? menuTabs.findIndex(tab => tab.key === initialTab) : 0);
   const [tags, setTags] = useState<Tag[]>([]);
   const [selectedTag, setSelectedTag] = useState<number | null>(null);
   const [selectedOption, setSelectedOption] = useState<number>(1);
@@ -203,9 +206,11 @@ const ListPage = () => {
 
   // wheel로 넘길수 있도록 설정
   useEffect(() => {
+    if (placeIsLoading) return;
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && !placeIsLoading) {
+          console.log(placeIsLoading)
           fetchPlaces[activeTab]();
         }
       },
@@ -231,6 +236,31 @@ const ListPage = () => {
       el.removeEventListener("wheel", handleWheel);
     };
   }, [activeTab, placeIsLoading, selectedTag, selectedOption, searchWord, page]);
+
+  const List = () => {
+    const list = [tourPlaces, restaurantPlaces, accommodationPlaces];
+
+    if (!placeIsLoading && list[activeTab].length === 0 && !isMorePage) {
+      return (
+        <div className={styles.list}>
+          <EmptyList />
+        </div>
+      )
+    }
+
+    return (
+      <div className={styles.list}>
+        {list[activeTab].map((card) => (
+          <Card key={card.id} id={card.id} image={card.image} title={card.title} description={card.description} type={card.type} />
+        ))}
+        {isMorePage && <div className={styles.loadMore} ref={loadMoreRef}>
+          {Array(20).fill(0).map((_, index) => (
+            <Card key={index} isLoading={true}/>
+          ))}
+        </div>}
+      </div>
+    )
+  }
 
   return (
     <div className={styles.listPage}>
@@ -264,34 +294,7 @@ const ListPage = () => {
           </div>
           <Dropdown current={selectedOption} options={options} onClickOption={handleOptionClick} />
         </div>
-        <div className={styles.list}>
-          {
-            activeTab === 0 && (!placeIsLoading && tourPlaces.length === 0 ? 
-            <EmptyList /> :
-            tourPlaces.map((card) => (
-              <Card key={card.id} id={card.id} image={card.image} title={card.title} description={card.description} type={card.type} />
-            )))
-          }
-          {
-            activeTab === 1 && (!placeIsLoading && restaurantPlaces.length === 0 ? 
-            <EmptyList /> :
-            restaurantPlaces.map((card) => (
-              <Card key={card.id} id={card.id} image={card.image} title={card.title} description={card.description} type={card.type}/>
-            )))
-          }
-          {
-            activeTab === 2 && (!placeIsLoading && accommodationPlaces.length === 0 ? 
-            <EmptyList /> :
-            accommodationPlaces.map((card) => (
-              <Card key={card.id} id={card.id} image={card.image} title={card.title} description={card.description} type={card.type} />
-            )))
-          }
-        </div>
-        {isMorePage && <div className={styles.loadMore} ref={loadMoreRef}>
-          {Array(20).fill(0).map((_, index) => (
-            <Card key={index} isLoading={true}/>
-          ))}
-        </div>}
+        <List />
       </div>
       <div>
         <MenuApp/>

@@ -77,7 +77,7 @@ const BannerCarousel = ({ banners, isLoading = false }: BannerCarouselProps) => 
                         ))
                     ) : (
                         banners.map((banner, key) => 
-                            <div key={key} className={styles.carouselItem}>
+                            <div key={key} className={styles.carouselItem} onClick={() => window.open(banner.url, "_blank")}>
                                 {banner && <img src={banner.image} alt="banner" />}
                             </div>
                         )

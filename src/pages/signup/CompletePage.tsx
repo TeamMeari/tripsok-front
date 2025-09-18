@@ -6,7 +6,7 @@ import HashtagBtnSkeleton from "../../components/common/HashtagBtnSkeleton";
 import { useApi } from "../../hooks/useApi";
 import { Tag } from "../../types/Tag";
 import styles from "./SignupPage.module.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuthStore from "../../stores/authStore";
 
 const SignupCompletePage = () => {
@@ -123,11 +123,11 @@ const SignupCompletePage = () => {
           )}
         </div>
         <div className={styles.buttonFixedTab}>
-          <a href="/">
+          <Link to="/">
             <Button borderRadius="12px" size="large">
               {t("home")}
             </Button>
-          </a>
+          </Link>
         </div>
       </div>
     </div>
