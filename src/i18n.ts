@@ -136,6 +136,10 @@ const resources = {
             receiptEmailInfo: "영수증을 받아볼 올바른 주소를 입력해주세요.",
             sameAsAccount: "계정 주인과 동일",
             payButton: "결제하기",
+            departure: "출발",
+            price: "30,000원",
+            paymentSuccess: "결제가 완료되었습니다",
+            receiptSent: "결제된 영수증은 이메일로 보냈어요.",
         },
     },
     en: {
@@ -271,6 +275,10 @@ const resources = {
             receiptEmailInfo: "Enter a valid address to receive the receipt.",
             sameAsAccount: "Same as account owner",
             payButton: "Pay",
+            departure: "Departure",
+            price: "$30.00",
+            paymentSuccess: "Payment has been completed",
+            receiptSent: "The receipt has been sent to your email.",
         },
     },
     ja: {
@@ -405,6 +413,10 @@ const resources = {
             receiptEmailInfo: "領収書を受け取る正しいアドレスを入力してください。",
             sameAsAccount: "アカウント所有者と同じ",
             payButton: "支払う",
+            departure: "出发",
+            price: "¥30,000",
+            paymentSuccess: "支付已完成",
+            receiptSent: "收据已发送到您的电子邮箱。",
         },
     },
     cn: {
@@ -539,6 +551,11 @@ const resources = {
             receiptEmailInfo: "请输入接收收据的正确地址。",
             sameAsAccount: "与账户持有人相同",
             payButton: "付款",
+            departure: "出发",
+            price: "¥30,000",
+            paymentSuccess: "お支払いが完了しました",
+            receiptSent: "領収書をメールに送信しました。",
+
         },
     },
 };
