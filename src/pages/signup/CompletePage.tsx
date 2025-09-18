@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo, memo } from "react";
 import { useTranslation, Trans } from "react-i18next";
 import Button from "../../components/common/Button/CommonBtn";
 import HashtagButton from "../../components/common/HashtagBtn";
@@ -24,6 +24,7 @@ const SignupCompletePage = () => {
   const { apiCall: fetchApiCall, isLoading: fetchIsLoading } = useApi();
   const { apiCall: patchApiCall } = useApi();
   const [hashtags, setHashtags] = useState<Tag[]>([]);
+  const [selectedIds, setSelectedIds] = useState<Set<number>>(() => new Set());
   const { isLoggedIn, nickname } = useAuthStore();
 
   const fetchHashtags = () => {
@@ -34,11 +35,45 @@ const SignupCompletePage = () => {
     });
   };
 
-  const patchHashtags = () => {
+  const patchHashtags = useCallback(() => {
+    if (selectedIds.size === 0) return;
     patchApiCall("/user/interest-themes", "PATCH", {
-      interestThemeIds: hashtags.map((hashtag) => hashtag.id)
-    })
-  }
+      interestThemeIds: Array.from(selectedIds),
+    });
+  }, [patchApiCall, selectedIds]);
+
+  const handleHashtagClick = useCallback((hashtagId: number) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(hashtagId)) next.delete(hashtagId);
+      else next.add(hashtagId);
+      return next;
+    });
+  }, []);
+
+  // 해시태그 클릭 핸들러 메모이제이션(해당 항목만 리렌더링)
+  const clickHandlersById = useMemo(() => {
+    const handlers: Record<number, () => void> = {};
+    hashtags.forEach((h) => {
+      handlers[h.id] = () => handleHashtagClick(h.id);
+    });
+    return handlers;
+  }, [hashtags, handleHashtagClick]);
+
+  const HashtagItem = memo((props: {
+    id: number;
+    label: string;
+    isSelected: boolean;
+    onClick: () => void;
+  }) => {
+    return (
+      <HashtagButton
+        label={props.label}
+        isSelected={props.isSelected}
+        onClick={props.onClick}
+      />
+    );
+  });
 
   useEffect(() => {
     // redirect
@@ -52,10 +87,9 @@ const SignupCompletePage = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       patchHashtags();
-    }, 1000);
-
+    }, 800);
     return () => clearTimeout(timer);
-  }, [hashtags.length]);
+  }, [patchHashtags]);
 
   return (
     <div className={styles.page}>
@@ -77,7 +111,13 @@ const SignupCompletePage = () => {
           ) : (
             <div className={styles.hashtagsContainer}>
               {hashtags.map((hashtag) => (
-                <HashtagButton key={hashtag.id} label={hashtag.type} />
+                <HashtagItem
+                  key={hashtag.id}
+                  id={hashtag.id}
+                  label={hashtag.type}
+                  isSelected={selectedIds.has(hashtag.id)}
+                  onClick={clickHandlersById[hashtag.id]}
+                />
               ))}
             </div>
           )}
