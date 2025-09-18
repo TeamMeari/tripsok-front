@@ -43,13 +43,18 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
                     // mapTypeId: kakao.maps.MapTypeId.SKYVIEW,
                 });
 
+                const bounds = new kakao.maps.LatLngBounds();
+
                 locations.forEach((loc) => {
-                    new kakao.maps.Marker({
+                    const marker = new kakao.maps.Marker({
                         position: new kakao.maps.LatLng(loc.lat, loc.lng),
                         map,
                         title: loc.title,
                     });
+                    bounds.extend(marker.getPosition());
                 });
+
+                map.setBounds(bounds);
             });
         };
 
