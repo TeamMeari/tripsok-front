@@ -5,6 +5,7 @@ import Button from "../common/Button/CommonBtn";
 import { useTranslation } from "react-i18next";
 import useAuthStore from "../../stores/authStore";
 import { useNavigate } from "react-router-dom";
+import { useApi } from "../../hooks/useApi";
 
 interface TransparentHeaderProps {
     type?: "default" | "auth"; // 기본 투명 헤더(default) / 로그인 포함(auth)
@@ -16,6 +17,7 @@ const TransparentHeader: React.FC<TransparentHeaderProps> = ({ type = "default",
     const navigate = useNavigate();
     const { isLoggedIn, logout, nickname } = useAuthStore();
     const [showLogoutMenu, setShowLogoutMenu] = useState(false);
+    const { apiCall: logoutApiCall } = useApi();
     const menuRef = useRef<HTMLDivElement>(null);
 
     const handleArrowClick = () => {
@@ -33,6 +35,7 @@ const TransparentHeader: React.FC<TransparentHeaderProps> = ({ type = "default",
 
     const handleLogout = () => {
         logout();
+        logoutApiCall('/auth/logout', 'POST');
         setShowLogoutMenu(false);
     };
 
