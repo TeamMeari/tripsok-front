@@ -62,3 +62,18 @@
     opacity: 0.9;
 }
 
+.grayPrimary {
+    background-color: #cccccc;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+}
+
+.grayPrimary:hover {
+    background-color: #b3b3b3;
+}
