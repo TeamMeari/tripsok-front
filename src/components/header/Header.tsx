@@ -4,8 +4,8 @@ import { useTranslation } from "react-i18next";
 import styles from "./Header.module.css";
 import Button from "../common/Button/CommonBtn";
 import IconButton from "../common/Button/IconBtn";
-import { ArrowLeftIcon } from "lucide-react";
-    
+import { ArrowLeftIcon } from "lucide-react";    
+import useAuthStore from "../../stores/authStore";
 
 interface HeaderProps {
     isLogo?: boolean;
@@ -16,11 +16,9 @@ const Header: React.FC<HeaderProps> = ({ useBackground = false, isLogo = true })
     const { t } = useTranslation(); // i18next 훅
 
     const navigate = useNavigate();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const { isLoggedIn, logout, nickname } = useAuthStore();
     const [showLogoutMenu, setShowLogoutMenu] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
-
-    const userName = "홍길동"; //테스트 닉네임
 
     const handleLogoClick = () => {
         navigate("/");
@@ -30,16 +28,14 @@ const Header: React.FC<HeaderProps> = ({ useBackground = false, isLogo = true })
         if (isLoggedIn) {
             setShowLogoutMenu(prev => !prev);
         } else {
-            setIsLoggedIn(true);
+            navigate("/login");
             setShowLogoutMenu(false);
-            console.log(t("login") + " 완료");
         }
     };
 
     const handleLogout = () => {
-        setIsLoggedIn(false);
+        logout();
         setShowLogoutMenu(false);
-        console.log(t("logout") + " 완료");
     };
 
     // 외부 클릭 시 드롭다운 닫기
@@ -90,7 +86,7 @@ const Header: React.FC<HeaderProps> = ({ useBackground = false, isLogo = true })
                         onClick={handleAuthClick}
                     >
                         {isLoggedIn
-                            ? t("greeting", { name: userName })
+                            ? t("greeting", { name: nickname })
                             : t("login")}
                     </Button>
 

@@ -32,6 +32,7 @@ const CardCarousel = ({ cards, isLoading = false }: CardCarouselProps) => {
                         description={card.description}
                         image={card.image}
                         id={card.id}
+                        type={card.type}
                         />
                     ))
                 )}

@@ -12,6 +12,7 @@ import { useApi } from '../hooks/useApi';
 import CardType from '../types/Card';
 import { MainCarouselItem } from '../components/feature/Carousel/MainCarousel';
 import { PlacesResponse, Place } from '../types/apiResponse';
+import { convertTypeToLowerCase } from '../utils/converter';
 
 const MainPage = () => {
   const { t, i18n } = useTranslation();
@@ -39,6 +40,7 @@ const MainPage = () => {
         setMainCarouselItems(response.data.items.map((v: Place) => ({
             id: v.id,
             image: v.thumbnailUrl,
+            type: convertTypeToLowerCase(v.type),
           })) as MainCarouselItem[]);
         } else setMainCarouselItems([]);
       }
@@ -56,6 +58,7 @@ const MainPage = () => {
             rank: idx + 1,
             title: v.name,
             description: v.summary,
+            type: convertTypeToLowerCase(v.type),
           })) as CardType[]);
         } else setTop5CardCarouselItems([]);
       }
@@ -73,6 +76,7 @@ const MainPage = () => {
             image: v.thumbnailUrl,
             title: v.name,
             description: v.summary,
+            type: convertTypeToLowerCase(v.type),
           })) as CardType[]);
         } else setFirstCardCarouselItems([]);
       }
@@ -90,6 +94,7 @@ const MainPage = () => {
             image: v.thumbnailUrl,
             title: v.name,
             description: v.summary,
+            type: convertTypeToLowerCase(v.type),
           })) as CardType[]);
         } else setSecondCardCarouselItems([]);
       }

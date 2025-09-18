@@ -1,6 +1,6 @@
 import { ChevronRightIcon } from "lucide-react";
 import { useState, useCallback, useEffect } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import ValidationBtn from "../../components/common/Button/ValidationBtn";
 import CheckBox from "../../components/common/CheckBox";
 import Input from "../../components/common/Input";
@@ -11,72 +11,122 @@ import { validatePassword } from "../../utils/validation";
 import styles from "./SignupPage.module.css";
 import { useSignupStore } from "../../stores/signupStores";
 import { useNavigate } from "react-router-dom";
+import { LoginResponse } from "../../types/apiResponse";
+import useAuthStore from "../../stores/authStore";
 
 const EmailSignupPage = () => {
     const { t } = useTranslation();
     const { apiCall: nicknameValidateApiCall, isLoading: nicknameValidateIsLoading } = useApi();
     const { apiCall: submitApiCall, isLoading: submitIsLoading } = useApi();
     const navigate = useNavigate();
-    const {nickname: nicknameStore, emailVerifyToken, setNickname: setNicknameStore, reset } = useSignupStore();
-    const [passwordConfirmVisible, setPasswordConfirmVisible] = useState(false);
-    const [nicknameVisible, setNicknameVisible] = useState(false);
-    const [termAndPrivacyVisible, setTermAndPrivacyVisible] = useState(false);
+    const password = useSignupStore(state => state.password);
+    const nicknameStore = useSignupStore(state => state.nickname);
+    const firstName = useSignupStore(state => state.firstName);
+    const lastName = useSignupStore(state => state.lastName);
+    const termsChecked = useSignupStore(state => state.termsChecked);
+    const privacyChecked = useSignupStore(state => state.privacyChecked);
+    const { login } = useAuthStore();
+    const {
+        email,
+        setPassword,
+        setNickname: setNicknameStore,
+        setFirstName, setLastName,
+        emailVerifyToken, 
+        reset,
+        setTermsChecked, setPrivacyChecked
+    } = useSignupStore();
+    
+    // 입력창 표시 여부
+    const [passwordConfirmVisible, setPasswordConfirmVisible] = useState(password !== "");
+    const [nameVisible, setNameVisible] = useState(passwordConfirmVisible && (firstName !== "" || lastName !== ""));
+    const [nicknameVisible, setNicknameVisible] = useState(nameVisible && (nicknameStore !== ""));
+    const [termAndPrivacyVisible, setTermAndPrivacyVisible] = useState(nicknameVisible);
 
-    const [password, setPassword] = useState("");
+    // 비밀번호 및 확인
     const [passwordError, setPasswordError] = useState("");
-    const [passwordConfirm, setPasswordConfirm] = useState("");
+    const [passwordErrorCondition, setPasswordErrorCondition] = useState<string[]>([]);
+    const [passwordConfirm, setPasswordConfirm] = useState(password);
     const [passwordConfirmError, setPasswordConfirmError] = useState("");
 
     const handlePasswordChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.target.value.trim());
+        const newPassword = e.target.value.trim();
+        setPassword(newPassword);
+        const { error, conditions } = PASSWORD_VALIDATION_WARNING(newPassword);
+        setPasswordError(error);
+        setPasswordErrorCondition(conditions);
     }, []);
 
     const handlePasswordConfirmChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        setPasswordConfirm(e.target.value.trim());
+        const newPasswordConfirm = e.target.value.trim();
+        setPasswordConfirm(newPasswordConfirm);
+        setPasswordConfirmError(newPasswordConfirm !== useSignupStore.getState().password ? t("passwordNotMatch") : "");
     }, []);
 
+    // 이름 및 성
+    const [nameError, setNameError] = useState("");
+
+    const handleFirstNameChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        const newFirstName = e.target.value.trim().slice(0, 20);
+        setFirstName(newFirstName);
+        if (newFirstName === "")setNameError(_ => "nameError");
+        else if (useSignupStore.getState().lastName !== "") setNameError(_ => "");
+    }, []);
+    const handleLastNameChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        const newLastName = e.target.value.trim().slice(0, 20);
+        setLastName(newLastName);
+        if (newLastName === "")setNameError(_ => "nameError");
+        else if (useSignupStore.getState().firstName !== "") setNameError(_ => "");
+    }, []);
+
+    // 닉네임   
     const NICKNAME_MAX_LENGTH = 15;
     const [nickname, setNickname] = useState(nicknameStore);
     const [nicknameError, setNicknameError] = useState("");
 
     const handleNicknameChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         setNickname(e.target.value.slice(0, NICKNAME_MAX_LENGTH));
+        if (nickname === "") setNicknameError(_ => "nicknameError");
+        else if (useSignupStore.getState().firstName !== "" && useSignupStore.getState().lastName !== "") setNicknameError("");
     }, []);
 
-    const [termsChecked, setTermsChecked] = useState(false);
-    const [privacyChecked, setPrivacyChecked] = useState(false);
-
-    const handleTermsChecked = useCallback(() => setTermsChecked(prev => !prev), []);
-    const handlePrivacyChecked = useCallback(() => setPrivacyChecked(prev => !prev), []);
+    // 약관 및 개인정보 동의
+    const handleTermsChecked = useCallback(() => setTermsChecked(!termsChecked), []);
+    const handlePrivacyChecked = useCallback(() => setPrivacyChecked(!privacyChecked), []);
 
     const handleSubmit = useCallback(() => {
-        submitApiCall("/auth/signup/email", "POST", { emailVerifyToken, nickname, password }).then(response => {
-            if (response.status === 200) {
-                reset();
-                navigate("/signup/complete", { state: { nickname: nickname } });
+        submitApiCall("/auth/signup/email", "POST", { emailVerifyToken, nickname, password, firstName, lastName }).then(response => {
+            if (response.status === 201 || response.status === 200) {
+                submitApiCall<LoginResponse>("/auth/login/email", "POST", { email: email, password: password }).then(response => {
+                    if (response.status === 200 && response.data?.accessToken && response.data?.nickname) {
+                        login(response.data?.accessToken as string, response.data?.nickname as string);
+                    }
+                }).then(() => {
+                    reset();
+                    navigate("/signup/complete", { state: { from: "/signup/email/3" } });
+                });
             }
+        }).finally(() => {
+            reset();
         });
     }, [nickname, navigate]);
 
-    const passwordValid = validatePassword(password);
-    const passwordConfirmValid = password !== "" && passwordConfirm !== "" && password === passwordConfirm;
+    const passwordValid = validatePassword(password || "");
+    const passwordConfirmValid = password !== "" && passwordValid && passwordConfirm !== "" && password === passwordConfirm;
     const nicknameValid = nickname.length > 0 && nickname.length <= NICKNAME_MAX_LENGTH;
     const validateInfo = passwordValid && passwordConfirmValid && nicknameValid && termsChecked && privacyChecked;
 
+    // 연쇄적 표시 처리
     useEffect(() => {
-        const error = PASSWORD_VALIDATION_WARNING(password);
-        setPasswordError(error ? t("passwordRequire") : "");
-        if (!error) setPasswordConfirmVisible(true);
-    }, [password, t]);
+        if (password !== "" && passwordError === "") setPasswordConfirmVisible(true);
+    }, [password, passwordError])
 
     useEffect(() => {
-        if (passwordConfirm !== "") {
-            setPasswordConfirmError(password !== passwordConfirm ? t("passwordNotMatch") : "");
-            if (password === passwordConfirm) setNicknameVisible(true);
-        } else {
-            setPasswordConfirmError("");
-        }
-    }, [passwordConfirm, password, t]);
+        if (passwordConfirmVisible && passwordConfirm !== "" && passwordConfirmError === "") setNameVisible(true);
+    }, [passwordConfirm, passwordConfirmError])
+
+    useEffect(() => {
+        if (nameVisible && firstName !== "" && lastName !== "") setNicknameVisible(true);
+    }, [firstName, lastName])
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -84,11 +134,11 @@ const EmailSignupPage = () => {
                 nicknameValidateApiCall("/auth/validate/nickname", "POST", { nickname }).then(response => {
                     if (response.status === 200) {
                         if (response.data && typeof response.data === 'object' && 'available' in response.data && response.data.available === true) {
-                            setNicknameError("");
+                            setNicknameError(_ => "");
                             setNicknameStore(nickname);
-                            if (passwordError === "" && passwordConfirmError === "") setTermAndPrivacyVisible(true);
+                            if (passwordError === "" && passwordConfirmError === "" && nameError === "") setTermAndPrivacyVisible(true);
                     } else {
-                        setNicknameError('existingNickname');
+                        setNicknameError(_ => 'existingNickname');
                     }
                     }
                 });
@@ -106,21 +156,36 @@ const EmailSignupPage = () => {
     return (
         <div className={styles.page}>
             <div className={styles.step}>
-                <p className={styles.message} dangerouslySetInnerHTML={{ __html: t("emailVerified") }} />
+                <p className={styles.message}>
+                    <Trans i18nKey="emailVerified" components={{ br: <br /> }} />
+                </p>
                 <div className={styles.content}>
                     <div className={styles.inputContainer}>
-                        <PasswordInput onChange={handlePasswordChange} placeholder={t("enterPassword")} />
+                        <PasswordInput onChange={handlePasswordChange} placeholder={t("enterPassword")} value={password} />
                         {password ?
-                            (passwordError ? <p className={styles.error}>{passwordError}</p> : <p className={styles.success}>{t("passwordValid")}</p>)
+                            (passwordError ?
+                                <p className={styles.error}>
+                                    <Trans i18nKey={passwordError} values={{ condition: passwordErrorCondition.map(condition => t(condition)).join(", ") }}/>
+                                </p> :
+                                <p className={styles.success}>{t("passwordValid")}</p>)
                             : <p className={styles.guide}>{t("passwordRule")}</p>
                         }
                     </div>
 
                     {passwordConfirmVisible && (
                         <div className={styles.inputContainer}>
-                            <PasswordInput onChange={handlePasswordConfirmChange} placeholder={t("reEnterPassword")} />
-                            {passwordConfirmError && <p className={styles.error}>{passwordConfirmError}</p>}
-                            {passwordValid && passwordConfirmValid && <p className={styles.success}>{t("passwordMatch")}</p>}
+                            <PasswordInput onChange={handlePasswordConfirmChange} placeholder={t("reEnterPassword")} value={passwordConfirm || ""} />
+                            {passwordConfirmError ? <p className={styles.error}>{passwordConfirmError}</p>
+                            : passwordConfirmValid ? <p className={styles.success}>{t("passwordMatch")}</p>
+                            : null}
+                        </div>
+                    )}
+
+                    {nameVisible && (
+                        <div className={styles.inputContainer}>
+                            <Input onChange={handleLastNameChange} placeholder={t("enterLastName")} value={lastName || ""} />
+                            <Input onChange={handleFirstNameChange} placeholder={t("enterFirstName")} value={firstName || ""} />
+                            {nameError ? <p className={styles.error}>{t(nameError)}</p> : <p className={styles.guide}>{t("useRealNameAsIdCard")}</p>}
                         </div>
                     )}
 
@@ -128,7 +193,7 @@ const EmailSignupPage = () => {
                         <div className={styles.inputContainer}>
                             <Input
                                 onChange={handleNicknameChange}
-                                value={nickname}
+                                value={nickname || ""}
                                 placeholder={t("nicknameRule")}
                                 maxLength={NICKNAME_MAX_LENGTH}
                             />

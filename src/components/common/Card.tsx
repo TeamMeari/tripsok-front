@@ -8,6 +8,7 @@ interface CardProps {
     description?: string;
     isLoading?: boolean;
     rank?: number | null;
+    type?: "restaurant" | "tour" | "accommodation";
 }
 
 const Card = ({
@@ -17,6 +18,7 @@ const Card = ({
     description,
     isLoading = false,
     rank = null,
+    type,
 }: CardProps) => {
     const navigate = useNavigate();
     const RankBadge = () => {
@@ -36,7 +38,7 @@ const Card = ({
         </div>
     }
   return (
-    <div className={styles.card} onClick={() => navigate(`/content/${id}`)}>
+    <div className={styles.card} onClick={() => navigate(`/content/${type}/${id}`)}>
         { RankBadge() }
         <div className={styles.cardImageContainer}>
             <img src={image} alt={title} />

@@ -1,39 +1,56 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useApi } from "../../hooks/useApi";
-import { login } from "../../utils/auth";
+import useAuthStore from "../../stores/authStore";
 import { useNavigate } from "react-router-dom";
 import { useSignupStore } from "../../stores/signupStores";
+import { OAuthLoginResponse } from "../../types/apiResponse";
 
 const OAuthCallbackPage = () => {
-  const { apiCall } = useApi();
+  const { apiCall, isLoading } = useApi();
   const navigate = useNavigate();
   const { setSocialSignUpToken } = useSignupStore();
+  const { login } = useAuthStore();
+  const urlParams = new URLSearchParams(window.location.search);
+  const code = urlParams.get("code");
 
-  useEffect(() => {
-    const hashParams = new URLSearchParams(window.location.hash.substring(1));
-    const accessToken = hashParams.get("access_token");
+  const tryLogin = () => {
+    if (isLoading) return;
 
     // redirect
-    if (!accessToken) navigate("/login", { replace: true });
+    if (!code) {
+      navigate("/login", { replace: true });
+      return;
+    }
 
-    apiCall<{ accessToken: string }>("/auth/login/oauth2", "POST", {
-      code: accessToken,
+    apiCall<OAuthLoginResponse>("/auth/login/oauth2", "POST", {
+      code: code,
       socialType: "GOOGLE",
     }).then((response) => {
-      if (response.status === 200 && response.data?.accessToken) {
+      if (response.status === 200 && response.data && typeof response.data === 'object' && 'nickname' in response.data) {
         // 로그인 처리
-        login(response.data.accessToken);
+        login(response.data?.accessToken as string, response.data?.nickname as string);
         // 필요하면 홈으로 이동
         navigate("/", { replace: true });
       } else if (response.status === 303) {
         // 회원가입이 필요한 경우 signup 페이지로 token 전달
-        setSocialSignUpToken(accessToken as string);
-        navigate("/signup/oauth", { replace: true });
+        const data: any = response.data || {};
+        const token = data.accessToken || data.socialSignUpToken || data.signUpToken || data.token;
+        if (token) {
+          setSocialSignUpToken(token as string);
+          // 라우터 state로도 함께 전달하여 반영 타이밍 이슈 제거
+          navigate("/signup/oauth2", { replace: true, state: { socialSignUpToken: token } });
+        } else {
+          navigate("/login", { replace: true });
+        }
       } else {
         navigate("/login", { replace: true });
       }
     });
-  }, [apiCall, navigate, setSocialSignUpToken]);
+  }
+
+  useEffect(() => {
+    tryLogin();
+  }, []);
 
   return <div>Loading...</div>;
 };
