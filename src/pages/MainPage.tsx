@@ -14,6 +14,7 @@ import { MainCarouselItem } from '../components/feature/Carousel/MainCarousel';
 import { PlacesResponse, Place } from '../types/apiResponse';
 import { convertTypeToLowerCase } from '../utils/converter';
 import { Link } from 'react-router-dom';
+import MenuApp from '../components/MenuApp';
 
 const MainPage = () => {
   const { t, i18n } = useTranslation();
@@ -112,16 +113,16 @@ const MainPage = () => {
   // 수정 필요
   const bannerCarouselItems = [
     {
-      url: "/",
-      image: "https://cdn.pixabay.com/photo/2025/06/13/14/48/bird-9658215_1280.jpg",
+      url: "https://www.instagram.com/gn.coffeefestival/",
+      image: "bannerImage/banner1.png",
     },
     {
-      url: "/",
-      image: "https://cdn.pixabay.com/photo/2022/11/17/09/49/fog-7597710_1280.jpg",
+      url: "https://www.instagram.com/gangneung_noodle/",
+      image: "bannerImage/banner2.png",
     },
     {
-      url: "/",
-      image: "https://cdn.pixabay.com/photo/2020/11/04/18/59/leaves-5713290_1280.jpg",
+      url: "https://www.instagram.com/culture_tour_/",
+      image: "bannerImage/banner3.png",
     }
   ]
 
@@ -161,6 +162,9 @@ const MainPage = () => {
       </div>
     </div>
     <Footer />
+    <div>
+        <MenuApp/>
+    </div>
   </div>;
 };
 
