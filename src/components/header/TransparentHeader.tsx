@@ -34,8 +34,9 @@ const TransparentHeader: React.FC<TransparentHeaderProps> = ({ type = "default",
     };
 
     const handleLogout = () => {
-        logout();
-        logoutApiCall('/auth/logout', 'POST');
+        logoutApiCall('/auth/logout', 'POST').then(() => {
+            logout();
+        });
         setShowLogoutMenu(false);
     };
 

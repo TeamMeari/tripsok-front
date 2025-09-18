@@ -21,7 +21,7 @@ const Header: React.FC<HeaderProps> = ({ useBackground = false, isLogo = true })
     const { isLoggedIn, logout, nickname } = useAuthStore();
     const [showLogoutMenu, setShowLogoutMenu] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
-    
+
     const handleLogoClick = () => {
         navigate("/");
     };
@@ -36,8 +36,9 @@ const Header: React.FC<HeaderProps> = ({ useBackground = false, isLogo = true })
     };
 
     const handleLogout = () => {
-        logout();
-        logoutApiCall('/auth/logout', 'POST');
+        logoutApiCall('/auth/logout', 'POST').then(() => {
+            logout();
+        });
         setShowLogoutMenu(false);
     };
 
