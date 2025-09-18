@@ -48,7 +48,6 @@ const IconButton: React.FC<IconButtonProps> = ({ type, color = "white", onClick 
     const handleClick = () => {
         if (type === "globeIcon") handleGlobeClick();
         if (onClick) onClick();
-        if (type === "arrow") navigate(-1);
     };
 
     return (

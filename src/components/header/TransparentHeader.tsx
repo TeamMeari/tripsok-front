@@ -7,9 +7,10 @@ import { useTranslation } from "react-i18next";
 interface TransparentHeaderProps {
     type?: "default" | "auth"; // 기본 투명 헤더(default) / 로그인 포함(auth)
     fixed?: boolean; //  고정 여부
+    onBackClick?: () => void;
 }
 
-const TransparentHeader: React.FC<TransparentHeaderProps> = ({ type = "default", fixed = false }) => {
+const TransparentHeader: React.FC<TransparentHeaderProps> = ({ type = "default", fixed = false, onBackClick  }) => {
     const { t } = useTranslation();
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -17,8 +18,13 @@ const TransparentHeader: React.FC<TransparentHeaderProps> = ({ type = "default",
     const menuRef = useRef<HTMLDivElement>(null);
     const userName = "홍길동"; // 테스트용
 
+
     const handleArrowClick = () => {
-        console.log("뒤로가기");
+        if (onBackClick) {
+            onBackClick(); // 페이지에서 전달한 함수 실행
+        } else {
+            console.log("뒤로가기");
+        }
     };
 
     const handleAuthClick = () => {
