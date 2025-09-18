@@ -4,10 +4,10 @@ import styles from "./HashtagBtn.module.css";
 interface HashtagButtonProps {
     label: string;
     onClick?: () => void;
+    isSelected?: boolean;
 }
 
-const HashtagButton: React.FC<HashtagButtonProps& { readOnly?: boolean }> = ({ label, onClick, readOnly }) => {
-    const [isSelected, setIsSelected] = useState(false);
+const HashtagButton: React.FC<HashtagButtonProps& { readOnly?: boolean }> = ({ label, onClick, readOnly, isSelected }) => {
 
     const handleClick = () => {
         if (readOnly) return;
