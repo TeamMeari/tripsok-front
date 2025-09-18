@@ -8,6 +8,7 @@ interface MenuTabProps {
     label: string;
     icon: string;
     uri: string;
+    key: string;
   }[];
   activeTab: number;
   isIcon? : boolean;
@@ -43,10 +44,10 @@ const MenuTab = ({ tabs, activeTab, isIcon, tabOnClick, isDot = [ false, false, 
     if (lineRef.current) {
         const tl = timeline([
             [lineRef.current, {
-                width: ['0px', '64px'],
+                width: ['0px', `${tabWidth}px`],
             }],
             [lineRef.current, {
-                x: ['calc(-50vw + 50%)', `-${tabWidth + tabGap}px`],
+                x: ['calc(-50vw + 50%)', `${(tabWidth + tabGap) * (activeTab - 1)}px`],
             }],
         ], {
             duration: 0.3,

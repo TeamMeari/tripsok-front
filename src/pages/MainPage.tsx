@@ -15,6 +15,7 @@ import { PlacesResponse, Place } from '../types/apiResponse';
 import { convertTypeToLowerCase } from '../utils/converter';
 import { Link } from 'react-router-dom';
 import MenuApp from '../components/MenuApp';
+import NavigationMenuTab from '../components/feature/Tab/NavigationMenuTab';
 
 const MainPage = () => {
   const { t, i18n } = useTranslation();
@@ -141,6 +142,7 @@ const MainPage = () => {
     />
     <div className={styles.space}></div>
     {/* <MenuTab tabs={menuTabs} activeTab={activeTab} isIcon={true} tabOnClick={handleTabClick} /> */}
+    <NavigationMenuTab tabs={menuTabs} isIcon={true}/>
     <div className={styles.section1}>
       <div className={styles.cardList}>
         <TitleLink i18nKey="mainTopSpots" link="/list" />
