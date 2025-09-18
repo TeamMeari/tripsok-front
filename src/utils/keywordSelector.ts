@@ -1,15 +1,15 @@
 const keywords = [
-    "바다",
-    "호텔",
-    "맛집",
-    "명소",
-    "쇼핑",
-    "카페",
-    "문화",
-    "역사",
-    "자연",
-    "레저",
-    "스포츠"
+    "sea",
+    "hotel",
+    "restaurant",
+    "landmark",
+    "shopping",
+    "cafe",
+    "culture",
+    "history",
+    "nature",
+    "leisure",
+    "sports"
 ];
 
 // 날짜 기반으로 여러 개의 검색어 선택

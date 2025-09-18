@@ -99,7 +99,25 @@ const resources = {
             //myPlanDetail 텍스트
             itineraryTitle: "계획중인 여행일정",
             reserveButton: "관광택시 예약 및 결제",
-            upcomingPlaces: "방문 예정 여행지"
+            upcomingPlaces: "방문 예정 여행지",
+            // MainCarousel 텍스트
+            mainCarouselText: "목적지를 검색하고\n나만의 여행을 시작해보세요.",
+            mainCarouselText2: "강릉으로 떠나는\n가장 쉬운 방법.",
+            mainCarouselText3: "강릉, 그 설레는 여정을\n시작하세요.",
+            mainCarouselText4: "여행의 모든 순간을\n함께 만들어가요.",
+            // keywordSelector 텍스트
+            gangneung: "강릉",
+            sea: "바다",
+            hotel: "호텔",
+            restaurant: "맛집",
+            landmark: "명소",
+            shopping: "쇼핑",
+            cafe: "카페",
+            culture: "문화",
+            history: "역사",
+            nature: "자연",
+            leisure: "레저",
+            sports: "스포츠"
         },
     },
     en: {
@@ -198,7 +216,25 @@ const resources = {
             //myPlanDetail 텍스트
             itineraryTitle: "Planned Itinerary",
             reserveButton: "Reserve and Pay for Tour Taxi",
-            upcomingPlaces: "Upcoming Places"
+            upcomingPlaces: "Upcoming Places",
+            // MainCarousel 텍스트
+            mainCarouselText: "Search for your destination\nand start your own journey.",
+            mainCarouselText2: "The easiest way to go to Gangneung",
+            mainCarouselText3: "Start your journey with Gangneung,\nthe journey of excitement.",
+            mainCarouselText4: "Create every moment of your journey\ntogether.",
+            // keywordSelector 텍스트
+            gangneung: "Gangneung",
+            sea: "sea",
+            hotel: "hotel",
+            restaurant: "restaurant",
+            landmark: "landmark",
+            shopping: "shopping",
+            cafe: "cafe",
+            culture: "culture",
+            history: "history",
+            nature: "nature",
+            leisure: "leisure",
+            sports: "sports"
         },
     },
     ja: {
@@ -296,7 +332,25 @@ const resources = {
             //myPlanDetail 텍스트
             itineraryTitle: "計画中の旅行日程",
             reserveButton: "観光タクシーの予約と支払い",
-            upcomingPlaces: "訪問予定の観光地"
+            upcomingPlaces: "訪問予定の観光地",
+            // MainCarousel 텍스트
+            mainCarouselText: "目的地を検索して\n自分だけの旅程を始めましょう。",
+            mainCarouselText2: "江陵への最も簡単な方法",
+            mainCarouselText3: "江陵での旅を始めましょう,\nその興奮の旅。",
+            mainCarouselText4: "旅のすべての瞬間を\n一緒に作りましょう。",
+            // keywordSelector 텍스트
+            gangneung: "江陵",
+            sea: "海",
+            hotel: "ホテル",
+            restaurant: "レストラン",
+            landmark: "ランドマーク",
+            shopping: "ショッピング",
+            cafe: "カフェ",
+            culture: "文化",
+            history: "歴史",
+            nature: "自然",
+            leisure: "レジャー",
+            sports: "スポーツ"
         },
     },
     cn: {
@@ -394,7 +448,25 @@ const resources = {
             //myPlanDetail 텍스트
             itineraryTitle: "计划中的行程",
             reserveButton: "旅游出租车预订与支付",
-            upcomingPlaces: "即将访问的景点"
+            upcomingPlaces: "即将访问的景点",
+            // MainCarousel 텍스트
+            mainCarouselText: "搜索目的地\n并开始您的旅程。",
+            mainCarouselText2: "前往江陵的最简单方式",
+            mainCarouselText3: "开始您的旅程，\n充满兴奋的旅程。",
+            mainCarouselText4: "共同创造旅行的每一刻",
+            // keywordSelector 텍스트
+            gangneung: "江陵",
+            sea: "海洋",
+            hotel: "酒店",
+            restaurant: "餐厅",
+            landmark: "地标",
+            shopping: "购物",
+            cafe: "咖啡馆",
+            culture: "文化",
+            history: "历史",
+            nature: "自然",
+            leisure: "休闲",
+            sports: "运动"
         },
     },
 };

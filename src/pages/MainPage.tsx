@@ -33,7 +33,7 @@ const MainPage = () => {
 
   const fetchMainCarouselPlaces = () => {
     // keyword 하나 사용
-    const queryParams = `?page=0&size=10&sortKey=rank&direction=desc&locale=${i18n.language}&typeSearch=text&categoryFilter=false&q=${dailyKeywords[0]}`;
+    const queryParams = `?page=0&size=10&sortKey=rank&direction=desc&locale=${i18n.language}&typeSearch=text&categoryFilter=false&q=${t(dailyKeywords[0])}`;
     MainCarouselApiCall<PlacesResponse>("/places/accommodation" + queryParams, "GET").then((response) => {
       if (response.status === 200) {
         if (response.data) {
@@ -48,7 +48,7 @@ const MainPage = () => {
   }
 
   const fetchTop5CardCarouselPlaces = () => {
-    const queryParams = `?page=0&size=10&sortKey=rank&direction=desc&locale=${i18n.language}&categoryFilter=false&q=%EA%B0%95%EB%A6%89`;
+    const queryParams = `?page=0&size=10&sortKey=rank&direction=desc&locale=${i18n.language}&categoryFilter=false&q=${t("gangneung")}`;
     Top5CardCarouselApiCall<PlacesResponse>("/places/accommodation" + queryParams, "GET").then((response) => {
       if (response.status === 200) {
         if (response.data) {
@@ -67,7 +67,7 @@ const MainPage = () => {
 
   const fetchFirstCardCarouselPlaces = () => {
     // keyword 하나 사용
-    const queryParams = `?page=0&size=10&sortKey=rank&direction=desc&locale=${i18n.language}&typeSearch=text&categoryFilter=false&q=${dailyKeywords[1]}`;
+    const queryParams = `?page=0&size=10&sortKey=rank&direction=desc&locale=${i18n.language}&typeSearch=text&categoryFilter=false&q=${t(dailyKeywords[1])}`;
     FirstCardCarouselApiCall<PlacesResponse>("/places/accommodation" + queryParams, "GET").then((response) => {
       if (response.status === 200) {
         if (response.data) {
@@ -85,7 +85,7 @@ const MainPage = () => {
 
   const fetchSecondCardCarouselPlaces = () => {
     // keyword 하나 사용
-    const queryParams = `?page=0&size=10&sortKey=rank&direction=desc&locale=${i18n.language}&typeSearch=text&categoryFilter=false&q=${dailyKeywords[2]}`;
+    const queryParams = `?page=0&size=10&sortKey=rank&direction=desc&locale=${i18n.language}&typeSearch=text&categoryFilter=false&q=${t(dailyKeywords[2])}`;
     SecondCardCarouselApiCall<PlacesResponse>("/places/accommodation" + queryParams, "GET").then((response) => {
       if (response.status === 200) {
         if (response.data) {
@@ -102,10 +102,10 @@ const MainPage = () => {
   }
 
   const texts = [
-    `목적지를 검색하고\n나만의 여행을 시작해보세요.`,
-    `강릉으로 떠나는\n가장 쉬운 방법.`,
-    `강릉, 그 설레는 여정을\n시작하세요.`,
-    `여행의 모든 순간을\n함께 만들어가요.`,
+    t("mainCarouselText"),
+    t("mainCarouselText2"),
+    t("mainCarouselText3"),
+    t("mainCarouselText4"),
   ]
 
   // 수정 필요
@@ -129,7 +129,7 @@ const MainPage = () => {
     fetchTop5CardCarouselPlaces();
     fetchFirstCardCarouselPlaces();
     fetchSecondCardCarouselPlaces();
-  }, []);
+  }, [t]);
 
   return <div className={styles.page}>
     <MainCarousel
