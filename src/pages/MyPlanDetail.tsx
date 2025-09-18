@@ -1,23 +1,20 @@
-import React, { useState, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState, useRef,useEffect, CSSProperties } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import KakaoMap from "../components/KakaoMap";
 import styles from "./MyPlanDetail.module.css";
 import Button from "../components/common/Button/CommonBtn";
 import DropdownInput from "../components/common/DropdownInput";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
-import { DndContext, closestCenter, PointerSensor, useSensor, useSensors} from '@dnd-kit/core';
-import TransparentHeader from "../components/header/TransparentHeader"
-import {arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy, useSortable} from '@dnd-kit/sortable';
+import { DndContext, closestCenter, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
+import TransparentHeader from "../components/header/TransparentHeader";
+import { arrayMove, SortableContext, verticalListSortingStrategy, useSortable } from "@dnd-kit/sortable";
 
-
-import PersonIcon from '/public/InfoIcon/person.svg';
-import DateIcon from '/public/InfoIcon/date.svg';
-import FlagIcon from '/public/InfoIcon/flag.svg';
-import StartTimeIcon from '/public/InfoIcon/starttimeIcon.svg';
-
-
-import {CSS} from '@dnd-kit/utilities';
+import PersonIcon from "/public/InfoIcon/person.svg";
+import DateIcon from "/public/InfoIcon/date.svg";
+import FlagIcon from "/public/InfoIcon/flag.svg";
+import StartTimeIcon from "/public/InfoIcon/starttimeIcon.svg";
+import { CSS } from "@dnd-kit/utilities";
 
 interface Place {
     id: number;
@@ -29,9 +26,8 @@ interface Place {
 
 // SortableItem.tsx  드래그 앱 드랍_각각의 여행지 상태관리
 function SortableItem({ place, index }: { place: Place; index: number }) {
-    const { attributes, listeners, setNodeRef, transform, transition } =
-        useSortable({ id: place.id });
-    const style:React.CSSProperties =  {
+    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: place.id });
+    const style: CSSProperties = {
         transform: CSS.Transform.toString(transform),
         transition,
         padding: "12px",
@@ -61,31 +57,53 @@ function SortableItem({ place, index }: { place: Place; index: number }) {
         fontWeight: "bold"
     };
 
-    const titleStyle :React.CSSProperties = {
-        display:"flex",
+    const titleStyle: CSSProperties = {
+        display: "flex",
         flexDirection: "row",
-        gap:"8px",
-        alignItems: "center",
+        gap: "8px",
+        alignItems: "center"
     };
 
     return (
         <div ref={setNodeRef} style={style}>
-
-            <span style={titleStyle}>
-                <div style={badgeStyle}>{index + 1}</div>
-                {place.title}
-            </span>
-            <span {...listeners} {...attributes} style={{cursor: "grab"}}>
-                &#9776; {/* 햄버거 아이콘 */}
-            </span>
+      <span style={titleStyle}>
+        <div style={badgeStyle}>{index + 1}</div>
+          {place.title}
+      </span>
+            <span {...listeners} {...attributes} style={{ cursor: "grab" }}>
+        &#9776;
+      </span>
         </div>
     );
 }
 
+// Exit Modal
+function ExitModal({ visible, onCancel, onSave }: { visible: boolean; onCancel: () => void; onSave: () => void }) {
+    if (!visible) return null;
+    return (
+        <div className={styles.overlay}>
+            <div className={styles.modal}>
+                <p className={styles.text}>
+                    작성 중인 내용이 있어요.<br/>
+                    저장하지 않고 나갈까요?
+                </p>
+                <div className={styles.buttons}>
+                    <Button variant="grayPrimary"  onClick={onCancel} size="mini" borderRadius="12px">
+                        나가기
+                    </Button>
+                    <Button variant="primary" onClick={onSave} size="mini" borderRadius="12px">
+                        저장
+                    </Button>
+                </div>
+            </div>
+        </div>
+    );
+}
 
 export default function MyPlanDetailPage() {
     const { t } = useTranslation();
     const location = useLocation();
+    const navigate = useNavigate();
     // const visitedPlaces: Place[] = [    //테스트 용입니다 실제 사용은 아래 주석 처리된 코드로 진행
     //     { id: 1, title: "BTS 버스정류장", lat: 37.751, lng: 128.876 },
     //     { id: 2, title: "강릉항", lat: 37.752, lng: 128.874 },
@@ -94,15 +112,14 @@ export default function MyPlanDetailPage() {
     const visitedPlaces: Place[] = location.state?.visitedPlaces || [];
     const [places, setPlaces] = useState<Place[]>(visitedPlaces);
 
-
     const INITIAL_HEIGHT = 200;
     const MIN_HEIGHT = 42;
     const MAX_HEIGHT = window.innerHeight * 0.8;
 
-    const [dateValue, setDateValue] = useState('');
-    const [fromValue, setFromValue] = useState('');
-    const [timeValue, setTimeValue] = useState('');
-    const [personValue, setPersonValue] = useState('');
+    const [dateValue, setDateValue] = useState("");
+    const [fromValue, setFromValue] = useState("");
+    const [timeValue, setTimeValue] = useState("");
+    const [personValue, setPersonValue] = useState("");
 
     const personOptions = [1, 2, 3, 4].map(num =>
         t("person", { num, count: num }) // count는 영어 복수 처리용
@@ -111,9 +128,11 @@ export default function MyPlanDetailPage() {
         t("locations.gangneungStation"),
     ];
 
-    const [sheetHeight, setSheetHeight] = useState(INITIAL_HEIGHT); // 초기 최소 높이
+    const [sheetHeight, setSheetHeight] = useState(INITIAL_HEIGHT);
     const startY = useRef(0);
     const startHeight = useRef(100);
+
+    const [showExitModal, setShowExitModal] = useState(false);
 
     const generateTimeOptions = () => {
         const options: string[] = [];
@@ -123,9 +142,7 @@ export default function MyPlanDetailPage() {
         }
         return options;
     };
-
     const timeOptions = generateTimeOptions();
-
 
     const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
         startY.current = "touches" in e ? e.touches[0].clientY : e.clientY;
@@ -156,23 +173,36 @@ export default function MyPlanDetailPage() {
         window.addEventListener("touchend", handleDragEnd);
     };
 
-
     const sensors = useSensors(useSensor(PointerSensor));
 
     return (
         <div style={{ height: "100vh", position: "relative" }}>
-            <TransparentHeader type="auth" fixed />
+            <TransparentHeader
+            type="auth"
+            fixed
+            onBackClick={() => setShowExitModal(true)}
+            />
 
+            <ExitModal
+                visible={showExitModal}
+                onCancel={() => {
+                    setShowExitModal(false);
+                    navigate(-1);
+                }}
+                onSave={() => {
+                    setShowExitModal(false);
+                    navigate("/");
+                }}
+            />
             <div style={{ height: "100%", width: "100%" }}>
                 <KakaoMap
-                    locations={visitedPlaces.map((p) => ({
+                    locations={visitedPlaces.map(p => ({
                         lat: p.lat || 37.751,
                         lng: p.lng || 128.876,
-                        title: p.title,
+                        title: p.title
                     }))}
                     width="100%"
                     height="100%"
-                    // showOrderMarker={true}
                 />
             </div>
 
@@ -191,36 +221,32 @@ export default function MyPlanDetailPage() {
                 {/* 내용 영역 */}
                 {sheetHeight > MIN_HEIGHT && (
                     <div className={styles.MyPlan_Detail}>
-
-
                         <div className={styles.contentContainer}>
                             {/* 드래그앤 드롭 */}
                             <div className={styles.myPlan_Places}>
                                 <div className={styles.myPlan_PlacesList}>
-                                    <div className={styles.MyPlan_placesTitle}> {t("upcomingPlaces")}</div>
+                                    <div className={styles.MyPlan_placesTitle}>{t("upcomingPlaces")}</div>
                                     <DndContext
                                         sensors={sensors}
                                         collisionDetection={closestCenter}
-                                        onDragEnd={(event) => {
-                                            const {active, over} = event;
+                                        onDragEnd={event => {
+                                            const { active, over } = event;
                                             if (over && active.id !== over.id) {
-                                                const oldIndex = places.findIndex((p) => p.id === active.id);
-                                                const newIndex = places.findIndex((p) => p.id === over.id);
+                                                const oldIndex = places.findIndex(p => p.id === active.id);
+                                                const newIndex = places.findIndex(p => p.id === over.id);
                                                 const newPlaces = arrayMove(places, oldIndex, newIndex);
-                                                setPlaces(arrayMove(places, oldIndex, newIndex));
-
+                                                setPlaces(newPlaces);
                                                 console.log("변경된 순서:", newPlaces.map(p => p.title));
                                             }
                                         }}
                                     >
                                         <SortableContext
-                                            items={places.map((p) => p.id)}
+                                            items={places.map(p => p.id)}
                                             strategy={verticalListSortingStrategy}
                                         >
                                             {places.map((place, index) => (
                                                 <SortableItem key={place.id} place={place} index={index} />
                                             ))}
-
                                         </SortableContext>
                                     </DndContext>
                                 </div>
@@ -228,7 +254,7 @@ export default function MyPlanDetailPage() {
 
                             <div className={styles.MyPlan_ItineraryDetail}>
                                 <div className={styles.MyPlan}>
-                                    <div className={styles.MyPlan_Itinerary}> {t("itineraryTitle")}</div>
+                                    <div className={styles.MyPlan_Itinerary}>{t("itineraryTitle")}</div>
                                     <div className={styles.DropdownInputs}>
                                         <DropdownInput
                                             value={dateValue}
@@ -272,23 +298,31 @@ export default function MyPlanDetailPage() {
                             </div>
                         </div>
                     </div>
-
                 )}
             </div>
 
-
             {/* 하단 고정 버튼 */}
             <div className={styles.fixedBottomArea}>
-                <Button
-                    variant="primary"
-                    size="large"
-                    borderRadius="12px"
-                >
+                <Button variant="primary" size="large" borderRadius="12px"
+                        onClick={() =>
+                            navigate("/payment", {
+                                state: {
+                                        places,
+                                        date: dateValue,
+                                        from: fromValue,
+                                        time: timeValue,
+                                        person: personValue,
+                                        mapLocations: visitedPlaces.map(p => ({
+                                            lat: p.lat || 37.751,
+                                            lng: p.lng || 128.876,
+                                            title: p.title
+                                        }))
+                                    }
+                            })
+                        }>
                     {t("reserveButton")}
                 </Button>
             </div>
-
-
         </div>
     );
 }

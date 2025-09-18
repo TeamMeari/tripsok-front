@@ -10,9 +10,10 @@ import { useApi } from "../../hooks/useApi";
 interface TransparentHeaderProps {
     type?: "default" | "auth"; // 기본 투명 헤더(default) / 로그인 포함(auth)
     fixed?: boolean; //  고정 여부
+    onBackClick?: () => void;
 }
 
-const TransparentHeader: React.FC<TransparentHeaderProps> = ({ type = "default", fixed = false }) => {
+const TransparentHeader: React.FC<TransparentHeaderProps> = ({ type = "default", fixed = false, onBackClick  }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { isLoggedIn, logout, nickname } = useAuthStore();
@@ -20,8 +21,13 @@ const TransparentHeader: React.FC<TransparentHeaderProps> = ({ type = "default",
     const { apiCall: logoutApiCall } = useApi();
     const menuRef = useRef<HTMLDivElement>(null);
 
+
     const handleArrowClick = () => {
-        navigate(-1);
+        if (onBackClick) {
+            onBackClick(); // 페이지에서 전달한 함수 실행
+        } else {
+            console.log("뒤로가기");
+        }
     };
 
     const handleAuthClick = () => {
