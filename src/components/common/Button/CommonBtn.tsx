@@ -3,7 +3,7 @@ import React from 'react';
 import styles from './CommonBtn.module.css';
 
 type ButtonVariant = 'primary' |'grayPrimary'| 'secondary' | 'orangeOutline' | 'grayDashed' | 'blackOutline';
-type PrimaryButtonSize = 'small' | 'large'; // primary 전용 width 옵션
+type PrimaryButtonSize = 'small' | 'large' | 'mini'; // primary 전용 width 옵션
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: ButtonVariant;
@@ -25,7 +25,11 @@ const Button: React.FC<ButtonProps> = ({
                                            ...props
                                        }) => {
     const width =
-        variant === 'primary' || variant === 'grayPrimary' || variant === 'orangeOutline' || variant === 'grayDashed' || variant == 'blackOutline' ? (size === 'small' ? '280px' : '312px') : undefined;
+        variant === 'primary' || variant === 'grayPrimary' || variant === 'orangeOutline' || variant === 'grayDashed' || variant == 'blackOutline' ? (size === 'mini'
+            ? '140px'   // mini 버튼 길이
+            : size === 'small'
+                ? '280px'
+                : '312px') : undefined;
 
     return (
         <div className={styles.commonBtn} onClick={onClick}>
