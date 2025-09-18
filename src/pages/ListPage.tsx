@@ -235,6 +235,30 @@ const ListPage = () => {
     };
   }, [activeTab, placeIsLoading, selectedTag, selectedOption, searchWord, page]);
 
+  const List = () => {
+    const list = [tourPlaces, restaurantPlaces, accommodationPlaces];
+    if (placeIsLoading) {
+      return (
+        <div className={styles.list}>
+          {Array(10).fill(0).map((_, index) => (
+            <Card key={index} isLoading={true}/>
+          ))}
+        </div>
+      )
+      
+    }
+    if (!placeIsLoading && list[activeTab].length === 0) {
+      return <div className={styles.list}><EmptyList /></div>;
+    }
+    return (
+      <div className={styles.list}>
+        {list[activeTab].map((card) => (
+          <Card key={card.id} id={card.id} image={card.image} title={card.title} description={card.description} type={card.type} />
+        ))}
+      </div>
+    )
+  }
+
   return (
     <div className={styles.listPage}>
       <div className={styles.searchContainer}>
@@ -267,34 +291,7 @@ const ListPage = () => {
           </div>
           <Dropdown current={selectedOption} options={options} onClickOption={handleOptionClick} />
         </div>
-        <div className={styles.list}>
-          {
-            activeTab === 0 && (!placeIsLoading && tourPlaces.length === 0 ? 
-            <EmptyList /> :
-            tourPlaces.map((card) => (
-              <Card key={card.id} id={card.id} image={card.image} title={card.title} description={card.description} type={card.type} />
-            )))
-          }
-          {
-            activeTab === 1 && (!placeIsLoading && restaurantPlaces.length === 0 ? 
-            <EmptyList /> :
-            restaurantPlaces.map((card) => (
-              <Card key={card.id} id={card.id} image={card.image} title={card.title} description={card.description} type={card.type}/>
-            )))
-          }
-          {
-            activeTab === 2 && (!placeIsLoading && accommodationPlaces.length === 0 ? 
-            <EmptyList /> :
-            accommodationPlaces.map((card) => (
-              <Card key={card.id} id={card.id} image={card.image} title={card.title} description={card.description} type={card.type} />
-            )))
-          }
-        </div>
-        {isMorePage && <div className={styles.loadMore} ref={loadMoreRef}>
-          {Array(20).fill(0).map((_, index) => (
-            <Card key={index} isLoading={true}/>
-          ))}
-        </div>}
+        <List />
       </div>
       <div>
         <MenuApp/>
