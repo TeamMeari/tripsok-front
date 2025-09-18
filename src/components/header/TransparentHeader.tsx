@@ -3,6 +3,8 @@ import styles from "./TransparentHeader.module.css";
 import IconButton from "../common/Button/IconBtn";
 import Button from "../common/Button/CommonBtn";
 import { useTranslation } from "react-i18next";
+import useAuthStore from "../../stores/authStore";
+import { useNavigate } from "react-router-dom";
 
 interface TransparentHeaderProps {
     type?: "default" | "auth"; // 기본 투명 헤더(default) / 로그인 포함(auth)
@@ -11,30 +13,27 @@ interface TransparentHeaderProps {
 
 const TransparentHeader: React.FC<TransparentHeaderProps> = ({ type = "default", fixed = false }) => {
     const { t } = useTranslation();
-
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate();
+    const { isLoggedIn, logout, nickname } = useAuthStore();
     const [showLogoutMenu, setShowLogoutMenu] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
-    const userName = "홍길동"; // 테스트용
 
     const handleArrowClick = () => {
-        console.log("뒤로가기");
+        navigate(-1);
     };
 
     const handleAuthClick = () => {
         if (isLoggedIn) {
             setShowLogoutMenu(prev => !prev);
         } else {
-            setIsLoggedIn(true);
+            navigate("/login");
             setShowLogoutMenu(false);
-            console.log("로그인 완료");
         }
     };
 
     const handleLogout = () => {
-        setIsLoggedIn(false);
+        logout();
         setShowLogoutMenu(false);
-        console.log("로그아웃 완료");
     };
 
     useEffect(() => {
@@ -70,7 +69,7 @@ const TransparentHeader: React.FC<TransparentHeaderProps> = ({ type = "default",
                         <IconButton type="globeIcon" />
                         <div className={styles.userMenuWrapper}>
                             <Button variant="secondary" borderRadius="48px" onClick={handleAuthClick}>
-                                {isLoggedIn ? t("greeting", { name: userName }) : t("login")}
+                                {isLoggedIn ? t("greeting", { name: nickname }) : t("login")}
                             </Button>
                             {isLoggedIn && showLogoutMenu && (
                                 <div className={styles.dropdownMenu}>
