@@ -160,37 +160,43 @@ const ContentPage = () => {
                             id: 1,
                             title: '카드 제목 1',
                             description: '카드 설명입니다. 첫 번째 카드입니다.',
-                            image: 'https://picsum.photos/200/300'
+                            image: 'https://picsum.photos/200/300',
+                            type: 'restaurant'  //백엔드 값에 수정
                         },
                         {
                             id: 2,
                             title: '카드 제목 2',
                             description: '카드 설명입니다. 두 번째 카드입니다.',
-                            image: 'https://picsum.photos/200/300'
+                            image: 'https://picsum.photos/200/300',
+                            type: 'restaurant'
                         },
                         {
                             id: 3,
                             title: '카드 제목 3',
                             description: '카드 설명입니다. 세 번째 카드입니다.',
-                            image: 'https://picsum.photos/200/300'
+                            image: 'https://picsum.photos/200/300',
+                            type: 'restaurant'
                         },
                         {
                             id: 4,
                             title: '카드 제목 4',
                             description: '카드 설명입니다. 네 번째 카드입니다.',
-                            image: 'https://picsum.photos/200/400'
+                            image: 'https://picsum.photos/200/400',
+                            type: 'restaurant'
                         },
                         {
                             id: 5,
                             title: '카드 제목 5',
                             description: '카드 설명입니다. 다섯 번째 카드입니다.',
-                            image: 'https://picsum.photos/200/350'
+                            image: 'https://picsum.photos/200/350',
+                            type: 'restaurant'
                         },
                         {
                             id: 6,
                             title: '카드 제목 6',
                             description: '카드 설명입니다. 여섯 번째 카드입니다.',
-                            image: 'https://picsum.photos/200/250'
+                            image: 'https://picsum.photos/200/250',
+                            type: 'restaurant'
                         }
                     ]}
                 />
