@@ -18,20 +18,6 @@ import { PlacesResponse, Place } from '../types/apiResponse';
 import EmptyList from '../components/common/EmptyList';
 import { convertTypeToLowerCase } from '../utils/converter';
 
-// 예시 데이터
-const expectedTags = [
-  { id: 1, type: "테마1" },
-  { id: 2, type: "테마2" },
-  { id: 3, type: "테마3" },
-  { id: 4, type: "테마4" },
-  { id: 5, type: "테마5" },
-  { id: 6, type: "테마6" },
-  { id: 7, type: "테마7" },
-  { id: 8, type: "테마8" },
-  { id: 9, type: "테마9" },
-  { id: 10, type: "테마10" },
-]
-
 const ListPage = () => {
   const { t, i18n } = useTranslation();
   const { apiCall: tagApiCall, isLoading: tagIsLoading } = useApi();
@@ -79,7 +65,7 @@ const ListPage = () => {
 
   const fetchTags = () => {
     if (tagIsLoading) return;
-    tagApiCall("/theme", "GET").then((response) => {
+    tagApiCall("/theme" + `?locale=${i18n.language.toUpperCase()}`, "GET").then((response) => {
       if (response.status === 200) {
         setTags(response.data as Tag[]);
       }
@@ -203,9 +189,9 @@ const ListPage = () => {
   // 태그 fetch
   useEffect(() => {
     fetchTags();
-  }, []);
+  }, [t]);
 
-  // 태그 변경, 옵션 변경
+  // 태그 변경, 옵션, 검색어, 언어 변경
   useEffect(() => {
     reset();
     if (searchWord) {
@@ -213,7 +199,7 @@ const ListPage = () => {
         if (i !== activeTab) fetchPlaces[i]();
       }
     }
-  }, [selectedTag, selectedOption, searchWord]);
+  }, [selectedTag, selectedOption, searchWord, t]);
 
   // wheel로 넘길수 있도록 설정
   useEffect(() => {
@@ -263,7 +249,7 @@ const ListPage = () => {
           </div>
         ) : (
           <div className={styles.tagContainer} ref={tagContainerRef}>
-            {expectedTags.map((tag) => (
+            {tags.map((tag) => (
               <HashtagButton key={tag.id} label={tag.type} onClick={() => {
                 handleTagClick(tag.id);
               }} isSelected={selectedTag === tag.id} />

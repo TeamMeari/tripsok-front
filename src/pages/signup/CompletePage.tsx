@@ -20,7 +20,7 @@ const SignupCompletePage = () => {
     }
   }, []);
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { apiCall: fetchApiCall, isLoading: fetchIsLoading } = useApi();
   const { apiCall: patchApiCall } = useApi();
   const [hashtags, setHashtags] = useState<Tag[]>([]);
@@ -28,7 +28,7 @@ const SignupCompletePage = () => {
   const { isLoggedIn, nickname } = useAuthStore();
 
   const fetchHashtags = () => {
-    fetchApiCall("/theme", "GET").then((response) => {
+    fetchApiCall("/theme" + `?locale=${i18n.language.toUpperCase()}`, "GET").then((response) => {
       if (response.status === 200) {
         setHashtags(response.data as Tag[]);
       }
