@@ -16,7 +16,15 @@ const HeaderSelector: React.FC = () => {
     if (pathname.startsWith("/content/")) {
       return null;
     }
-    
+    if (pathname.startsWith("/payment")) {
+        return null;
+    }
+    if (pathname.startsWith("/myplan-detail")) {
+        return null;
+    }
+    if (pathname.startsWith("/myplan")) {
+        return null;
+    }
     // 나머지 페이지들은 기본 Header 사용
     return <Header />;
   };

@@ -161,7 +161,7 @@ export default function MyPlanDetailPage() {
 
     return (
         <div style={{ height: "100vh", position: "relative" }}>
-            <TransparentHeader  type="auth" />
+            <TransparentHeader type="auth" fixed />
 
             <div style={{ height: "100%", width: "100%" }}>
                 <KakaoMap
