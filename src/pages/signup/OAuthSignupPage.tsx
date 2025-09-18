@@ -11,6 +11,7 @@ import { useApi } from "../../hooks/useApi";
 import { OAuthSignupResponse } from "../../types/apiResponse";
 import useAuthStore from "../../stores/authStore";
 import { useLocation } from "react-router-dom";
+import { Trans } from "react-i18next";
 
 const OAuthSignupPage = () => {
     const navigate = useNavigate();
@@ -85,49 +86,53 @@ const OAuthSignupPage = () => {
     }, [nickname]);
 
     // redirect
-    useEffect(() => {
-        if (!state || !socialSignUpToken) navigate("/login", { replace: true });
-    }, [socialSignUpToken, navigate, state]);
+    // useEffect(() => {
+    //     if (!state || !socialSignUpToken) navigate("/login", { replace: true });
+    // }, [socialSignUpToken, navigate, state]);
 
-    return (<div className={styles.step}>
-        <p className={styles.message}>
-            {t("emailVerified")}
-        </p>
-        <div className={styles.content}>
-            <div className={styles.inputContainer}>
-                <Input
-                    onChange={handleNicknameChange}
-                    value={nickname}
-                    placeholder={t("nicknameRule")}
-                    maxLength={NICKNAME_MAX_LENGTH}
-                />
-                {nicknameError && <p className={styles.error}>{t(nicknameError)}</p>}
-            </div>
-
-            {termAndPrivacyVisible && (
-                <div className={styles.checkboxContainer}>
-                    <div className={styles.checkboxItem}>
-                        <CheckBox checked={termsChecked} disabled={false} onClick={handleTermsChecked} />
-                        <button onClick={() => navigate("/signup/terms")} className={styles.documentButton}>
-                            <label>{t("termsRequired")}</label>
-                            <ChevronRightIcon color="#ABB0BA" size={16} />
-                        </button>
+    return (
+        <div className={styles.page}>   
+            <div className={styles.step}>
+                <p className={styles.message}>
+                    <Trans i18nKey="oauth2Verified" components={{ br: <br /> }} />
+                </p>
+                <div className={styles.content}>
+                    <div className={styles.inputContainer}>
+                        <Input
+                            onChange={handleNicknameChange}
+                            value={nickname}
+                            placeholder={t("nicknameRule")}
+                            maxLength={NICKNAME_MAX_LENGTH}
+                        />
+                        {nicknameError && <p className={styles.error}>{t(nicknameError)}</p>}
                     </div>
-                    <div className={styles.checkboxItem}>
-                        <CheckBox checked={privacyChecked} disabled={false} onClick={handlePrivacyChecked} />
-                        <button onClick={() => navigate("/signup/privacy")} className={styles.documentButton}>
-                            <label>{t("privacyRequired")}</label>
-                            <ChevronRightIcon color="#ABB0BA" size={16} />
-                        </button>
+
+                    {termAndPrivacyVisible && (
+                        <div className={styles.checkboxContainer}>
+                            <div className={styles.checkboxItem}>
+                                <CheckBox checked={termsChecked} disabled={false} onClick={handleTermsChecked} />
+                                <button onClick={() => navigate("/signup/terms")} className={styles.documentButton}>
+                                    <label>{t("termsRequired")}</label>
+                                    <ChevronRightIcon color="#ABB0BA" size={16} />
+                                </button>
+                            </div>
+                            <div className={styles.checkboxItem}>
+                                <CheckBox checked={privacyChecked} disabled={false} onClick={handlePrivacyChecked} />
+                                <button onClick={() => navigate("/signup/privacy")} className={styles.documentButton}>
+                                    <label>{t("privacyRequired")}</label>
+                                    <ChevronRightIcon color="#ABB0BA" size={16} />
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    <div className={styles.buttonFixedTab}>
+                        <ValidationBtn isDisabled={!validateInfo || nicknameValidateIsLoading || submitIsLoading} onClick={handleSubmit}>{t("signup")}</ValidationBtn>
                     </div>
                 </div>
-            )}
-
-            <div className={styles.buttonFixedTab}>
-                <ValidationBtn isDisabled={!validateInfo || nicknameValidateIsLoading || submitIsLoading} onClick={handleSubmit}>{t("signup")}</ValidationBtn>
             </div>
         </div>
-    </div>)
+    )
 };
 
 export default OAuthSignupPage;
