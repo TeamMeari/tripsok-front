@@ -269,21 +269,21 @@ const ListPage = () => {
             activeTab === 0 && (!placeIsLoading && tourPlaces.length === 0 ? 
             <EmptyList /> :
             tourPlaces.map((card) => (
-              <Card key={card.id} image={card.image} title={card.title} description={card.description} type={card.type} />
+              <Card key={card.id} id={card.id} image={card.image} title={card.title} description={card.description} type={card.type} />
             )))
           }
           {
             activeTab === 1 && (!placeIsLoading && restaurantPlaces.length === 0 ? 
             <EmptyList /> :
             restaurantPlaces.map((card) => (
-              <Card key={card.id} image={card.image} title={card.title} description={card.description} />
+              <Card key={card.id} id={card.id} image={card.image} title={card.title} description={card.description} type={card.type}/>
             )))
           }
           {
             activeTab === 2 && (!placeIsLoading && accommodationPlaces.length === 0 ? 
             <EmptyList /> :
             accommodationPlaces.map((card) => (
-              <Card key={card.id} image={card.image} title={card.title} description={card.description} />
+              <Card key={card.id} id={card.id} image={card.image} title={card.title} description={card.description} type={card.type} />
             )))
           }
         </div>
