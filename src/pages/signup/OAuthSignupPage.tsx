@@ -8,16 +8,17 @@ import ValidationBtn from "../../components/common/Button/ValidationBtn";
 import CheckBox from "../../components/common/CheckBox";
 import Input from "../../components/common/Input";
 import { useApi } from "../../hooks/useApi";
-import OAuthLoginUrl from "../../utils/OAuthLoginUrl";
+import { OAuthSignupResponse } from "../../types/apiResponse";
+import useAuthStore from "../../stores/authStore";
 
 const OAuthSignupPage = () => {
     const navigate = useNavigate();
     const { socialSignUpToken } = useSignupStore();
-
+    const { login } = useAuthStore();
     const { apiCall: nicknameValidateApiCall, isLoading: nicknameValidateIsLoading } = useApi();
     const { apiCall: submitApiCall, isLoading: submitIsLoading } = useApi();
 
-    const { nickname: nicknameStore, setNickname: setNicknameStore, reset, setTermsChecked, setPrivacyChecked, termsChecked, privacyChecked, setRoutingSignupComplete } = useSignupStore();
+    const { nickname: nicknameStore, setNickname: setNicknameStore, reset, setTermsChecked, setPrivacyChecked, termsChecked, privacyChecked } = useSignupStore();
 
     const NICKNAME_MAX_LENGTH = 15;
     const [nickname, setNickname] = useState(nicknameStore);
@@ -33,11 +34,11 @@ const OAuthSignupPage = () => {
     const handlePrivacyChecked = useCallback(() => setPrivacyChecked(!privacyChecked), []);
 
     const handleSubmit = useCallback(() => {
-        submitApiCall("/auth/signup/oauth2", "POST", { socialSignUpToken, nickname }).then(response => {
-            if (response.status === 200 || response.status === 201) {
-                window.location.href = OAuthLoginUrl;
+        submitApiCall<OAuthSignupResponse>("/auth/signup/oauth2", "POST", { socialSignUpToken, nickname }).then(response => {
+            if ((response.status === 200 || response.status === 201) && response.data?.accessToken && response.data?.nickname) {
+                login(response.data?.accessToken as string, response.data?.nickname as string);
                 reset();
-                setRoutingSignupComplete();
+                navigate("/signup/complete", { state: { from: "/signup/oauth2" } });
             }
         });
     }, [nickname, navigate]);

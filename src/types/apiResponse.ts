@@ -16,6 +16,11 @@ export interface LoginResponse {
     nickname: string;
 }
 
+export interface OAuthSignupResponse {
+    accessToken: string;
+    nickname: string;
+}
+
 export interface PlacesResponse {
     currentPage: number;
     totalPages: number;
