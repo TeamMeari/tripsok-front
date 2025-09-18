@@ -9,9 +9,10 @@ interface HashtagButtonProps {
 
 const HashtagButton: React.FC<HashtagButtonProps& { readOnly?: boolean }> = ({ label, onClick, readOnly, isSelected }) => {
 
+
     const handleClick = () => {
         if (readOnly) return;
-        setIsSelected((prev) => !prev);
+
         onClick?.();
     };
 
