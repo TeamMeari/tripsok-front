@@ -27,6 +27,7 @@ const TransparentHeader: React.FC<TransparentHeaderProps> = ({ type = "default",
             onBackClick(); // 페이지에서 전달한 함수 실행
         } else {
             console.log("뒤로가기");
+            navigate(-1);
         }
     };
 
