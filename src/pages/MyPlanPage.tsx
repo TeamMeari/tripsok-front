@@ -6,6 +6,8 @@ import Button from "../components/common/Button/CommonBtn";
 import styles from "./MyPlanPage.module.css";
 import { useTranslation } from "react-i18next";
 import { useApi } from "../hooks/useApi";
+import useAuthStore from "../stores/authStore";
+
 
 interface Place {
     id: number;
@@ -17,6 +19,9 @@ export default function Page() {
     const navigate = useNavigate();
     const location = useLocation();
     const { apiCall, isLoading } = useApi();
+
+    const [showLoginModal, setShowLoginModal] = useState(false);
+    const {isLoggedIn} = useAuthStore();
 
     const [visitedPlaces, setVisitedPlaces] = useState<Place[]>(() => {
         const saved = localStorage.getItem('visitedPlaces');
@@ -54,6 +59,7 @@ export default function Page() {
 
         // 서버에 저장된 플랜이 있는지 확인
         const checkSavedPlan = async () => {
+            if (!isLoggedIn) return null;
             try {
                 const res = await apiCall<{
                     tripPlan: { tripDate: string | null; startTime: string | null; numberOfPeople: number | null };
@@ -87,6 +93,13 @@ export default function Page() {
         };
         checkSavedPlan();
     }, [location.state]);
+
+    const isAuthenticated = !!localStorage.getItem("accessToken");
+
+    useEffect(() => {
+        setShowLoginModal(!isLoggedIn);
+    }, [isLoggedIn]);
+
     useEffect(() => {
         setSavedButtonText(prev => {
             if (!hasSavedPlan) return prev;
@@ -115,10 +128,27 @@ export default function Page() {
             <div className={styles.MyPlanPage}>
                 <Header useBackground={true} />
 
+                {showLoginModal && (
+                    <div className={styles.guestContainer}>
+                        <img src="/InfoIcon/taxi.svg" alt="Taxi" className={styles.image} />
+                        <div className={styles.TexiTitle}>
+                            <div className={styles.textTitle}>
+                                지금 가입하고<br/>
+                                계획부터 예약까지<br/>
+                                간편하게 진행해요
+                            </div>
+                            <Button variant="primary" size="large" borderRadius="12px"
+                                    onClick={() => navigate("/signup/email/1")}
+                            >
+                                회원가입
+                            </Button>
+                        </div>
+
+                    </div>
+                )}
                 <div className={styles.MyPlanCreate}>
                     <div className={styles.MyPlan}>
                         <div className={styles.MyPlanTitle}>{t('myPlanTitle')}</div>
-
 
 
                         <div className={styles.MyPlanDetail}>

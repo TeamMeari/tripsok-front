@@ -91,7 +91,7 @@ const resources = {
             myJourney: "{{nickname}}님의 이번 강릉 여정",
             person: "{{count}}명",
             locations: {
-            gangneungStation: "강남역",
+            gangneungStation: "강릉역",
                 },
             savedPlanContinue: "저장한 계획 이어하기",
             savedPlanAdd: "저장된 계획에 추가",
@@ -230,7 +230,7 @@ const resources = {
             person_one: "{{count}} person",
             person_other: "{{count}} people",
             locations: {
-                gangneungStation: "강릉역",
+                gangneungStation: "Gangneung Station",
             },
             savedPlanContinue: "Continue saved plan",
             savedPlanAdd: "Add to saved plan",
