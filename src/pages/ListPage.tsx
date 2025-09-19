@@ -17,6 +17,7 @@ import useScrollHorizon from '../hooks/useScrollHorizon';
 import { PlacesResponse, Place } from '../types/apiResponse';
 import EmptyList from '../components/common/EmptyList';
 import { convertTypeToLowerCase } from '../utils/converter';
+import TopButton from '../components/common/TopButton';
 
 const ListPage = () => {
   const { t, i18n } = useTranslation();
@@ -43,7 +44,7 @@ const ListPage = () => {
   const [page, setPage] = useState<number[]>([0, 0, 0]);
   const [totalPages, setTotalPages] = useState<number[]>([1, 1, 1]);
   const [totalCount, setTotalCount] = useState<number[]>([0, 0, 0]);
-
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
   const isMorePage = totalPages[activeTab] > page[activeTab];
   
   const isDot: boolean[] = [
@@ -263,7 +264,8 @@ const ListPage = () => {
   }
 
   return (
-    <div className={styles.listPage}>
+    <div className={styles.listPageContainer} ref={scrollAreaRef}>
+      <div className={styles.listPage}>
       <div className={styles.searchContainer}>
         <SearchInput variant="list" searchWord={searchWord || ""} />
       </div>
@@ -296,9 +298,10 @@ const ListPage = () => {
         </div>
         <List />
       </div>
-      <div>
-        <MenuApp/>
       </div>
+
+      <MenuApp/>
+      <TopButton ref={scrollAreaRef} />
     </div>
   );
 }

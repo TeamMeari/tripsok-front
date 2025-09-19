@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { animate } from "@motionone/dom";
 import { useScrollToSlide } from "../../../hooks/useScrollToSlide";
 import SearchInput from "../SearchInput";
+import placePlaceholder from "../../../assets/image/place-placeholder.png";
 
 export interface MainCarouselItem {
   id: number;
@@ -176,8 +177,9 @@ const MainCarousel = ({ items, texts = [], isLoading = false }: MainCarouselProp
             extendedItems.map((item, idx) => (
               <div className={styles.carouselItem} key={idx} onClick={(e) => handleCarouselItemClick(e, item.type, item.id)} onTouchStart={(e) => handleCarouselItemTouchStart(e)} onTouchEnd={(e) => handleCarouselItemTouchEnd(e, item.type, item.id)}>
                 <img
-                  src={item.image || "src/assets/images/card/card.png"}
+                  src={item.image || placePlaceholder}
                   alt=""
+                  onError={(e) => {e.currentTarget.src = placePlaceholder;}}
                 />
               </div>
             ))

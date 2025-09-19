@@ -11,8 +11,7 @@ import KakaoMap from "../components/KakaoMap";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useApi } from '../hooks/useApi';
-import axiosInstance from "../utils/axios";
-
+import useAuthStore from '../stores/authStore';
 
 interface Tag {
     id: number;
@@ -42,13 +41,39 @@ const ContentPage = () => {
     const location = useLocation();
     const { t, i18n } = useTranslation(); // i18n.language 사용
     const { apiCall: fetchApi, isLoading } = useApi();
-
+    const { isLoggedIn } = useAuthStore();
 
     const [place, setPlace] = useState<PlaceResponse | null>(null);
     const [loading, setLoading] = useState(true);
     const { type, id } = useParams<{ type: string; id: string }>();
 
+    const { apiCall: likePatchApiCall } = useApi();
+    const { apiCall: likeFetchApiCall } = useApi();
+    const [liked, setLiked] = useState(false);
 
+    const handleClickLike = () => {
+        if (!isLoggedIn) return;
+        // 먼저 UI 반영, 오류 시 롤백
+        setLiked(prev => !prev);
+        likePatchApiCall(`user/like-place/${id}`, 'POST').then(response => {
+            if (response.status !== 200) {
+                setLiked(prev => !prev);
+            }
+        })
+    }
+
+    const fetchLike = () => {
+        if (!isLoggedIn) return;
+        likeFetchApiCall(`user/like-places?size=20&type=${type?.toUpperCase()}&locale=${i18n.language.toUpperCase()}`, 'GET').then(response => {
+            if (response.status === 200 && response.data) {
+                const data = response.data as { content: { placeId: number }[] };
+                if ('content' in data) {
+                    setLiked(data.content.some(like => like.placeId === Number(id)));
+                }
+            }
+        })
+    }
+    
     console.log("URL 파라미터 type:", type);
     console.log("URL 파라미터 id:", id);
 
@@ -75,6 +100,12 @@ const ContentPage = () => {
         };
         navigate('/myplan', { state: { addedPlace } });
     };
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            fetchLike();
+        }
+    }, [isLoggedIn]);
 
     if (loading) return <div>⏳ 로딩중...</div>;
     if (!place) return <div>❌ 장소 정보를 불러올 수 없습니다.</div>;
@@ -203,7 +234,7 @@ const ContentPage = () => {
             </div>
 
             <div className={styles.fixedBtn}>
-                <LikeButton/>
+                <LikeButton initialLiked={liked} onClick={handleClickLike}/>
                 <Button variant="primary"
                         size="small"
                         borderRadius="12px"

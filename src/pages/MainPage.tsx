@@ -1,6 +1,6 @@
 import styles from './MainPage.module.css';
 import MainCarousel from '../components/feature/Carousel/MainCarousel';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import MenuTab from '../components/feature/Tab/MenuTab';
 import menuTabs from '../types/menuTabs';
 import { Trans, useTranslation } from 'react-i18next';
@@ -16,6 +16,7 @@ import { convertTypeToLowerCase } from '../utils/converter';
 import { Link } from 'react-router-dom';
 import MenuApp from '../components/MenuApp';
 import NavigationMenuTab from '../components/feature/Tab/NavigationMenuTab';
+import TopButton from '../components/common/TopButton';
 
 const MainPage = () => {
   const { t, i18n } = useTranslation();
@@ -29,7 +30,7 @@ const MainPage = () => {
   const { apiCall: Top5CardCarouselApiCall, isLoading: Top5CardCarouselIsLoading } = useApi();
   const { apiCall: FirstCardCarouselApiCall, isLoading: FirstCardCarouselIsLoading } = useApi();
   const { apiCall: SecondCardCarouselApiCall, isLoading: SecondCardCarouselIsLoading } = useApi();
-
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
   // const handleTabClick = (tab: number) => {
   //   setActiveTab(tab);
   // }
@@ -134,40 +135,43 @@ const MainPage = () => {
     fetchSecondCardCarouselPlaces();
   }, [t]);
 
-  return <div className={styles.page}>
-    <MainCarousel
-      items={mainCarouselItems}
-      texts={texts}
-      isLoading={MainCarouselIsLoading}
-    />
-    <div className={styles.space}></div>
-    {/* <MenuTab tabs={menuTabs} activeTab={activeTab} isIcon={true} tabOnClick={handleTabClick} /> */}
-    <NavigationMenuTab tabs={menuTabs} isIcon={true}/>
-    <div className={styles.section1}>
-      <div className={styles.cardList}>
-        <TitleLink i18nKey="mainTopSpots" link="/list" />
-        <CardCarousel cards={top5CardCarouselItems} isLoading={Top5CardCarouselIsLoading} />
+  return (
+    <div className={styles.pageContainer} ref={scrollAreaRef}>
+      <div className={styles.page}>
+        <MainCarousel
+          items={mainCarouselItems}
+          texts={texts}
+          isLoading={MainCarouselIsLoading}
+        />
+        <div className={styles.space}></div>
+        {/* <MenuTab tabs={menuTabs} activeTab={activeTab} isIcon={true} tabOnClick={handleTabClick} /> */}
+        <NavigationMenuTab tabs={menuTabs} isIcon={true}/>
+        <div className={styles.section1}>
+          <div className={styles.cardList}>
+            <TitleLink i18nKey="mainTopSpots" link="/list"/>
+            <CardCarousel cards={top5CardCarouselItems} isLoading={Top5CardCarouselIsLoading} />
+          </div>
+          <div className={styles.cardList}>
+            <TitleLink i18nKey="mainKeywordSpotsFirst" values={{ keyword: dailyKeywords[1] }} link="/list" />
+            <CardCarousel cards={firstCardCarouselItems} isLoading={FirstCardCarouselIsLoading} />
+          </div>
+          <div className={styles.listLinkContainer}>
+            <Link to="/list">{t("mainMoreSpots")}</Link>
+          </div>
+        </div>
+        <div className={styles.section2}>
+          <BannerCarousel banners={bannerCarouselItems} />
+          <div className={styles.cardList}>
+            <TitleLink i18nKey="mainKeywordSpotsSecond" values={{ keyword: dailyKeywords[2] }} link="/list" />
+            <CardCarousel cards={secondCardCarouselItems} isLoading={SecondCardCarouselIsLoading} />
+          </div>
+        </div>
+        <Footer />
       </div>
-      <div className={styles.cardList}>
-        <TitleLink i18nKey="mainKeywordSpotsFirst" values={{ keyword: dailyKeywords[1] }} link="/list" />
-        <CardCarousel cards={firstCardCarouselItems} isLoading={FirstCardCarouselIsLoading} />
-      </div>
-      <div className={styles.listLinkContainer}>
-        <Link to="/list">{t("mainMoreSpots")}</Link>
-      </div>
+      <TopButton ref={scrollAreaRef} />
+      <MenuApp/>
     </div>
-    <div className={styles.section2}>
-      <BannerCarousel banners={bannerCarouselItems} />
-      <div className={styles.cardList}>
-        <TitleLink i18nKey="mainKeywordSpotsSecond" values={{ keyword: dailyKeywords[2] }} link="/list" />
-        <CardCarousel cards={secondCardCarouselItems} isLoading={SecondCardCarouselIsLoading} />
-      </div>
-    </div>
-    <Footer />
-    <div>
-        <MenuApp/>
-    </div>
-  </div>;
+  )
 };
 
 const TitleLink = ({ i18nKey, values, link }: { i18nKey: string, values?: any, link: string }) => {
