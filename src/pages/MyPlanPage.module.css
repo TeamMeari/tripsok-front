@@ -72,3 +72,37 @@
     width: 100%;
     margin-left: -8px;
 }
+.guestContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(237, 237, 237, 0.6);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    gap: 8px;
+}
+
+/*.signupBtn {*/
+/*    margin-top: 16px;*/
+/*    padding: 10px 20px;*/
+/*    border-radius: 12px;*/
+/*    border: none;*/
+/*    cursor: pointer;*/
+/*}*/
+
+.textTitle{
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+}
+.TexiTitle{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+}

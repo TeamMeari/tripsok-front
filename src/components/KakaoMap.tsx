@@ -51,6 +51,15 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
                         map,
                         title: loc.title,
                     });
+
+                    const infowindow = new kakao.maps.InfoWindow({
+                        content: `<div style="padding:5px;">${loc.title}</div>`,
+                    });
+
+                    kakao.maps.event.addListener(marker, "click", () => {
+                        infowindow.open(map, marker);
+                    });
+
                     bounds.extend(marker.getPosition());
                 });
 

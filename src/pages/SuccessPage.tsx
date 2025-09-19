@@ -1,7 +1,7 @@
 // src/pages/PaymentSuccessPage.tsx
 import React from "react";
-import { useLocation } from "react-router-dom";
-import styles from "./payment_successPage.module.css";
+import { useLocation, useNavigate } from "react-router-dom";
+import styles from "./SuccessPage.module.css";
 import TransparentHeader from "../components/header/TransparentHeader";
 import Button from "../components/common/Button/CommonBtn";
 import { useTranslation } from "react-i18next";
@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 const PaymentSuccessPage: React.FC = () => {
     const { t } = useTranslation();
     const location = useLocation();
+    const navigate = useNavigate();
     const query = new URLSearchParams(location.search);
 
     const orderId = query.get("orderId");
@@ -18,7 +19,7 @@ const PaymentSuccessPage: React.FC = () => {
 
     return (
         <div className={styles.container}>
-            <TransparentHeader type="auth"/>
+            <TransparentHeader type="auth" onBackClick={() => navigate(-1)}/>
             <div className={styles.line}></div>
             <div className={styles.pyment_succssPage}>
                 <div className={styles.pyment_succss}>

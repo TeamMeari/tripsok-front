@@ -19,7 +19,7 @@ import OAuthSignupPage from "./pages/signup/OAuthSignupPage";
 import TermsPage from "./pages/signup/TermsPage";
 import PrivacyPage from "./pages/signup/PrivacyPage";
 import PaymentPage from "./pages/PaymentPage";
-import PaymentSuccessPage from "./pages/payment_successPage";
+import PaymentSuccessPage from "./pages/SuccessPage";
 import useAuthStore from "./stores/authStore";
 
 function App(): JSX.Element {
