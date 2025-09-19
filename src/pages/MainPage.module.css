@@ -1,3 +1,16 @@
+.pageContainer {
+    width: 100%;
+    height: calc(100vh - 84px);
+    margin: 0;
+    overflow-y: auto;
+    -ms-overflow-style: none; /* IE, Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.pageContainer::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
 .page {
     margin: 84px 0;
 }
