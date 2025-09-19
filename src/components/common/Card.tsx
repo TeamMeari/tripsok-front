@@ -1,6 +1,7 @@
 import styles from "./Card.module.css";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import placePlaceholder from "../../assets/image/place-placeholder.png";
 
 interface CardProps {
     id?: number;
@@ -14,7 +15,7 @@ interface CardProps {
 
 const Card = ({
     id,
-    image = "src/assets/images/card/card.png",
+    image = placePlaceholder,
     title,
     description,
     isLoading = false,
@@ -43,7 +44,7 @@ const Card = ({
     <div className={styles.card} onClick={() => navigate(`/content/${type}/${id}`)}>
         { RankBadge() }
         <div className={styles.cardImageContainer}>
-            <img src={image} alt={title} />
+            <img src={image} alt={title} onError={(e) => {e.currentTarget.src = placePlaceholder;}}/>
         </div>
         <div className={styles.cardBody}>
             <h5 className={styles.cardTitle}>{title}</h5>
