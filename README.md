@@ -12,20 +12,17 @@
 ## 🔨 사용 기술
 <!-- 기술 + 버전 + 사용 이유 -->
 ### 기술
-<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white">
-<img src="https://img.shields.io/badge/Typescript-3178C6?style=for-the-badge&logo=Typescript&logoColor=white">
+<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white"> <img src="https://img.shields.io/badge/Typescript-3178C6?style=for-the-badge&logo=Typescript&logoColor=white">
 <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=Vite&logoColor=white">
 <img src="https://img.shields.io/badge/Zustand-443E38?style=for-the-badge&logo=Zustand&logoColor=white">
 <img src="https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=Axios&logoColor=white">
 <img src="https://img.shields.io/badge/i18next-26A69A?style=for-the-badge&logo=i18next&logoColor=white">
 
 ### 디자인
-<img src="https://img.shields.io/badge/CSSModules-000000?style=for-the-badge&logo=CSSModules&logoColor=white">
-<img src="https://img.shields.io/badge/MotionOne-FFEB0E?style=for-the-badge&logo=MotionOne&logoColor=black">
+<img src="https://img.shields.io/badge/CSSModules-000000?style=for-the-badge&logo=CSSModules&logoColor=white"> <img src="https://img.shields.io/badge/MotionOne-FFEB0E?style=for-the-badge&logo=MotionOne&logoColor=black">
 
 ### 협업
-<img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white">
-<img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white">
+<img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white"> <img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white">
 <img src="https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=Jira&logoColor=white">
 <img src="https://img.shields.io/badge/Confluence-172B4D?style=for-the-badge&logo=Confluence&logoColor=white">
 <img src="https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white">
