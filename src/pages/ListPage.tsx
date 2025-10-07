@@ -40,7 +40,7 @@ const ListPage = () => {
   // type, sort 없으면 기본값으로 리다이렉트
   useEffect(() => {
     if (type === null || sort === null) {
-      const queryParams = `type=${type || 'tour'}&sort=${sort || 'like'}${searchWord ? `&query=${searchWord}&typeSearch=text` : ''}${hashtagId ? `&hashtagId=${hashtagId}` : ''}`;
+      const queryParams = `type=${type || 'tour'}&sort=${sort || 'like'}${searchWord ? `&q=${searchWord}&typeSearch=text` : ''}${hashtagId ? `&hashtagId=${hashtagId}` : ''}`;
       navigate(`/list?${queryParams}`, { replace: true });
     }
   }, [type, sort, searchWord, hashtagId, navigate]);
@@ -130,19 +130,19 @@ const ListPage = () => {
   // 설정 변경
   const handleTabClick = (tab: string) => {
     reset();
-    const queryParams = `type=${tab}&sort=${sort || 'like'}${searchWord ? `&query=${searchWord}&typeSearch=text` : ''}${hashtagId ? `&hashtagId=${hashtagId}` : ''}`;
+    const queryParams = `type=${tab}&sort=${sort || 'like'}${searchWord ? `&q=${searchWord}&typeSearch=text` : ''}${hashtagId ? `&hashtagId=${hashtagId}` : ''}`;
     navigate(`/list?${queryParams}`, { replace: true });
   }
 
   const handleTagClick = (tagId: number) => {
     reset();
-    const queryParams = `type=${type}&sort=${sort || 'like'}${searchWord ? `&query=${searchWord}&typeSearch=text` : ''}${tagId === hashtagId ? '' : `&hashtagId=${tagId}`}`;
+    const queryParams = `type=${type}&sort=${sort || 'like'}${searchWord ? `&q=${searchWord}&typeSearch=text` : ''}${tagId === hashtagId ? '' : `&hashtagId=${tagId}`}`;
     navigate(`/list?${queryParams}`, { replace: true });
   }
 
   const handleOptionClick = (option: SortType) => {
     reset();
-    const queryParams = `type=${type}&sort=${option}${searchWord ? `&query=${searchWord}&typeSearch=text` : ''}${hashtagId ? `&hashtagId=${hashtagId}` : ''}`;
+    const queryParams = `type=${type}&sort=${option}${searchWord ? `&q=${searchWord}&typeSearch=text` : ''}${hashtagId ? `&hashtagId=${hashtagId}` : ''}`;
     navigate(`/list?${queryParams}`, { replace: true });
   }
 
