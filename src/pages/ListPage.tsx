@@ -9,9 +9,10 @@ import Card from '../components/common/Card';
 import { useTranslation } from 'react-i18next';
 import MenuApp from "../components/MenuApp";
 import SearchInput from '../components/feature/SearchInput';
-import { menuTabs, PlaceType } from '../types/menuTabs';
+import { PlaceType } from '../types/menuTabs';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useApi } from '../hooks/useApi';
+import { useStaticApiQuery } from '../hooks/useApi';
 import HashtagBtnSkeleton from '../components/common/HashtagBtnSkeleton';
 import useScrollHorizon from '../hooks/useScrollHorizon';
 import { PlacesResponse, Place } from '../types/apiResponse';
@@ -22,8 +23,7 @@ import { SortType } from '../types/sortOptions';
 
 const ListPage = () => {
   const { t, i18n } = useTranslation();
-  const { apiCall: tagApiCall, isLoading: tagIsLoading } = useApi();
-  const { apiCall: placeApiCall, isLoading: placeIsLoading } = useApi();
+  // 장소 목록은 정적 캐시로 관리 (React Query)
   const navigate = useNavigate();
 
   // query params
@@ -61,39 +61,71 @@ const ListPage = () => {
     accommodation: false,
   });
 
+  // 정적 태그 데이터: React Query로 캐싱
+  const { data: tagsData, isLoading: tagsIsLoading } = useStaticApiQuery<Tag[]>(
+    ['tags', i18n.language],
+    `/theme?locale=${i18n.language.toUpperCase()}`
+  );
+
+  // 현재 page 기준 장소 목록 요청 (정적 캐시)
+  const placesQueryParams = `?page=${page}&size=20&sortKey=${sort}&direction=desc&locale=${i18n.language}${hashtagId ? `&themeId=${hashtagId}` : ''}${searchWord ? `&categoryFilter=true&q=${searchWord}` : ''}`;
+  const { data: placesData, isLoading: placesIsLoading } = useStaticApiQuery<PlacesResponse>(
+    ['places', (type as string) || 'tour', sort || 'like', searchWord || '', hashtagId ?? '', page, i18n.language],
+    `places/${(type as string) || 'tour'}${placesQueryParams}`,
+    {
+      enabled: type !== null && sort !== null,
+    }
+  );
+
+  // 검색어가 있을 때, 모든 타입의 첫 페이지를 실제 목록과 동일 키로 선조회하여 캐시 (UI 반영 없음)
+  const prefetchQueryParams = `?page=0&size=20&sortKey=${sort}&direction=desc&locale=${i18n.language}${hashtagId ? `&themeId=${hashtagId}` : ''}${searchWord ? `&categoryFilter=true&q=${searchWord}&typeSearch=text` : ''}`;
+  useStaticApiQuery<PlacesResponse>(
+    ['places', 'tour', sort || 'like', searchWord || '', hashtagId ?? '', 0, i18n.language],
+    `places/tour${prefetchQueryParams}`,
+    { enabled: !!searchWord }
+  );
+  useStaticApiQuery<PlacesResponse>(
+    ['places', 'restaurant', sort || 'like', searchWord || '', hashtagId ?? '', 0, i18n.language],
+    `places/restaurant${prefetchQueryParams}`,
+    { enabled: !!searchWord }
+  );
+  useStaticApiQuery<PlacesResponse>(
+    ['places', 'accommodation', sort || 'like', searchWord || '', hashtagId ?? '', 0, i18n.language],
+    `places/accommodation${prefetchQueryParams}`,
+    { enabled: !!searchWord }
+  );
+
   const reset = () => {
     setTotalPage(1);
     setTotalCount(0);
     setPage(0);
     setPlaces([]);
-  }
+  }  
 
-  const fetchTags = () => {
-    if (tagIsLoading) return;
-    tagApiCall("/theme" + `?locale=${i18n.language.toUpperCase()}`, "GET").then((response) => {
-      if (response.status === 200) {
-        setTags(response.data as Tag[]);
-      }
-    });
-  }
+  // 정적 태그 데이터를 화면 상태로 반영
+  useEffect(() => {
+    if (tagsData) setTags(tagsData);
+  }, [tagsData]);
 
-  const fetchPlaces = (type: PlaceType) => {
-    const queryparam = `?page=${page}&size=20&sortKey=${sort}&direction=desc&locale=${i18n.language}${hashtagId ? `&themeId=${hashtagId}` : ''}${searchWord ? `&categoryFilter=true&q=${searchWord}` : ''}`;
-    placeApiCall<PlacesResponse>(`places/${type || 'tour'}` + queryparam, "GET").then((response) => {
-      if (response.status === 200 && page === response.data!.currentPage) {
-        setPlaces(prev => [...prev, ...response.data!.items.map((v: Place) => ({
+  // 쿼리 응답을 화면 상태로 반영
+  useEffect(() => {
+    if (!placesData) return;
+    // 동일 페이지에 대해서만 반영
+    if (placesData.currentPage === page) {
+      setPlaces(prev => [
+        ...prev,
+        ...placesData.items.map((v: Place) => ({
           id: v.id,
           image: v.thumbnailUrl,
           title: v.name,
           description: v.summary,
           type: convertTypeToLowerCase(v.type),
-        })) as CardType[]]);
-        setPage(response.data!.currentPage + 1);
-        setTotalPage(response.data!.totalPages);
-        setTotalCount(response.data!.totalItems);
-      }
-    });
-  }
+        })) as CardType[]
+      ]);
+      setTotalPage(placesData.totalPages);
+      setTotalCount(placesData.totalItems);
+    }
+  }, [placesData, page]);
 
   // 설정 변경
   const handleTabClick = (tab: string) => {
@@ -114,41 +146,16 @@ const ListPage = () => {
     navigate(`/list?${queryParams}`, { replace: true });
   }
 
-  // 첫 렌더링 데이터 fetch
-  // 태그 fetch
-  useEffect(() => {
-    fetchTags();
-    if (searchWord) {
-      for (const placeType of Object.keys(menuTabs) as PlaceType[]) {
-        placeApiCall<PlacesResponse>(`places/${placeType}?page=0&size=1&sortKey=${sort}&direction=desc&locale=${i18n.language}${hashtagId ? `&themeId=${hashtagId}` : ''}&categoryFilter=true&q=${searchWord}&typeSearch=text`, "GET").then((response) => {
-          if (response.status === 200 && response.data!.totalItems > 0) {
-            setIsDot(prev => ({ ...prev, [placeType]: true }));
-          }
-        });
-      }
-    }
-  }, [t]);
-
-  useEffect(() => {
-    if (searchWord) {
-      for (const placeType of Object.keys(menuTabs) as PlaceType[]) {
-        placeApiCall<PlacesResponse>(`places/${placeType}?page=0&size=1&sortKey=${sort}&direction=desc&locale=${i18n.language}${hashtagId ? `&themeId=${hashtagId}` : ''}&categoryFilter=true&q=${searchWord}&typeSearch=text`, "GET").then((response) => {
-          if (response.status === 200) {
-            setIsDot(prev => ({ ...prev, [placeType]: response.data!.totalItems > 0 }));
-          }
-        });
-      }
-    }
-  }, [searchWord])
-
   // wheel로 넘길수 있도록 설정
   // observer 설정
   useEffect(() => {
-    if (placeIsLoading) return;
+    if (placesIsLoading) return;
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && !placeIsLoading) {
-          fetchPlaces(type as PlaceType || 'tour');
+        if (entries[0].isIntersecting && !placesIsLoading) {
+          if (isMorePage) {
+            setPage(prev => prev + 1);
+          }
         }
       },
       { threshold: 0.05 }
@@ -172,10 +179,10 @@ const ListPage = () => {
       observer.disconnect();
       el.removeEventListener("wheel", handleWheel);
     };
-  }, [placeIsLoading, searchWord, page, hashtagId, type, sort]);
+  }, [placesIsLoading, searchWord, page, hashtagId, type, sort, isMorePage]);
 
   const List = () => {
-    if (!placeIsLoading && places.length === 0 && !isMorePage) {
+    if (!placesIsLoading && places.length === 0 && !isMorePage) {
       return (
         <div className={styles.list}>
           <EmptyList />
@@ -207,7 +214,7 @@ const ListPage = () => {
         handleTabClick(tab);
       }} isDot={isDot}/>
       {
-        tagIsLoading ? (
+        tagsIsLoading ? (
           <div className={styles.tagSkeletonContainer}>
             {[...Array(10)].map((_, i) => (
               <HashtagBtnSkeleton key={i} />
