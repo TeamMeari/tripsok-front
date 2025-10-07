@@ -40,7 +40,7 @@ const ListPage = () => {
   // type, sort 없으면 기본값으로 리다이렉트
   useEffect(() => {
     if (type === null || sort === null) {
-      const queryParams = `type=${type || 'tour'}&sort=${sort || 'like'}${searchWord ? `&query=${searchWord}` : ''}${hashtagId ? `&hashtagId=${hashtagId}` : ''}`;
+      const queryParams = `type=${type || 'tour'}&sort=${sort || 'like'}${searchWord ? `&query=${searchWord}&typeSearch=text` : ''}${hashtagId ? `&hashtagId=${hashtagId}` : ''}`;
       navigate(`/list?${queryParams}`, { replace: true });
     }
   }, [type, sort, searchWord, hashtagId, navigate]);
@@ -98,19 +98,19 @@ const ListPage = () => {
   // 설정 변경
   const handleTabClick = (tab: string) => {
     reset();
-    const queryParams = `type=${tab}&sort=${sort || 'like'}${searchWord ? `&query=${searchWord}` : ''}${hashtagId ? `&hashtagId=${hashtagId}` : ''}`;
+    const queryParams = `type=${tab}&sort=${sort || 'like'}${searchWord ? `&query=${searchWord}&typeSearch=text` : ''}${hashtagId ? `&hashtagId=${hashtagId}` : ''}`;
     navigate(`/list?${queryParams}`, { replace: true });
   }
 
   const handleTagClick = (tagId: number) => {
     reset();
-    const queryParams = `type=${type}&sort=${sort || 'like'}${searchWord ? `&query=${searchWord}` : ''}${tagId === hashtagId ? '' : `&hashtagId=${tagId}`}`;
+    const queryParams = `type=${type}&sort=${sort || 'like'}${searchWord ? `&query=${searchWord}&typeSearch=text` : ''}${tagId === hashtagId ? '' : `&hashtagId=${tagId}`}`;
     navigate(`/list?${queryParams}`, { replace: true });
   }
 
   const handleOptionClick = (option: SortType) => {
     reset();
-    const queryParams = `type=${type}&sort=${option}${searchWord ? `&query=${searchWord}` : ''}${hashtagId ? `&hashtagId=${hashtagId}` : ''}`;
+    const queryParams = `type=${type}&sort=${option}${searchWord ? `&query=${searchWord}&typeSearch=text` : ''}${hashtagId ? `&hashtagId=${hashtagId}` : ''}`;
     navigate(`/list?${queryParams}`, { replace: true });
   }
 
@@ -120,7 +120,7 @@ const ListPage = () => {
     fetchTags();
     if (searchWord) {
       for (const placeType of Object.keys(menuTabs) as PlaceType[]) {
-        placeApiCall<PlacesResponse>(`places/${placeType}?page=0&size=1&sortKey=${sort}&direction=desc&locale=${i18n.language}${hashtagId ? `&themeId=${hashtagId}` : ''}&categoryFilter=true&q=${searchWord}`, "GET").then((response) => {
+        placeApiCall<PlacesResponse>(`places/${placeType}?page=0&size=1&sortKey=${sort}&direction=desc&locale=${i18n.language}${hashtagId ? `&themeId=${hashtagId}` : ''}&categoryFilter=true&q=${searchWord}&typeSearch=text`, "GET").then((response) => {
           if (response.status === 200 && response.data!.totalItems > 0) {
             setIsDot(prev => ({ ...prev, [placeType]: true }));
           }
@@ -128,6 +128,18 @@ const ListPage = () => {
       }
     }
   }, [t]);
+
+  useEffect(() => {
+    if (searchWord) {
+      for (const placeType of Object.keys(menuTabs) as PlaceType[]) {
+        placeApiCall<PlacesResponse>(`places/${placeType}?page=0&size=1&sortKey=${sort}&direction=desc&locale=${i18n.language}${hashtagId ? `&themeId=${hashtagId}` : ''}&categoryFilter=true&q=${searchWord}&typeSearch=text`, "GET").then((response) => {
+          if (response.status === 200) {
+            setIsDot(prev => ({ ...prev, [placeType]: response.data!.totalItems > 0 }));
+          }
+        });
+      }
+    }
+  }, [searchWord])
 
   // wheel로 넘길수 있도록 설정
   // observer 설정
