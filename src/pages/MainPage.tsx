@@ -1,12 +1,12 @@
 import styles from './MainPage.module.css';
 import MainCarousel from '../components/feature/Carousel/MainCarousel';
-import { useEffect, useState, useRef } from 'react';
+import { useRef } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import CardCarousel from '../components/feature/Carousel/CardCarousel';
 import Footer from '../components/Footer';
 import BannerCarousel from '../components/feature/Carousel/BannerCarousel';
 import { getDailyKeywords } from '../utils/keywordSelector';
-import { useApi } from '../hooks/useApi';
+import { useStaticApiQuery } from '../hooks/useApi';
 import CardType from '../types/Card';
 import { MainCarouselItem } from '../components/feature/Carousel/MainCarousel';
 import { PlacesResponse, Place } from '../types/apiResponse';
@@ -18,90 +18,63 @@ import TopButton from '../components/common/TopButton';
 
 const MainPage = () => {
   const { t, i18n } = useTranslation();
-  // const [activeTab, setActiveTab] = useState(0);
   const dailyKeywords = getDailyKeywords();
-  const [mainCarouselItems, setMainCarouselItems] = useState<MainCarouselItem[]>([]);
-  const [top5CardCarouselItems, setTop5CardCarouselItems] = useState<CardType[]>([]);
-  const [firstCardCarouselItems, setFirstCardCarouselItems] = useState<CardType[]>([]);
-  const [secondCardCarouselItems, setSecondCardCarouselItems] = useState<CardType[]>([]);
-  const { apiCall: MainCarouselApiCall, isLoading: MainCarouselIsLoading } = useApi();
-  const { apiCall: Top5CardCarouselApiCall, isLoading: Top5CardCarouselIsLoading } = useApi();
-  const { apiCall: FirstCardCarouselApiCall, isLoading: FirstCardCarouselIsLoading } = useApi();
-  const { apiCall: SecondCardCarouselApiCall, isLoading: SecondCardCarouselIsLoading } = useApi();
   const scrollAreaRef = useRef<HTMLDivElement>(null);
-  // const handleTabClick = (tab: number) => {
-  //   setActiveTab(tab);
-  // }
 
-  const fetchMainCarouselPlaces = () => {
-    // keyword 하나 사용
-    const queryParams = `?page=0&size=10&sortKey=rank&direction=desc&locale=${i18n.language}&typeSearch=text&categoryFilter=false&q=${t(dailyKeywords[0])}`;
-    MainCarouselApiCall<PlacesResponse>("/places/accommodation" + queryParams, "GET").then((response) => {
-      if (response.status === 200) {
-        if (response.data) {
-        setMainCarouselItems(response.data.items.map((v: Place) => ({
-            id: v.id,
-            image: v.thumbnailUrl,
-            type: convertTypeToLowerCase(v.type),
-          })) as MainCarouselItem[]);
-        } else setMainCarouselItems([]);
-      }
-    });
-  }
+  // 메인 캐러셀: 정적 캐시
+  const mainQueryParams = `?page=0&size=10&sortKey=rank&direction=desc&locale=${i18n.language}&typeSearch=text&categoryFilter=false&q=${t(dailyKeywords[0])}`;
+  const { data: mainData, isLoading: MainCarouselIsLoading } = useStaticApiQuery<PlacesResponse>(
+    ['main-carousel', i18n.language, t(dailyKeywords[0])],
+    `/places/accommodation${mainQueryParams}`
+  );
+  const mainCarouselItems: MainCarouselItem[] = (mainData?.items ?? []).map((v: Place) => ({
+    id: v.id,
+    image: v.thumbnailUrl,
+    type: convertTypeToLowerCase(v.type) as MainCarouselItem['type'],
+  }));
 
-  const fetchTop5CardCarouselPlaces = () => {
-    const queryParams = `?page=0&size=10&sortKey=rank&direction=desc&locale=${i18n.language}&categoryFilter=false&q=${t("gangneung")}`;
-    Top5CardCarouselApiCall<PlacesResponse>("/places/accommodation" + queryParams, "GET").then((response) => {
-      if (response.status === 200) {
-        if (response.data) {
-          setTop5CardCarouselItems(response.data.items.slice(0, 5).map((v: Place, idx: number) => ({
-            id: v.id,
-            image: v.thumbnailUrl,
-            rank: idx + 1,
-            title: v.name,
-            description: v.summary,
-            type: convertTypeToLowerCase(v.type),
-          })) as CardType[]);
-        } else setTop5CardCarouselItems([]);
-      }
-    });
-  }
+  // 상단 Top5 카드: 정적 캐시 (gangneung)
+  const top5Params = `?page=0&size=10&sortKey=rank&direction=desc&locale=${i18n.language}&categoryFilter=false&q=${t("gangneung")}`;
+  const { data: top5Data, isLoading: Top5CardCarouselIsLoading } = useStaticApiQuery<PlacesResponse>(
+    ['top5-cards', i18n.language, t('gangneung')],
+    `/places/accommodation${top5Params}`
+  );
+  const top5CardCarouselItems: CardType[] = (top5Data?.items ?? []).slice(0, 5).map((v: Place, idx: number) => ({
+    id: v.id,
+    image: v.thumbnailUrl,
+    rank: idx + 1,
+    title: v.name,
+    description: v.summary,
+    type: convertTypeToLowerCase(v.type) as CardType['type'],
+  }));
 
-  const fetchFirstCardCarouselPlaces = () => {
-    // keyword 하나 사용
-    const queryParams = `?page=0&size=10&sortKey=rank&direction=desc&locale=${i18n.language}&typeSearch=text&categoryFilter=false&q=${t(dailyKeywords[1])}`;
-    FirstCardCarouselApiCall<PlacesResponse>("/places/accommodation" + queryParams, "GET").then((response) => {
-      if (response.status === 200) {
-        if (response.data) {
-          setFirstCardCarouselItems(response.data.items.map((v: Place) => ({
-            id: v.id,
-            image: v.thumbnailUrl,
-            title: v.name,
-            description: v.summary,
-            type: convertTypeToLowerCase(v.type),
-          })) as CardType[]);
-        } else setFirstCardCarouselItems([]);
-      }
-    });
-  }
+  // 첫 번째 키워드 카드: 정적 캐시
+  const firstParams = `?page=0&size=10&sortKey=rank&direction=desc&locale=${i18n.language}&typeSearch=text&categoryFilter=false&q=${t(dailyKeywords[1])}`;
+  const { data: firstData, isLoading: FirstCardCarouselIsLoading } = useStaticApiQuery<PlacesResponse>(
+    ['first-cards', i18n.language, t(dailyKeywords[1])],
+    `/places/accommodation${firstParams}`
+  );
+  const firstCardCarouselItems: CardType[] = (firstData?.items ?? []).map((v: Place) => ({
+    id: v.id,
+    image: v.thumbnailUrl,
+    title: v.name,
+    description: v.summary,
+    type: convertTypeToLowerCase(v.type) as CardType['type'],
+  }));
 
-  const fetchSecondCardCarouselPlaces = () => {
-    // keyword 하나 사용
-    const queryParams = `?page=0&size=10&sortKey=rank&direction=desc&locale=${i18n.language}&typeSearch=text&categoryFilter=false&q=${t(dailyKeywords[2])}`;
-    SecondCardCarouselApiCall<PlacesResponse>("/places/accommodation" + queryParams, "GET").then((response) => {
-      if (response.status === 200) {
-        if (response.data) {
-          setSecondCardCarouselItems(response.data.items.map((v: Place) => ({
-            id: v.id,
-            image: v.thumbnailUrl,
-            title: v.name,
-            description: v.summary,
-            type: convertTypeToLowerCase(v.type),
-          })) as CardType[]);
-        } else setSecondCardCarouselItems([]);
-      }
-    });
-  }
+  // 두 번째 키워드 카드: 정적 캐시
+  const secondParams = `?page=0&size=10&sortKey=rank&direction=desc&locale=${i18n.language}&typeSearch=text&categoryFilter=false&q=${t(dailyKeywords[2])}`;
+  const { data: secondData, isLoading: SecondCardCarouselIsLoading } = useStaticApiQuery<PlacesResponse>(
+    ['second-cards', i18n.language, t(dailyKeywords[2])],
+    `/places/accommodation${secondParams}`
+  );
+  const secondCardCarouselItems: CardType[] = (secondData?.items ?? []).map((v: Place) => ({
+    id: v.id,
+    image: v.thumbnailUrl,
+    title: v.name,
+    description: v.summary,
+    type: convertTypeToLowerCase(v.type) as CardType['type'],
+  }));
 
   const texts = [
     t("mainCarouselText"),
@@ -126,12 +99,7 @@ const MainPage = () => {
     }
   ]
 
-  useEffect(() => {
-    fetchMainCarouselPlaces();
-    fetchTop5CardCarouselPlaces();
-    fetchFirstCardCarouselPlaces();
-    fetchSecondCardCarouselPlaces();
-  }, [t]);
+  // 데이터는 React Query로 캐싱 및 패칭됨 (별도 effect 불필요)
 
   return (
     <div className={styles.pageContainer} ref={scrollAreaRef}>
