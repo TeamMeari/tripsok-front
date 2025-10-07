@@ -1,19 +1,19 @@
 import styles from './Dropdown.module.css'
 import { useEffect, useState, useRef } from 'react'
+import { sortKey, SortType } from '../../types/sortOptions';
 
 interface DropdownProps {
-    current: number;
-    options: Record<number, string>;
-    onClickOption: (option: number) => void;
+    current: SortType;
+    onClickOption: (option: SortType) => void;
 }
 
-const Dropdown = ({ current, options, onClickOption }: DropdownProps) => {
+const Dropdown = ({ current, onClickOption }: DropdownProps) => {
     const [isHidden, setIsHidden] = useState(true);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
     const toggleHidden = () => { setIsHidden(!isHidden) }
 
-    const handleClickOption = (option: number) => {
+    const handleClickOption = (option: SortType) => {
         onClickOption(option)
         setIsHidden(true);
     }
@@ -41,19 +41,19 @@ const Dropdown = ({ current, options, onClickOption }: DropdownProps) => {
             className={styles.dropdownButton}
             onClick={toggleHidden}
         >
-            <p className={styles.value}>{options[current]}</p>
+            <p className={styles.value}>{sortKey[current].label}</p>
             <p className={styles.arrow}>{ isHidden ? "▼" : "▲"}</p>
         </button>
         {!isHidden && <div
             className={styles.dropdownOptionContainer}
             aria-hidden={isHidden}
         >
-            {Object.entries(options).map(([key, value]) => <button
+            {Object.keys(sortKey).map((key) => <button
                     key={key}
-                    className={`${styles.dropdownOption} ${current === +key ? styles.selected : ""}`}
-                    onClick={() => handleClickOption(+key)}
+                    className={`${styles.dropdownOption} ${current === key ? styles.selected : ""}`}
+                    onClick={() => handleClickOption(key as SortType)}
                 >
-                    {value}
+                    {sortKey[key as SortType].label}
                 </button>
             )}
         </div>}

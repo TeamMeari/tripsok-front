@@ -1,8 +1,6 @@
 import styles from './MainPage.module.css';
 import MainCarousel from '../components/feature/Carousel/MainCarousel';
 import { useEffect, useState, useRef } from 'react';
-import MenuTab from '../components/feature/Tab/MenuTab';
-import menuTabs from '../types/menuTabs';
 import { Trans, useTranslation } from 'react-i18next';
 import CardCarousel from '../components/feature/Carousel/CardCarousel';
 import Footer from '../components/Footer';
@@ -145,7 +143,7 @@ const MainPage = () => {
         />
         <div className={styles.space}></div>
         {/* <MenuTab tabs={menuTabs} activeTab={activeTab} isIcon={true} tabOnClick={handleTabClick} /> */}
-        <NavigationMenuTab tabs={menuTabs} isIcon={true}/>
+        <NavigationMenuTab isIcon={true}/>
         <div className={styles.section1}>
           <div className={styles.cardList}>
             <TitleLink i18nKey="mainTopSpots" link="/list"/>
