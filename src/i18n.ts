@@ -49,6 +49,7 @@ const resources = {
             privacyContent: "개인정보 수집 및 이용 동의", // 수정 필요
             agree: "동의합니다",
             welcomeNickname: "<span>{{name}}</span>님, 반가워요! <br />관심있는 여행이 있으신가요?",
+            guideHashtags: "1개 필수, 복수 선택 가능",
             home: "홈으로",
             passwordTooShort: "비밀번호는 8자 이상이어야 합니다.",
             letterRequired: "영문",
@@ -187,6 +188,7 @@ const resources = {
             privacyContent: "Privacy Policy", // 수정 필요
             agree: "Agree",
             welcomeNickname: "Welcome, {{name}}!<br />Do you have any trips in mind?",
+            guideHashtags: "1 required, multiple selection possible",
             home: "Go Home",
             passwordTooShort: "Password must be at least 8 characters.",
             letterRequired: "Letter",
@@ -326,6 +328,7 @@ const resources = {
             privacyContent: "個人情報の収集および利用に同意", // 수정 필요
             agree: "同意",
             welcomeNickname: "{{name}}さん、ようこそ！<br />興味のある旅行はありますか？",
+            guideHashtags: "1つ必須、複数選択可能",
             home: "ホームへ",
             passwordTooShort: "パスワードは8文字以上である必要があります。",
             letterRequired: "英字",
@@ -464,6 +467,7 @@ const resources = {
             privacyContent: "隐私政策", // 수정 필요
             agree: "同意",
             welcomeNickname: "{{name}}，欢迎！<br />有感兴趣的旅行吗？",
+            guideHashtags: "1个必填，多个可选",
             home: "回到首页",
             passwordTooShort: "密码至少需要8位。",
             letterRequired: "字母",
