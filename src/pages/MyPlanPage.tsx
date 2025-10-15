@@ -7,7 +7,7 @@ import styles from "./MyPlanPage.module.css";
 import { useTranslation } from "react-i18next";
 import { useApi } from "../hooks/useApi";
 import useAuthStore from "../stores/authStore";
-
+import CardCarousel from '../components/feature/Carousel/CardCarousel';
 
 interface Place {
     id: number;
@@ -32,8 +32,8 @@ export default function Page() {
     // const [savedButtonText, setSavedButtonText] = useState(t('savedPlanContinue'));
 
     const isVisitedAdded = visitedPlaces.length > 0;
-    const buttonVariant = isVisitedAdded ? 'grayDashed' : 'orangeOutline';
-    const buttonText = isVisitedAdded ? t('addPlace') : t('myPlanStart');
+    // const buttonVariant = isVisitedAdded ? 'grayDashed' : 'orangeOutline';
+    const buttonText = isVisitedAdded ? t('addPlace') : t('addPlace');
 
 
     const [savedButtonText, setSavedButtonText] = useState("저장한 계획 이어하기");
@@ -123,6 +123,50 @@ export default function Page() {
         navigate('/myplan-detail', { state: { visitedPlaces: combinedPlaces } });
     };
 
+    // MyPlanPage 좋아요 리스트
+    const [likeCards, setLikeCards] = useState<any[]>([]);
+    const [isLikesLoading, setIsLikesLoading] = useState(false);
+
+    useEffect(() => {
+        const fetchLikedPlaces = async () => {
+            if (!isLoggedIn) return; // 비로그인 시 요청 안 함
+            setIsLikesLoading(true);
+            try {
+                const res = await apiCall<{
+                    hasNext: boolean;
+                    content: Array<{
+                        id: number;
+                        language: string;
+                        placeId: number;
+                        name: string;
+                        type: string;
+                        thumbnailUrl: string;
+                    }>;
+                }>("/user/like-places?size=20&locale=KO", "GET");
+
+                if (res.status === 200 && res.data !== null && res.data.content) {
+                    const formattedCards = res.data.content.map(item => ({
+                        id: item.placeId,
+                        title: item.name,
+                        description: "",
+                        image: item.thumbnailUrl,
+                        rank: undefined,
+                        type: item.type
+                    }));
+                    setLikeCards(formattedCards);
+                }
+
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setIsLikesLoading(false);
+            }
+        };
+
+        fetchLikedPlaces();
+    }, [isLoggedIn]);
+
+
     return (
         <div className={styles.Page}>
             <div className={styles.MyPlanPage}>
@@ -190,14 +234,14 @@ export default function Page() {
                             )}
 
                             <Button
-                                variant={buttonVariant}
+                                variant="grayDashed"
                                 size="large"
                                 borderRadius="12px"
                                 onClick={handleStartTravel}
                             >
                                 <span className={styles.plusBtn}>
                                     <img
-                                        src="/InfoIcon/plusColorIcon.svg"
+                                        src="/InfoIcon/plusgrayIcon.svg"
                                         alt="plus"
                                         style={{ width: 18, height: 18 }}
                                     />
@@ -240,7 +284,9 @@ export default function Page() {
 
                 <div className={styles.MyPlanLikeContent}>
                     <div className={styles.LikeTitle}>{t('likedSpots')}</div>
-                    <div className={styles.LikeList}></div>
+                    <div className={styles.LikeList}>
+                        <CardCarousel cards={likeCards} isLoading={isLikesLoading} />
+                    </div>
                 </div>
 
                 <MenuApp defaultIndex={1} />
