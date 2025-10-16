@@ -18,7 +18,7 @@ export const PASSWORD_VALIDATION_WARNING = (password: string): { error: string, 
     if (!password.match(/[0-9]/)) {
         notExisting.push("numberRequired");
     }
-    if (!password.match(/[@$!%*#?&]/)) {
+    if (!password.match(/[@$!%*#?&^]/)) {
         notExisting.push("specialCharRequired");
     }
     if (notExisting.length > 0) {
