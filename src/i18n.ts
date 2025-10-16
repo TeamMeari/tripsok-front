@@ -21,7 +21,7 @@ const resources = {
             invalidEmail: "존재하지 않는 메일 형식입니다.",
             existingAccount: "기존 계정이 존재합니다.",
             wrongEmailAndPassword: "잘못된 이메일 또는 비밀번호입니다.",
-            enterVerificationCode: "{{email}}<br />으로 보낸 인증코드를 입력해주세요",
+            enterVerificationCode: "<span>{{email}}</span><br />으로 보낸 인증코드를 입력해주세요",
             expiredCode: "유효한 시간이 지났습니다.",
             sixDigitCode: "6자리 숫자",
             noEmail: "메일이 오지 않았나요?",
@@ -56,6 +56,12 @@ const resources = {
             numberRequired: "숫자",
             specialCharRequired: "특수문자",
             passwordValidationWarning: "필수 조건 필요 - {{condition}} 필수",
+            // 비밀번호 재설정
+            emailForPasswordReset: "계정 확인을 위해<br />가입한 이메일을 입력해주세요.",
+            enterNewPassword: "이메일 인증에 성공했어요.<br />비밀번호 재설정을 이어갈게요.",
+            passwordResetComplete: "<span>{{name}}</span>님, 비밀번호 재설정이<br />성공적으로 완료되었어요!",
+            passwordReset: "비밀번호 재설정",
+            retryLoginGuide: "다시 로그인을 시도해주세요.",
             // ContentPage 텍스트
             placePointTitle: "이 장소의 매력 포인트",
             cardSectionTitle: "과 함께 찾아본 장소",
@@ -195,6 +201,12 @@ const resources = {
             numberRequired: "Number",
             specialCharRequired: "Special character",
             passwordValidationWarning: "Requirements needed - {{condition}} required",
+            // 비밀번호 재설정
+            emailForPasswordReset: "To verify your account,<br />please enter the email you used to sign up.",
+            enterNewPassword: "Email verified successfully.<br />Let's continue resetting your password.",
+            passwordResetComplete: "{{name}}'s password reset has<br />been completed successfully!",
+            passwordReset: "Reset Password",
+            retryLoginGuide: "Please try logging in again.",
             // ContentPage 텍스트
             placePointTitle: "Highlights of this place",
             cardSectionTitle: "Places explored together",
@@ -335,6 +347,12 @@ const resources = {
             numberRequired: "数字",
             specialCharRequired: "記号",
             passwordValidationWarning: "必須条件 - {{condition}} 必須",
+            // 비밀번호 재설정
+            emailForPasswordReset: "アカウントの確認のために<br />登録したメールアドレスを入力してください。",
+            enterNewPassword: "メール認証に成功しました。<br />パスワード再設定を続けましょう。",
+            passwordResetComplete: "{{name}}のパスワード再設定が<br />正常に完了しました！",
+            passwordReset: "パスワード再設定",
+            retryLoginGuide: "再ログインを試してください。",
             // ContentPage 텍스트
             placePointTitle: "この場所の魅力ポイント",
             cardSectionTitle: "と似た場所",
@@ -474,6 +492,12 @@ const resources = {
             numberRequired: "数字",
             specialCharRequired: "特殊字符",
             passwordValidationWarning: "必须条件 - {{condition}} 必须",
+            // 비밀번호 재설정
+            emailForPasswordReset: "为了验证您的账户，<br />请输入您注册时使用的电子邮箱。",
+            enterNewPassword: "邮箱验证成功。<br />让我们继续重置您的密码。",
+            passwordResetComplete: "{{name}}的密码重置已<br />成功完成！",
+            passwordReset: "密码重置",
+            retryLoginGuide: "再登录试试看。",
             // ContentPage 텍스트
             placePointTitle: "这个地方的亮点",
             cardSectionTitle: "一起探索过的地方",
