@@ -10,10 +10,11 @@ import { useApi } from "../../hooks/useApi";
 
 interface HeaderProps {
     isLogo?: boolean;
+    isLoginButton?: boolean;
     useBackground?: boolean; // 배경 이미지 사용 여부 선택
 }
 
-const Header: React.FC<HeaderProps> = ({ useBackground = false, isLogo = true }) => {
+const Header: React.FC<HeaderProps> = ({ useBackground = false, isLogo = true, isLoginButton = true }) => {
     const { t } = useTranslation(); // i18next 훅
 
     const navigate = useNavigate();
@@ -83,7 +84,7 @@ const Header: React.FC<HeaderProps> = ({ useBackground = false, isLogo = true })
 
             <div className={styles.right} ref={menuRef}>
                 <IconButton type="globeIcon" />
-                <div className={styles.userMenuWrapper}>
+                {isLoginButton && <div className={styles.userMenuWrapper}>
                     <Button
                         variant="secondary"
                         borderRadius="48px"
@@ -100,7 +101,7 @@ const Header: React.FC<HeaderProps> = ({ useBackground = false, isLogo = true })
                             <button onClick={handleLogout}>{t("logout")}</button>
                         </div>
                     )}
-                </div>
+                </div>}
 
             </div>
         </header>
