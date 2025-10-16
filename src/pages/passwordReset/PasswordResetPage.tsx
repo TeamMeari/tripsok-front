@@ -13,7 +13,7 @@ const PasswordResetPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { apiCall, isLoading } = useApi();
-    const { emailVerifyToken } = usePasswordResetStore();
+    const { emailVerifyToken, reset } = usePasswordResetStore();
     const [password, setPassword] = useState("");
     const [passwordError, setPasswordError] = useState("");
     const [passwordErrorCondition, setPasswordErrorCondition] = useState<string[]>([]);
@@ -50,6 +50,10 @@ const PasswordResetPage = () => {
         const prevPath = location.state?.from;
         if (prevPath !== '/password/reset/code' || emailVerifyToken === "") {
             navigate('/password/reset/email', { replace: true });
+        }
+
+        () => {
+            reset();
         }
     }, [])
 
