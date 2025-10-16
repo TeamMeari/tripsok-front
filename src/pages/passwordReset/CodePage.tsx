@@ -1,6 +1,6 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useApi } from "../../hooks/useApi";
 import { usePasswordResetStore } from "../../stores/passwordResetStore";
 import { EXPIRED_CODE, INVALID_CODE } from "../../types/signupErrors";
@@ -19,6 +19,7 @@ const PasswordResetCodePage = () => {
     const [code, setCode] = useState("");
     const [codeError, setCodeError] = useState("");
     const navigate = useNavigate();
+    const location = useLocation();
 
     const startTimer = () => {
         // 코드 전송 로직
@@ -82,6 +83,15 @@ const PasswordResetCodePage = () => {
             handleCodeVerification();
         }
     }, [code, handleCodeVerification]);
+
+    // 잘못된 접근 redirect
+    useEffect(() => {
+        const prevPath = location.state?.from;
+        if (prevPath !== '/password/reset/email' || email === "") {
+            navigate('/password/reset/email', { replace: true });
+        }
+    }, [])
+    
     return (
         <div className={styles.page}>
             <div className={styles.step}>

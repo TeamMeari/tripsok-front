@@ -1,15 +1,25 @@
 import styles from "./passwordReset.module.css";
 import { Trans, useTranslation } from "react-i18next";
 import ValidationBtn from "../../components/common/Button/ValidationBtn";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 const PasswordResetCompletePage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const handleClickLogin = () => {
         navigate("/login");
     }
+
+    // 잘못된 접근 redirect
+    useEffect(() => {
+        const prevPath = location.state?.from;
+        if (prevPath !== '/password/reset/new') {
+            navigate('/password/reset/email', { replace: true });
+        }
+    }, [])
 
     return (
         <div className={styles.page}>

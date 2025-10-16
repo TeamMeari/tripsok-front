@@ -1,16 +1,17 @@
 import styles from "./passwordReset.module.css";
 import { Trans, useTranslation } from "react-i18next";
 import PasswordInput from "../../components/feature/Input/PasswordInput";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { PASSWORD_VALIDATION_WARNING } from "../../types/signupErrors";
 import ValidationBtn from "../../components/common/Button/ValidationBtn";
 import { useApi } from "../../hooks/useApi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { usePasswordResetStore } from "../../stores/passwordResetStore";
 
 const PasswordResetPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const location = useLocation();
     const { apiCall, isLoading } = useApi();
     const { emailVerifyToken } = usePasswordResetStore();
     const [password, setPassword] = useState("");
@@ -43,6 +44,14 @@ const PasswordResetPage = () => {
             } 
         });
     }, [password, passwordConfirm]);
+
+    // 잘못된 접근 redirect
+    useEffect(() => {
+        const prevPath = location.state?.from;
+        if (prevPath !== '/password/reset/code' || emailVerifyToken === "") {
+            navigate('/password/reset/email', { replace: true });
+        }
+    }, [])
 
     return (
         <div className={styles.page}>
