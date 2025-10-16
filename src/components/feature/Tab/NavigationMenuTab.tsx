@@ -2,36 +2,32 @@ import React, { useEffect, useRef, useState } from 'react';
 import styles from './NavigationMenuTab.module.css';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { menuTabs } from '../../../types/menuTabs';
+import { PlaceType } from '../../../types/menuTabs';
 
-interface MenuTabProps {
-  tabs: {
-    label: string;
-    icon: string;
-    uri: string;
-    key: string;
-  }[];
+interface NavigationMenuTabProps {
   isIcon? : boolean;
 }
 
-const MenuTab = ({ tabs, isIcon }: MenuTabProps) => {
+const NavigationMenuTab = ({ isIcon }: NavigationMenuTabProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const handleTabClick = (index: number) => {
-    navigate('/list', {state: {tab: tabs[index].key}});
+  const handleTabClick = (key: PlaceType) => {
+    navigate('/list', {state: {tab: menuTabs[key].uri}});
   };
 
   return (
     <div className={styles.tabContainer}>
-      {tabs.map((tab: { label: string; icon: string; uri: string }, index: number) => (
+      {(Object.keys(menuTabs) as PlaceType[]).map((key: PlaceType) => (
         <div
-          key={index}
+          key={key}
           className={`${styles.tabItem}`}
-          onClick={() => handleTabClick(index)}
+          onClick={() => handleTabClick(key)}
         >
-          {isIcon && <img src={tab.icon} alt={tab.label} className={styles.tabIcon} />}
+          {isIcon && <img src={menuTabs[key].icon} alt={menuTabs[key].label} className={styles.tabIcon} />}
           <div className={styles.tabTextContainer}>
-            <span className={styles.tabText}>{t(tab.label)}</span>
+            <span className={styles.tabText}>{t(menuTabs[key].label)}</span>
           </div>
         </div>
       ))}
@@ -39,5 +35,5 @@ const MenuTab = ({ tabs, isIcon }: MenuTabProps) => {
   );
 };
 
-export default MenuTab;
+export default NavigationMenuTab;
 

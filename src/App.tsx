@@ -1,5 +1,9 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
 import './App.css';
 import MainPage from './pages/MainPage';
 import ListPage from './pages/ListPage';
@@ -23,7 +27,7 @@ import PaymentSuccessPage from "./pages/SuccessPage";
 import useAuthStore from "./stores/authStore";
 
 function App(): JSX.Element {
-
+  const queryClient = new QueryClient();
   const { checkLogin } = useAuthStore();
 
   useEffect(() => {
@@ -34,6 +38,7 @@ function App(): JSX.Element {
     <div className="App">
       <div className="app-area">
         <BrowserRouter>
+          <QueryClientProvider client={queryClient}>
           <HeaderSelector />
           <div className="content-area">
             <Routes>
@@ -58,6 +63,7 @@ function App(): JSX.Element {
 
             </Routes>
           </div>
+          </QueryClientProvider>
         </BrowserRouter>
       </div>
     </div>

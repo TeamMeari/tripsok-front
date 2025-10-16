@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useApi } from "../../hooks/useApi";
 import useAuthStore from "../../stores/authStore";
 import { useNavigate } from "react-router-dom";
@@ -13,8 +13,11 @@ const OAuthCallbackPage = () => {
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get("code");
 
+  const isCalled = useRef(false);
+
   const tryLogin = () => {
-    if (isLoading) return;
+    if (isLoading || isCalled.current) return;
+    isCalled.current = true;
 
     // redirect
     if (!code) {

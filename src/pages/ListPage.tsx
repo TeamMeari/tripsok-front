@@ -9,213 +9,156 @@ import Card from '../components/common/Card';
 import { useTranslation } from 'react-i18next';
 import MenuApp from "../components/MenuApp";
 import SearchInput from '../components/feature/SearchInput';
-import menuTabs from '../types/menuTabs';
-import { useSearchParams, useLocation } from 'react-router-dom';
+import { PlaceType } from '../types/menuTabs';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useApi } from '../hooks/useApi';
+import { useStaticApiQuery } from '../hooks/useApi';
 import HashtagBtnSkeleton from '../components/common/HashtagBtnSkeleton';
 import useScrollHorizon from '../hooks/useScrollHorizon';
 import { PlacesResponse, Place } from '../types/apiResponse';
 import EmptyList from '../components/common/EmptyList';
 import { convertTypeToLowerCase } from '../utils/converter';
 import TopButton from '../components/common/TopButton';
+import { SortType } from '../types/sortOptions';
 
 const ListPage = () => {
   const { t, i18n } = useTranslation();
-  const { apiCall: tagApiCall, isLoading: tagIsLoading } = useApi();
-  const { apiCall: placeApiCall, isLoading: placeIsLoading } = useApi();
-  const location = useLocation();
-  const state = location.state;
-  const initialTab = state?.tab;
-  const [activeTab, setActiveTab] = useState<number>(initialTab ? menuTabs.findIndex(tab => tab.key === initialTab) : 0);
-  const [tags, setTags] = useState<Tag[]>([]);
-  const [selectedTag, setSelectedTag] = useState<number | null>(null);
-  const [selectedOption, setSelectedOption] = useState<number>(1);
-  const sortKey = {
-    1: "like",
-    2: "name"
-  }
-  const tagContainerRef = useScrollHorizon();
-  const [searchParams] = useSearchParams();
-  const searchWord = searchParams.get('query');
-  const loadMoreRef = useRef<HTMLDivElement>(null);
-  const [tourPlaces, setTourPlaces] = useState<CardType[]>([]);
-  const [restaurantPlaces, setRestaurantPlaces] = useState<CardType[]>([]);
-  const [accommodationPlaces, setAccommodationPlaces] = useState<CardType[]>([]);
-  const [page, setPage] = useState<number[]>([0, 0, 0]);
-  const [totalPages, setTotalPages] = useState<number[]>([1, 1, 1]);
-  const [totalCount, setTotalCount] = useState<number[]>([0, 0, 0]);
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
-  const isMorePage = totalPages[activeTab] > page[activeTab];
-  
-  const isDot: boolean[] = [
-    Boolean(searchWord && tourPlaces.length > 0),
-    Boolean(searchWord && restaurantPlaces.length > 0),
-    Boolean(searchWord && accommodationPlaces.length > 0)
-  ];
+  // 장소 목록은 정적 캐시로 관리 (React Query)
+  const navigate = useNavigate();
 
-  const options = {
-    1: t("sortPopular"),
-    2: t("sortName"),
-  };
+  // query params
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const type = searchParams.get('type');
+  const searchWord = searchParams.get('query') || null;
+  const hashtagId = searchParams.get('hashtagId') ? Number(searchParams.get('hashtagId')) : null;
+  const sort = searchParams.get('sort');
+
+  // place list
+  const [places, setPlaces] = useState<CardType[]>([]);
+
+  // type, sort 없으면 기본값으로 리다이렉트
+  useEffect(() => {
+    if (type === null || sort === null) {
+      const queryParams = `type=${type || 'tour'}&sort=${sort || 'like'}${searchWord ? `&q=${searchWord}&typeSearch=text` : ''}${hashtagId ? `&hashtagId=${hashtagId}` : ''}`;
+      navigate(`/list?${queryParams}`, { replace: true });
+    }
+  }, [type, sort, searchWord, hashtagId, navigate]);
+
+  // state
+  const [tags, setTags] = useState<Tag[]>([]);
+  const tagContainerRef = useScrollHorizon();
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+  const [page, setPage] = useState<number>(0);
+  const [totalPage, setTotalPage] = useState<number>(1);
+  const [totalCount, setTotalCount] = useState<number>(0);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const isMorePage = totalPage > page;
+  
+  const [isDot, setIsDot] = useState<Record<PlaceType, boolean>>({
+    tour: false,
+    restaurant: false,
+    accommodation: false,
+  });
+
+  // 정적 태그 데이터: React Query로 캐싱
+  const { data: tagsData, isLoading: tagsIsLoading } = useStaticApiQuery<Tag[]>(
+    ['tags', i18n.language],
+    `/theme?locale=${i18n.language.toUpperCase()}`
+  );
+
+  // 현재 page 기준 장소 목록 요청 (정적 캐시)
+  const placesQueryParams = `?page=${page}&size=20&sortKey=${sort}&direction=desc&locale=${i18n.language}${hashtagId ? `&themeId=${hashtagId}` : ''}${searchWord ? `&categoryFilter=true&q=${searchWord}` : ''}`;
+  const { data: placesData, isLoading: placesIsLoading } = useStaticApiQuery<PlacesResponse>(
+    ['places', (type as string) || 'tour', sort || 'like', searchWord || '', hashtagId ?? '', page, i18n.language],
+    `places/${(type as string) || 'tour'}${placesQueryParams}`,
+    {
+      enabled: type !== null && sort !== null,
+    }
+  );
+
+  // 검색어가 있을 때, 모든 타입의 첫 페이지를 실제 목록과 동일 키로 선조회하여 캐시 (UI 반영 없음)
+  const prefetchQueryParams = `?page=0&size=20&sortKey=${sort}&direction=desc&locale=${i18n.language}${hashtagId ? `&themeId=${hashtagId}` : ''}${searchWord ? `&categoryFilter=true&q=${searchWord}&typeSearch=text` : ''}`;
+  useStaticApiQuery<PlacesResponse>(
+    ['places', 'tour', sort || 'like', searchWord || '', hashtagId ?? '', 0, i18n.language],
+    `places/tour${prefetchQueryParams}`,
+    { enabled: !!searchWord }
+  );
+  useStaticApiQuery<PlacesResponse>(
+    ['places', 'restaurant', sort || 'like', searchWord || '', hashtagId ?? '', 0, i18n.language],
+    `places/restaurant${prefetchQueryParams}`,
+    { enabled: !!searchWord }
+  );
+  useStaticApiQuery<PlacesResponse>(
+    ['places', 'accommodation', sort || 'like', searchWord || '', hashtagId ?? '', 0, i18n.language],
+    `places/accommodation${prefetchQueryParams}`,
+    { enabled: !!searchWord }
+  );
 
   const reset = () => {
-    setTotalPages([1, 1, 1]);
-    setTotalCount([0, 0, 0]);
-    setPage([0, 0, 0]);
-    setTourPlaces([]);
-    setRestaurantPlaces([]);
-    setAccommodationPlaces([]);
-  }
+    setTotalPage(1);
+    setTotalCount(0);
+    setPage(0);
+    setPlaces([]);
+  }  
 
-  const fetchTags = () => {
-    if (tagIsLoading) return;
-    tagApiCall("/theme" + `?locale=${i18n.language.toUpperCase()}`, "GET").then((response) => {
-      if (response.status === 200) {
-        setTags(response.data as Tag[]);
-      }
-    });
-  }
+  // 정적 태그 데이터를 화면 상태로 반영
+  useEffect(() => {
+    if (tagsData) setTags(tagsData);
+  }, [tagsData]);
 
-  const fetchTourPlaces = () => {
-    if (placeIsLoading) return;
-    const queryParams = `?page=${page[0]}&size=20&sortKey=${sortKey[selectedOption as keyof typeof sortKey]}&direction=desc&locale=${i18n.language}`
-      + (selectedTag ? `&themeId=${selectedTag}` : "")
-      + (searchWord ? `&categoryFilter=true&q=${searchWord}` : "");
-    placeApiCall<PlacesResponse>("/places/tour" + queryParams, "GET").then((response) => {
-      if (response.status === 200 && page[0] === response.data!.currentPage) {
-        setPage(prev => {
-          const next = [...prev];
-          next[0] = response.data!.currentPage + 1;
-          return next;
-        });
-        setTourPlaces(prev => [...prev, ...response.data?.items.map((v: Place) => ({
+  // 쿼리 응답을 화면 상태로 반영
+  useEffect(() => {
+    if (!placesData) return;
+    // 동일 페이지에 대해서만 반영
+    if (placesData.currentPage === page) {
+      setPlaces(prev => [
+        ...prev,
+        ...placesData.items.map((v: Place) => ({
           id: v.id,
           image: v.thumbnailUrl,
           title: v.name,
           description: v.summary,
           type: convertTypeToLowerCase(v.type),
-        })) as CardType[]]);
-        setTotalPages(prev => {
-          prev[0] = response.data?.totalPages || 0;
-          return prev;
-        });
-        setTotalCount(prev => {
-          prev[0] = response.data?.totalItems || 0;
-          return prev;
-        });
-      }
-    });
-  }
+        })) as CardType[]
+      ]);
+      setTotalPage(placesData.totalPages);
+      setTotalCount(placesData.totalItems);
+    }
+  }, [placesData, page]);
 
-  const fetchRestaurantPlaces = () => {
-    if (placeIsLoading) return;
-    const queryParams = `?page=${page[1]}&size=20&sortKey=${sortKey[selectedOption as keyof typeof sortKey]}&direction=desc&locale=${i18n.language}`
-      + (selectedTag ? `&themeId=${selectedTag}` : "")
-      + (searchWord ? `&categoryFilter=true&q=${searchWord}` : "");
-    placeApiCall<PlacesResponse>("/places/restaurant" + queryParams, "GET").then((response) => {
-      if (response.status === 200 && page[1] === response.data!.currentPage) {
-        setPage(prev => {
-          const next = [...prev];
-          next[1] = response.data!.currentPage + 1;
-          return next;
-        });
-        setRestaurantPlaces(prev => [...prev, ...response.data?.items.map((v: Place) => ({
-          id: v.id,
-          image: v.thumbnailUrl,
-          title: v.name,
-          description: v.summary,
-          type: convertTypeToLowerCase(v.type),
-        })) as CardType[]]);
-        setTotalPages(prev => {
-          prev[1] = response.data?.totalPages || 0;
-          return prev;
-        });
-        setTotalCount(prev => {
-          prev[1] = response.data?.totalItems || 0;
-          return prev;
-        });
-      }
-    });
-  }
-
-  const fetchAccommodationPlaces = () => {
-    if (placeIsLoading) return;
-    const queryParams = `?page=${page[2]}&size=20&sortKey=${sortKey[selectedOption as keyof typeof sortKey]}&direction=desc&locale=${i18n.language}`
-      + (selectedTag ? `&themeId=${selectedTag}` : "")
-      + (searchWord ? `&categoryFilter=true&q=${searchWord}` : "");
-    placeApiCall<PlacesResponse>("/places/accommodation" + queryParams, "GET").then((response) => {
-      if (response.status === 200 && page[2] === response.data!.currentPage) {
-        setPage(prev => {
-          const next = [...prev];
-          next[2] = response.data!.currentPage + 1;
-          return next;
-        });
-        setAccommodationPlaces(prev => [...prev, ...response.data!.items.map((v: Place) => ({
-          id: v.id,
-          image: v.thumbnailUrl,
-          title: v.name,
-          description: v.summary,
-          type: convertTypeToLowerCase(v.type),
-        })) as CardType[]]);
-        setTotalPages(prev => {
-          prev[2] = response.data?.totalPages || 0;
-          return prev;
-        });
-        setTotalCount(prev => {
-          prev[2] = response.data?.totalItems || 0;
-          return prev;
-        });
-      }
-    });
-  }
-
-  const fetchPlaces = [fetchTourPlaces, fetchRestaurantPlaces, fetchAccommodationPlaces];
-
-  const handleTabClick = (tab: number) => {
-    setActiveTab(tab);
+  // 설정 변경
+  const handleTabClick = (tab: string) => {
+    reset();
+    const queryParams = `type=${tab}&sort=${sort || 'like'}${searchWord ? `&q=${searchWord}&typeSearch=text` : ''}${hashtagId ? `&hashtagId=${hashtagId}` : ''}`;
+    navigate(`/list?${queryParams}`, { replace: true });
   }
 
   const handleTagClick = (tagId: number) => {
     reset();
-    if (selectedTag === tagId) {
-      setSelectedTag(null);
-    } else {
-      setSelectedTag(tagId);
-    }
+    const queryParams = `type=${type}&sort=${sort || 'like'}${searchWord ? `&q=${searchWord}&typeSearch=text` : ''}${tagId === hashtagId ? '' : `&hashtagId=${tagId}`}`;
+    navigate(`/list?${queryParams}`, { replace: true });
   }
 
-  const handleOptionClick = (option: number) => {
+  const handleOptionClick = (option: SortType) => {
     reset();
-    setSelectedOption(option);
+    const queryParams = `type=${type}&sort=${option}${searchWord ? `&q=${searchWord}&typeSearch=text` : ''}${hashtagId ? `&hashtagId=${hashtagId}` : ''}`;
+    navigate(`/list?${queryParams}`, { replace: true });
   }
-
-  // 첫 렌더링 데이터 fetch
-  // 태그 fetch
-  useEffect(() => {
-    fetchTags();
-  }, [t]);
-
-  // 태그 변경, 옵션, 검색어, 언어 변경
-  useEffect(() => {
-    reset();
-    if (searchWord) {
-      for (let i = 0; i < 3; i++) {
-        if (i !== activeTab) fetchPlaces[i]();
-      }
-    }
-  }, [selectedTag, selectedOption, searchWord, t]);
 
   // wheel로 넘길수 있도록 설정
+  // observer 설정
   useEffect(() => {
-    if (placeIsLoading) return;
+    if (placesIsLoading) return;
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && !placeIsLoading) {
-          console.log(placeIsLoading)
-          fetchPlaces[activeTab]();
+        if (entries[0].isIntersecting && !placesIsLoading) {
+          if (isMorePage) {
+            setPage(prev => prev + 1);
+          }
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.05 }
     );
 
     if (loadMoreRef.current) {
@@ -236,12 +179,10 @@ const ListPage = () => {
       observer.disconnect();
       el.removeEventListener("wheel", handleWheel);
     };
-  }, [activeTab, placeIsLoading, selectedTag, selectedOption, searchWord, page]);
+  }, [placesIsLoading, searchWord, page, hashtagId, type, sort, isMorePage]);
 
   const List = () => {
-    const list = [tourPlaces, restaurantPlaces, accommodationPlaces];
-
-    if (!placeIsLoading && list[activeTab].length === 0 && !isMorePage) {
+    if (!placesIsLoading && places.length === 0 && !isMorePage) {
       return (
         <div className={styles.list}>
           <EmptyList />
@@ -251,7 +192,7 @@ const ListPage = () => {
 
     return (
       <div className={styles.list}>
-        {list[activeTab].map((card) => (
+        {places.map((card) => (
           <Card key={card.id} id={card.id} image={card.image} title={card.title} description={card.description} type={card.type} />
         ))}
         {isMorePage && <div className={styles.loadMore} ref={loadMoreRef}>
@@ -269,11 +210,11 @@ const ListPage = () => {
       <div className={styles.searchContainer}>
         <SearchInput variant="list" searchWord={searchWord || ""} />
       </div>
-      <MenuTab tabs={menuTabs} activeTab={activeTab} isIcon={false} tabOnClick={(tab) => {
+      <MenuTab activeTab={type as PlaceType || 'tour'} isIcon={false} tabOnClick={(tab: PlaceType) => {
         handleTabClick(tab);
       }} isDot={isDot}/>
       {
-        tagIsLoading ? (
+        tagsIsLoading ? (
           <div className={styles.tagSkeletonContainer}>
             {[...Array(10)].map((_, i) => (
               <HashtagBtnSkeleton key={i} />
@@ -284,7 +225,7 @@ const ListPage = () => {
             {tags.map((tag) => (
               <HashtagButton key={tag.id} label={tag.type} onClick={() => {
                 handleTagClick(tag.id);
-              }} isSelected={selectedTag === tag.id} />
+              }} isSelected={hashtagId !== null && Number(hashtagId) === tag.id} />
               ))}
           </div>
         )
@@ -292,9 +233,9 @@ const ListPage = () => {
       <div className={styles.listContainer}>
         <div className={styles.info}>
           <div className={styles.listCount}>
-            {t("totalSearch", { count: totalCount[activeTab] })}
+            {t("totalSearch", { count: totalCount })}
           </div>
-          <Dropdown current={selectedOption} options={options} onClickOption={handleOptionClick} />
+          <Dropdown current={sort as SortType || 'like'} onClickOption={handleOptionClick} />
         </div>
         <List />
       </div>
