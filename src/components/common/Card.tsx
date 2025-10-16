@@ -11,6 +11,7 @@ interface CardProps {
     isLoading?: boolean;
     rank?: number | null;
     type?: "restaurant" | "tour" | "accommodation";
+    onClick?:() => void;
 }
 
 const Card = ({
@@ -21,6 +22,7 @@ const Card = ({
     isLoading = false,
     rank = null,
     type,
+    onClick,
 }: CardProps) => {
     const navigate = useNavigate();
     const { t } = useTranslation();

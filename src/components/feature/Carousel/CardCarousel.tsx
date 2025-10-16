@@ -7,9 +7,10 @@ import useScrollHorizon from "../../../hooks/useScrollHorizon";
 interface CardCarouselProps {
     cards: CardType[]
     isLoading?: boolean
+    onCardClick?: (card: CardType) => void;
 }
 
-const CardCarousel = ({ cards, isLoading = false }: CardCarouselProps) => {
+const CardCarousel = ({ cards, isLoading = false, onCardClick }: CardCarouselProps) => {
     const carouselRef = useScrollHorizon(!isLoading);
 
     return (
@@ -33,6 +34,7 @@ const CardCarousel = ({ cards, isLoading = false }: CardCarouselProps) => {
                         image={card.image}
                         id={card.id}
                         type={card.type}
+                        onClick={() => onCardClick?.(card)}
                         />
                     ))
                 )}
