@@ -29,7 +29,9 @@ const PasswordResetEmailPage = () => {
         if (!email) return;
         apiCall("/auth/email/send", "POST", { email }).then(response => {
             if (response.status === 204) {
-                navigate("/password/reset/code");
+                navigate("/password/reset/code", {
+                    state: { from: location.pathname },
+                });
             } else {
                 setEmailError(EXISTING_EMAIL);
             }

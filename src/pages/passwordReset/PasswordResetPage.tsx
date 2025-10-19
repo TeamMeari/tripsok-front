@@ -20,6 +20,7 @@ const PasswordResetPage = () => {
     const [passwordConfirm, setPasswordConfirm] = useState("");
     const [passwordConfirmError, setPasswordConfirmError] = useState("");
     const [passwordConfirmVisible, setPasswordConfirmVisible] = useState(false);
+    const [nickname, setNickname] = useState("");
 
     const handlePasswordChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const newPassword = e.target.value.trim();
@@ -39,8 +40,8 @@ const PasswordResetPage = () => {
     const handlePasswordReset = useCallback(() => {
         if (!password || !passwordConfirm) return;
         apiCall("/auth/reset/password", "POST", { password, emailVerifyToken }).then(response => {
-            if (response.status === 204) {
-                navigate("/password/reset/complete");
+            if (response.status === 200 && response.data && typeof response.data === 'object' && 'nickname' in response.data) {
+                navigate("/password/reset/complete", {state: { nickname: (response.data as { nickname: string }).nickname , from: location.pathname }});
             } 
         });
     }, [password, passwordConfirm]);

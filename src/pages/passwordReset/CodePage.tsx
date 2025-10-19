@@ -59,7 +59,9 @@ const PasswordResetCodePage = () => {
                 typeof response.data === 'object' &&
                 'emailVerifyToken' in response.data) {
                 setEmailVerifyToken(response.data.emailVerifyToken as string);
-                navigate("/password/reset/new");
+                navigate("/password/reset/new", {
+                    state: { from: location.pathname },
+                });
             } else {
                 setCodeError(INVALID_CODE);
             }

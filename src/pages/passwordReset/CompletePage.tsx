@@ -8,6 +8,7 @@ const PasswordResetCompletePage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
+    const { nickname } = location.state || {};
 
     const handleClickLogin = () => {
         navigate("/login");
@@ -20,12 +21,13 @@ const PasswordResetCompletePage = () => {
             navigate('/password/reset/email', { replace: true });
         }
     }, [])
-
+    
     return (
         <div className={styles.page}>
             <div className={styles.step}>
                 <p className={styles.message} style={{ paddingBottom: "16px" }}>
                     <Trans i18nKey="passwordResetComplete"
+                    values={{ name: nickname }}
                     components={{ br: <br />, span: <span /> }} />
                 </p>
                 <p className={styles.guide} style={{ color: "black"}}>{t("retryLoginGuide")}</p>
