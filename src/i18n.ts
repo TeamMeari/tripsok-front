@@ -21,7 +21,7 @@ const resources = {
             invalidEmail: "존재하지 않는 메일 형식입니다.",
             existingAccount: "기존 계정이 존재합니다.",
             wrongEmailAndPassword: "잘못된 이메일 또는 비밀번호입니다.",
-            enterVerificationCode: "{{email}}<br />으로 보낸 인증코드를 입력해주세요",
+            enterVerificationCode: "<span>{{email}}</span><br />으로 보낸 인증코드를 입력해주세요",
             expiredCode: "유효한 시간이 지났습니다.",
             sixDigitCode: "6자리 숫자",
             noEmail: "메일이 오지 않았나요?",
@@ -49,12 +49,19 @@ const resources = {
             privacyContent: "개인정보 수집 및 이용 동의", // 수정 필요
             agree: "동의합니다",
             welcomeNickname: "<span>{{name}}</span>님, 반가워요! <br />관심있는 여행이 있으신가요?",
+            guideHashtags: "1개 필수, 복수 선택 가능",
             home: "홈으로",
             passwordTooShort: "비밀번호는 8자 이상이어야 합니다.",
             letterRequired: "영문",
             numberRequired: "숫자",
             specialCharRequired: "특수문자",
             passwordValidationWarning: "필수 조건 필요 - {{condition}} 필수",
+            // 비밀번호 재설정
+            emailForPasswordReset: "계정 확인을 위해<br />가입한 이메일을 입력해주세요.",
+            enterNewPassword: "이메일 인증에 성공했어요.<br />비밀번호 재설정을 이어갈게요.",
+            passwordResetComplete: "<span>{{name}}</span>님, 비밀번호 재설정이<br />성공적으로 완료되었어요!",
+            passwordReset: "비밀번호 재설정",
+            retryLoginGuide: "다시 로그인을 시도해주세요.",
             // ContentPage 텍스트
             placePointTitle: "이 장소의 매력 포인트",
             cardSectionTitle: "과 함께 찾아본 장소",
@@ -187,12 +194,19 @@ const resources = {
             privacyContent: "Privacy Policy", // 수정 필요
             agree: "Agree",
             welcomeNickname: "Welcome, {{name}}!<br />Do you have any trips in mind?",
+            guideHashtags: "1 required, multiple selection possible",
             home: "Go Home",
             passwordTooShort: "Password must be at least 8 characters.",
             letterRequired: "Letter",
             numberRequired: "Number",
             specialCharRequired: "Special character",
             passwordValidationWarning: "Requirements needed - {{condition}} required",
+            // 비밀번호 재설정
+            emailForPasswordReset: "To verify your account,<br />please enter the email you used to sign up.",
+            enterNewPassword: "Email verified successfully.<br />Let's continue resetting your password.",
+            passwordResetComplete: "{{name}}'s password reset has<br />been completed successfully!",
+            passwordReset: "Reset Password",
+            retryLoginGuide: "Please try logging in again.",
             // ContentPage 텍스트
             placePointTitle: "Highlights of this place",
             cardSectionTitle: "Places explored together",
@@ -326,12 +340,19 @@ const resources = {
             privacyContent: "個人情報の収集および利用に同意", // 수정 필요
             agree: "同意",
             welcomeNickname: "{{name}}さん、ようこそ！<br />興味のある旅行はありますか？",
+            guideHashtags: "1つ必須、複数選択可能",
             home: "ホームへ",
             passwordTooShort: "パスワードは8文字以上である必要があります。",
             letterRequired: "英字",
             numberRequired: "数字",
             specialCharRequired: "記号",
             passwordValidationWarning: "必須条件 - {{condition}} 必須",
+            // 비밀번호 재설정
+            emailForPasswordReset: "アカウントの確認のために<br />登録したメールアドレスを入力してください。",
+            enterNewPassword: "メール認証に成功しました。<br />パスワード再設定を続けましょう。",
+            passwordResetComplete: "{{name}}のパスワード再設定が<br />正常に完了しました！",
+            passwordReset: "パスワード再設定",
+            retryLoginGuide: "再ログインを試してください。",
             // ContentPage 텍스트
             placePointTitle: "この場所の魅力ポイント",
             cardSectionTitle: "と似た場所",
@@ -464,12 +485,19 @@ const resources = {
             privacyContent: "隐私政策", // 수정 필요
             agree: "同意",
             welcomeNickname: "{{name}}，欢迎！<br />有感兴趣的旅行吗？",
+            guideHashtags: "1个必填，多个可选",
             home: "回到首页",
             passwordTooShort: "密码至少需要8位。",
             letterRequired: "字母",
             numberRequired: "数字",
             specialCharRequired: "特殊字符",
             passwordValidationWarning: "必须条件 - {{condition}} 必须",
+            // 비밀번호 재설정
+            emailForPasswordReset: "为了验证您的账户，<br />请输入您注册时使用的电子邮箱。",
+            enterNewPassword: "邮箱验证成功。<br />让我们继续重置您的密码。",
+            passwordResetComplete: "{{name}}的密码重置已<br />成功完成！",
+            passwordReset: "密码重置",
+            retryLoginGuide: "再登录试试看。",
             // ContentPage 텍스트
             placePointTitle: "这个地方的亮点",
             cardSectionTitle: "一起探索过的地方",

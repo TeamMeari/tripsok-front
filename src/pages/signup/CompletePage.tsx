@@ -94,13 +94,15 @@ const SignupCompletePage = () => {
   return (
     <div className={styles.page}>
       <div className={styles.step}>
-        <p className={styles.message}>
+        <p className={styles.message} style={{ paddingBottom: "16px"}}>
           <Trans
             i18nKey="welcomeNickname"
             components={{ br: <br />, span: <span /> }}
             values={{ name: nickname || "" }}
           />
         </p>
+        <p className={styles.guide}>{t("guideHashtags")}</p>
+        <br />
         <div className={styles.content}>
           {fetchIsLoading ? (
             <div className={styles.hashtagsContainer}>
@@ -124,7 +126,7 @@ const SignupCompletePage = () => {
         </div>
         <div className={styles.buttonFixedTab}>
           <Link to="/">
-            <Button borderRadius="12px" size="large">
+            <Button borderRadius="12px" size="large" disabled={selectedIds.size === 0}>
               {t("home")}
             </Button>
           </Link>

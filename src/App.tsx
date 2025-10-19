@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React, { useEffect, useRef } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import {
   QueryClient,
   QueryClientProvider,
@@ -25,6 +25,11 @@ import PrivacyPage from "./pages/signup/PrivacyPage";
 import PaymentPage from "./pages/PaymentPage";
 import PaymentSuccessPage from "./pages/SuccessPage";
 import useAuthStore from "./stores/authStore";
+import PasswordResetEmailPage from "./pages/passwordReset/EmailPage";
+import PasswordResetCodePage from "./pages/passwordReset/CodePage";
+import PasswordResetPage from "./pages/passwordReset/PasswordResetPage";
+import PasswordResetCompletePage from "./pages/passwordReset/CompletePage";
+import { usePasswordResetStore } from "./stores/passwordResetStore";
 
 function App(): JSX.Element {
   const queryClient = new QueryClient();
@@ -41,6 +46,7 @@ function App(): JSX.Element {
           <QueryClientProvider client={queryClient}>
           <HeaderSelector />
           <div className="content-area">
+            <ZustandResetGuard />
             <Routes>
               <Route path="/" element={<MainPage />} />
               <Route path="/login" element={<LoginPage />} />
@@ -53,6 +59,12 @@ function App(): JSX.Element {
               <Route path="/signup/email/3" element={<EmailSignupPage />} />
               <Route path="/signup/oauth2" element={<OAuthSignupPage />} />
               <Route path="/signup/complete" element={<SignupCompletePage />} />
+
+              {/* 비밀번호 재설정 */}
+              <Route path="/password/reset/email" element={<PasswordResetEmailPage />} />
+              <Route path="/password/reset/code" element={<PasswordResetCodePage />} />
+              <Route path="/password/reset/new" element={<PasswordResetPage />} />
+              <Route path="/password/reset/complete" element={<PasswordResetCompletePage />} />
 
               <Route path="/list" element={<ListPage />} />
               <Route path="/content/:type/:id" element={<ContentPage />} />
@@ -71,3 +83,21 @@ function App(): JSX.Element {
 }
 
 export default App; 
+
+function ZustandResetGuard(): JSX.Element | null {
+  const location = useLocation();
+  const { reset } = usePasswordResetStore();
+  const wasInPasswordResetGroupRef = useRef<boolean>(false);
+
+  useEffect(() => {
+    // 비밀번호 재설정 라우트 그룹 여부를 명확히 표현
+    const inPasswordResetGroup = location.pathname.startsWith("/password/reset");
+    // 비밀번호 재설정 그룹에서 벗어나는 순간에만 reset
+    if (wasInPasswordResetGroupRef.current && !inPasswordResetGroup) {
+      reset();
+    }
+    wasInPasswordResetGroupRef.current = inPasswordResetGroup;
+  }, [location.pathname, reset]);
+
+  return null;
+}

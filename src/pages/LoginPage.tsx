@@ -89,9 +89,9 @@ const LoginPage = () => {
             </div>
 
             <div className={styles.linkContainer}>
-                {/* <Link to="/password/reset" className={styles.link}>{t("resetPassword")}</Link>
-                <div className={styles.divider} /> */}
-                <p className={styles.link} style={{ fontSize: "14px", margin: "0" }}>{t("ifNoAccount")} </p>
+                <Link to="/password/reset/email" className={styles.link}>{t("resetPassword")}</Link>
+                <div className={styles.divider} />
+                {/* <p className={styles.link} style={{ fontSize: "14px", margin: "0" }}>{t("ifNoAccount")} </p> */}
                 <Link to="/signup/email/1" className={styles.link}>{t("signup")}</Link>
             </div>
 
