@@ -2,21 +2,17 @@ import React, { useEffect, useRef, useState } from 'react';
 import styles from './MenuTab.module.css';
 import { animate, timeline } from '@motionone/dom';
 import { useTranslation } from 'react-i18next';
+import { menuTabs } from '../../../types/menuTabs';
+import { PlaceType } from '../../../types/menuTabs';
 
 interface MenuTabProps {
-  tabs: {
-    label: string;
-    icon: string;
-    uri: string;
-    key: string;
-  }[];
-  activeTab: number;
+  activeTab: PlaceType;
   isIcon? : boolean;
-  tabOnClick: (index: number) => void;
-  isDot?: boolean[];
+  tabOnClick: (tab: PlaceType) => void;
+  isDot?: Record<PlaceType, boolean>;
 }
 
-const MenuTab = ({ tabs, activeTab, isIcon, tabOnClick, isDot = [ false, false, false ] }: MenuTabProps) => {
+const MenuTab = ({ activeTab, isIcon, tabOnClick, isDot = { tour: false, restaurant: false, accommodation: false } }: MenuTabProps) => {
   const { t } = useTranslation();
   const [isAnimating, setIsAnimating] = useState(false);
   const lineRef = useRef<HTMLDivElement>(null);
@@ -24,18 +20,18 @@ const MenuTab = ({ tabs, activeTab, isIcon, tabOnClick, isDot = [ false, false, 
   const tabWidth = 64;
   const tabGap = 24;
 
-  const handleTabClick = (index: number) => {
+  const handleTabClick = (tab: PlaceType) => {
     if (isAnimating) return;
     setIsAnimating(true);
     if (lineRef.current) {
         animate(lineRef.current, {
-            x: `${(index - 1) * (tabWidth + tabGap)}px`,
+            x: `${(menuTabs[tab].id - 2) * (tabWidth + tabGap)}px`,
         }, {
             duration: 0.3,
             easing: 'ease-in-out',
         }).finished.then(() => {
             setIsAnimating(false);
-            tabOnClick(index);
+            tabOnClick(tab);
         });
     }
   };
@@ -47,7 +43,7 @@ const MenuTab = ({ tabs, activeTab, isIcon, tabOnClick, isDot = [ false, false, 
                 width: ['0px', `${tabWidth}px`],
             }],
             [lineRef.current, {
-                x: ['calc(-50vw + 50%)', `${(tabWidth + tabGap) * (activeTab - 1)}px`],
+                x: ['calc(-50vw + 50%)', `${(tabWidth + tabGap) * (menuTabs[activeTab].id - 2)}px`],
             }],
         ], {
             duration: 0.3,
@@ -58,16 +54,16 @@ const MenuTab = ({ tabs, activeTab, isIcon, tabOnClick, isDot = [ false, false, 
 
   return (
     <div className={styles.tabContainer}>
-      {tabs.map((tab: { label: string; icon: string; uri: string }, index: number) => (
+      {(Object.keys(menuTabs) as PlaceType[]).map((key) => (
         <div
-          key={index}
-          className={`${styles.tabItem} ${activeTab === index ? styles.active : ''}`}
-          onClick={() => handleTabClick(index)}
+          key={key}
+          className={`${styles.tabItem} ${activeTab === key ? styles.active : ''}`}
+          onClick={() => handleTabClick(key as PlaceType)}
         >
-          {isIcon && <img src={tab.icon} alt={tab.label} className={styles.tabIcon} />}
+          {isIcon && <img src={menuTabs[key].icon} alt={menuTabs[key].label} className={styles.tabIcon} />}
           <div className={styles.tabTextContainer}>
-            <span className={styles.tabText}>{t(tab.label)}</span>
-            {isDot[index] && <div className={styles.dot} />}
+            <span className={styles.tabText}>{t(menuTabs[key].label)}</span>
+            {isDot[key] && <div className={styles.dot} />}
           </div>
         </div>
       ))}

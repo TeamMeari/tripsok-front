@@ -1,22 +1,29 @@
-const menuTabs = [
-    {
+export type PlaceType = 'tour' | 'restaurant' | 'accommodation';
+
+export const menuTabs: {
+    [key in PlaceType]: {
+        id: number;
+        label: string;
+        icon: string;
+        uri: string;
+    }
+} = {
+    tour: {
+        id: 1,
         label: 'tabTour',
-        key: 'tour',
         icon: 'typeIcon/spot.png',
         uri: '/tour',
     },
-    {
+    restaurant: {
+        id: 2,
         label: 'tabFood',
-        key: 'restaurant',
         icon: 'typeIcon/restaurant.png',
         uri: '/food',
     },
-    {
+    accommodation: {
+        id: 3,
         label: 'tabStay',
-        key: 'accommodation',
         icon: 'typeIcon/accommodation.png',
         uri: '/stay',
     }
-]
-
-export default menuTabs
+}

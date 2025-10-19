@@ -1,5 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
 import './App.css';
 import MainPage from './pages/MainPage';
 import ListPage from './pages/ListPage';
@@ -28,7 +32,7 @@ import PasswordResetCompletePage from "./pages/passwordReset/CompletePage";
 import { usePasswordResetStore } from "./stores/passwordResetStore";
 
 function App(): JSX.Element {
-
+  const queryClient = new QueryClient();
   const { checkLogin } = useAuthStore();
 
   useEffect(() => {
@@ -39,6 +43,7 @@ function App(): JSX.Element {
     <div className="App">
       <div className="app-area">
         <BrowserRouter>
+          <QueryClientProvider client={queryClient}>
           <HeaderSelector />
           <div className="content-area">
             <ZustandResetGuard />
@@ -70,6 +75,7 @@ function App(): JSX.Element {
 
             </Routes>
           </div>
+          </QueryClientProvider>
         </BrowserRouter>
       </div>
     </div>
