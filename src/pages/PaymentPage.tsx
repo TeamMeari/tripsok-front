@@ -37,6 +37,7 @@ const PaymentPage: React.FC = () => {
     const handlePayment = async () => {
         if (!paymentWidget) return;
         sessionStorage.setItem("passengerEmail", email);
+        sessionStorage.setItem("passengerName", passengerName);
 
         try {
             await paymentWidget.requestPayment({

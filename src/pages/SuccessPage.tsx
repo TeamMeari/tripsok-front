@@ -1,10 +1,11 @@
 // src/pages/PaymentSuccessPage.tsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./SuccessPage.module.css";
 import TransparentHeader from "../components/header/TransparentHeader";
 import Button from "../components/common/Button/CommonBtn";
 import { useTranslation } from "react-i18next";
+import { useApi } from "../hooks/useApi";
 
 const PaymentSuccessPage: React.FC = () => {
     const { t } = useTranslation();
@@ -12,44 +13,114 @@ const PaymentSuccessPage: React.FC = () => {
     const navigate = useNavigate();
     const query = new URLSearchParams(location.search);
 
+    const { apiCall } = useApi();
+
     const orderId = query.get("orderId");
     const paymentKey = query.get("paymentKey");
     const amount = query.get("amount");
-    const email = query.get("passengerEmail")
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [email, setEmail] = useState<string | null>(null);
+
+    const accessToken = localStorage.getItem("accessToken");
+
+    const API_BASE_URL = import.meta.env.VITE_PUBLIC_API_BASE_URL;
+
+    useEffect(() => {
+        const contactEmail = sessionStorage.getItem("passengerEmail") || "";
+        const userName = sessionStorage.getItem("passengerName") || "";
+
+        if (!paymentKey || !orderId || !amount) {
+            setError("결제 정보가 올바르지 않습니다.");
+            setLoading(false);
+            return;
+        }
+
+        const sendBookingInfo = async () => {
+            const body = {
+                contactEmail,
+                userName,
+                paymentInfo: {
+                    orderNumber: orderId,
+                    amount: Number(amount),
+                    paymentKey,
+                },
+            };
+
+            try {
+                const res = await apiCall<{ email?: string }>(
+                    `${API_BASE_URL}/booking?locale=KO`,
+                    "POST",
+                    body
+                );
+
+                if (res.error) {
+                    throw res.error;
+                }
+
+                console.log("예약 등록 성공:", res.data);
+                setEmail(res.data?.email || contactEmail);
+            } catch (err) {
+                console.error("예약 API 요청 실패:", err);
+                setError("서버와 통신 중 문제가 발생했습니다.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        sendBookingInfo();
+    }, [orderId, paymentKey, amount, apiCall, API_BASE_URL]);
 
     return (
         <div className={styles.container}>
-            <TransparentHeader type="auth" onBackClick={() => navigate(-1)}/>
+            <TransparentHeader type="auth" onBackClick={() => navigate(-1)} />
             <div className={styles.line}></div>
+
             <div className={styles.pyment_succssPage}>
                 <div className={styles.pyment_succss}>
                     <div className={styles.successIcon}>
-                        <img src="/InfoIcon/bag.svg" alt="asuccessIcon" className={styles.successIcon_img}></img>
+                        <img
+                            src="/InfoIcon/bag.svg"
+                            alt="successIcon"
+                            className={styles.successIcon_img}
+                        />
                     </div>
                     <div className={styles.content}>
-                        <div className={styles.infoBox}>
-                            <div className={styles.title}>{t("paymentSuccess")}</div>
-                            <div className={styles.text}>{t("receiptSent")}</div>
-                        </div>
-
-
+                        {loading ? (
+                            <div className={styles.infoBox}>
+                                <div className={styles.title}>{t("paymentProcessing") || "결제 확인 중..."}</div>
+                                <div className={styles.text}>잠시만 기다려주세요 🙏</div>
+                            </div>
+                        ) : error ? (
+                            <div className={styles.infoBox}>
+                                <div className={styles.title}>오류 발생 ⚠️</div>
+                                <div className={styles.text}>{error}</div>
+                            </div>
+                        ) : (
+                            <div className={styles.infoBox}>
+                                <div className={styles.title}>{t("paymentSuccess")}</div>
+                                <div className={styles.text}>
+                                    {email
+                                        ? `${email}로 영수증이 발송되었습니다.`
+                                        : t("receiptSent")}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
+
             <div className={styles.fixedBottomArea}>
                 <Button
                     variant="primary"
                     size="large"
                     borderRadius="12px"
                     onClick={() => (window.location.href = "/")}
-                    >
+                >
                     메인으로 이동
                 </Button>
             </div>
-
         </div>
-
-
     );
 };
 
