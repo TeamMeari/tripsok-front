@@ -67,7 +67,7 @@ const LoginPage = () => {
                 <div className={styles.inputContainer}>
                     <Input
                         onChange={handleEmailChange}
-                        placeholder="touang@example.com"
+                        placeholder="tourang@example.com"
                         maxLength={320}
                         value={email}
                         rightElement={email && <ResetButton onClick={() => setEmail("")} />}
