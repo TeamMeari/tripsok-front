@@ -11,11 +11,10 @@ import MenuApp from "../components/MenuApp";
 import SearchInput from '../components/feature/SearchInput';
 import { PlaceType } from '../types/menuTabs';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useApi } from '../hooks/useApi';
 import { useStaticApiQuery } from '../hooks/useApi';
 import HashtagBtnSkeleton from '../components/common/HashtagBtnSkeleton';
 import useScrollHorizon from '../hooks/useScrollHorizon';
-import { PlacesResponse, Place } from '../types/apiResponse';
+import { PlaceListResponse, PlaceListItem } from '../types/apiResponse';
 import EmptyList from '../components/common/EmptyList';
 import { convertTypeToLowerCase } from '../utils/converter';
 import TopButton from '../components/common/TopButton';
@@ -69,7 +68,7 @@ const ListPage = () => {
 
   // 현재 page 기준 장소 목록 요청 (정적 캐시)
   const placesQueryParams = `?page=${page}&size=20&sortKey=${sort}&direction=desc&locale=${i18n.language}${hashtagId ? `&themeId=${hashtagId}` : ''}${searchWord ? `&categoryFilter=true&q=${searchWord}` : ''}`;
-  const { data: placesData, isLoading: placesIsLoading } = useStaticApiQuery<PlacesResponse>(
+  const { data: placesData, isLoading: placesIsLoading } = useStaticApiQuery<PlaceListResponse>(
     ['places', (type as string) || 'tour', sort || 'like', searchWord || '', hashtagId ?? '', page, i18n.language],
     `places/${(type as string) || 'tour'}${placesQueryParams}`,
     {
@@ -79,17 +78,17 @@ const ListPage = () => {
 
   // 검색어가 있을 때, 모든 타입의 첫 페이지를 실제 목록과 동일 키로 선조회하여 캐시 (UI 반영 없음)
   const prefetchQueryParams = `?page=0&size=20&sortKey=${sort}&direction=desc&locale=${i18n.language}${hashtagId ? `&themeId=${hashtagId}` : ''}${searchWord ? `&categoryFilter=true&q=${searchWord}&typeSearch=text` : ''}`;
-  useStaticApiQuery<PlacesResponse>(
+  useStaticApiQuery<PlaceListResponse>(
     ['places', 'tour', sort || 'like', searchWord || '', hashtagId ?? '', 0, i18n.language],
     `places/tour${prefetchQueryParams}`,
     { enabled: !!searchWord }
   );
-  useStaticApiQuery<PlacesResponse>(
+  useStaticApiQuery<PlaceListResponse>(
     ['places', 'restaurant', sort || 'like', searchWord || '', hashtagId ?? '', 0, i18n.language],
     `places/restaurant${prefetchQueryParams}`,
     { enabled: !!searchWord }
   );
-  useStaticApiQuery<PlacesResponse>(
+  useStaticApiQuery<PlaceListResponse>(
     ['places', 'accommodation', sort || 'like', searchWord || '', hashtagId ?? '', 0, i18n.language],
     `places/accommodation${prefetchQueryParams}`,
     { enabled: !!searchWord }
@@ -114,7 +113,7 @@ const ListPage = () => {
     if (placesData.currentPage === page) {
       setPlaces(prev => [
         ...prev,
-        ...placesData.items.map((v: Place) => ({
+        ...placesData.items.map((v: PlaceListItem) => ({
           id: v.id,
           image: v.thumbnailUrl,
           title: v.name,
