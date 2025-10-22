@@ -30,6 +30,7 @@ import PasswordResetCodePage from "./pages/passwordReset/CodePage";
 import PasswordResetPage from "./pages/passwordReset/PasswordResetPage";
 import PasswordResetCompletePage from "./pages/passwordReset/CompletePage";
 import { usePasswordResetStore } from "./stores/passwordResetStore";
+import ReviewFormPage from "./pages/review/ReviewFormPage";
 
 function App(): JSX.Element {
   const queryClient = new QueryClient();
@@ -65,6 +66,9 @@ function App(): JSX.Element {
               <Route path="/password/reset/code" element={<PasswordResetCodePage />} />
               <Route path="/password/reset/new" element={<PasswordResetPage />} />
               <Route path="/password/reset/complete" element={<PasswordResetCompletePage />} />
+
+              {/* 리뷰 */}
+              <Route path="/review/write" element={<ReviewFormPage />} />
 
               <Route path="/list" element={<ListPage />} />
               <Route path="/content/:type/:id" element={<ContentPage />} />

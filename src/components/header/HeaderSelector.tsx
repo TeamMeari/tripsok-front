@@ -7,9 +7,14 @@ const HeaderSelector: React.FC = () => {
     const location = useLocation();
     const pathname = location.pathname;
     
-    // 로그인/회원가입 페이지는 로고가 없는 Header 사용
+    // 로그인/회원가입 페이지는 로고, loginButton이 없는 Header 사용
     if (pathname === "/login" || pathname.startsWith("/signup") || pathname.startsWith("/password/reset")) {
       return <Header isLogo={false} isLoginButton={false} />;
+    }
+
+    // 리뷰 페이지는 로고가 없는 Header 사용
+    if (pathname.startsWith("/review")) {
+      return <Header isLogo={false} />;
     }
     
     // 콘텐츠 상세 페이지는 TransparentHeader 사용
