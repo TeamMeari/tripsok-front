@@ -1,5 +1,4 @@
-// src/pages/PaymentSuccessPage.tsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./SuccessPage.module.css";
 import TransparentHeader from "../components/header/TransparentHeader";
@@ -22,21 +21,26 @@ const PaymentSuccessPage: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [email, setEmail] = useState<string | null>(null);
 
-    const accessToken = localStorage.getItem("accessToken");
-
     const API_BASE_URL = import.meta.env.VITE_PUBLIC_API_BASE_URL;
 
-    useEffect(() => {
-        const contactEmail = sessionStorage.getItem("passengerEmail") || "";
-        const userName = sessionStorage.getItem("passengerName") || "";
+    // useRef로 중복 호출 방지
+    const hasRequestedRef = useRef(false);
 
+    useEffect(() => {
         if (!paymentKey || !orderId || !amount) {
             setError("결제 정보가 올바르지 않습니다.");
             setLoading(false);
             return;
         }
 
+        // 이미 호출했으면 return
+        if (hasRequestedRef.current) return;
+        hasRequestedRef.current = true;
+
         const sendBookingInfo = async () => {
+            const contactEmail = sessionStorage.getItem("passengerEmail") || "";
+            const userName = sessionStorage.getItem("passengerName") || "";
+
             const body = {
                 contactEmail,
                 userName,
@@ -54,9 +58,7 @@ const PaymentSuccessPage: React.FC = () => {
                     body
                 );
 
-                if (res.error) {
-                    throw res.error;
-                }
+                if (res.error) throw res.error;
 
                 console.log("예약 등록 성공:", res.data);
                 setEmail(res.data?.email || contactEmail);
