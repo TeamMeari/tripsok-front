@@ -22,6 +22,7 @@ interface Place {
     title: string;
     lat?: number;
     lng?: number;
+    memo?:string;
 }
 
 
@@ -65,21 +66,38 @@ function SortableItem({ place, index }: { place: Place; index: number }) {
         alignItems: "center"
     };
 
+    const rigthBtns: CSSProperties = {
+        display: "flex",
+        flexDirection: "row",
+        width: "40px",
+        justifyContent:"space-between",
+        alignItems:"center"
+    }
     return (
         <div ref={setNodeRef} style={style}>
       <span style={titleStyle}>
         <div style={badgeStyle}>{index + 1}</div>
           {place.title}
       </span>
-            <span {...listeners} {...attributes} style={{ cursor: "grab" }}>
-        &#9776;
-      </span>
-        </div>
-    );
+            <div style={rigthBtns}>
+                <img
+                    src="/InfoIcon/pencilIcon.svg"
+                    alt="pen"
+                    style={{width: 18, height: 18}}
+                />
+                <span {...listeners} {...attributes} style={{cursor: "grab"}}>
+                     &#9776;
+        </span>
+            </div>
+
+
+</div>
+)
+    ;
 }
 
 // Exit Modal
-function ExitModal({ visible, onCancel, onSave }: { visible: boolean; onCancel: () => void; onSave: () => void }) {
+function ExitModal({visible, onCancel, onSave}: { visible: boolean; onCancel: () => void; onSave: () => void }) {
     if (!visible) return null;
     return (
         <div className={styles.overlay}>
@@ -102,7 +120,7 @@ function ExitModal({ visible, onCancel, onSave }: { visible: boolean; onCancel: 
 }
 
 export default function MyPlanDetailPage() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const location = useLocation();
     const navigate = useNavigate();
     const { apiCall: fetchApi, isLoading } = useApi();
@@ -174,34 +192,61 @@ export default function MyPlanDetailPage() {
 
     const sensors = useSensors(useSensor(PointerSensor));
 
-      const handleSavePlan = async () => {
+    const handleSavePlan = async (goToPayment: boolean) => {
         const body = {
             tripPlan: {
                 tripDate: dateValue,
                 startTime: timeValue,
-                numberOfPeople: personValue ? Number(personValue) : null,
+                numberOfPeople: personValue ? parseInt(personValue, 10) : null,
             },
             visitSpotSet: places.map((p, index) => ({
                 placeId: p.id,
                 memo: "",
                 orderIndex: index + 1,
             })),
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("accessToken") || ""}`,
-            },
         };
-
+        const currentLocale = i18n.language.toUpperCase();
+        console.log("보낼 body:", body);
         try {
-            const res = await fetchApi(`/trip-plan?locale=KO`, "POST", body);
+            // 여행계획 저장 (토큰 자동 포함)
+            const res = await fetchApi(`/trip-plan?locale=${currentLocale}`, "POST", body);
             console.log("저장 성공:", res);
-            localStorage.removeItem("visitedPlaces");
-            setPlaces([]);
-            setShowExitModal(false);
-            navigate("/");
+
+            // 결제 전 검증 API
+            if (goToPayment) {
+                const validationRes = await fetchApi(`/booking`, "GET");
+
+                if (validationRes?.status === 204 || validationRes === null) {
+                    localStorage.removeItem("visitedPlaces");
+                    setPlaces([]);
+                    setShowExitModal(false);
+                    navigate("/payment", {
+                        state: {
+                            places,
+                            date: dateValue,
+                            from: fromValue,
+                            time: timeValue,
+                            person: personValue,
+                            mapLocations: visitedPlaces.map(p => ({
+                                lat: p.lat || 37.751,
+                                lng: p.lng || 128.876,
+                                title: p.title,
+                            })),
+                            clearVisited: true,
+                        },
+                    });
+                } else {
+                    alert("예약 검증에 실패했습니다. 다시 시도해주세요.");
+                }
+            } else {
+                navigate("/");
+            }
+
+
         } catch (err) {
             console.error("저장 실패:", err);
+            alert("여행 계획 저장에 실패했습니다.");
         }
-        console.log("전송할 body:", body);
     };
 
     return (
@@ -219,7 +264,7 @@ export default function MyPlanDetailPage() {
                     navigate(-1);
                 }}
 
-                onSave={handleSavePlan}
+                onSave={() => handleSavePlan(false)}
             />
             <div style={{ height: "100%", width: "100%" }}>
                 <KakaoMap
@@ -267,14 +312,18 @@ export default function MyPlanDetailPage() {
                                             }
                                         }}
                                     >
+
                                         <SortableContext
                                             items={places.map(p => p.id)}
                                             strategy={verticalListSortingStrategy}
                                         >
+
                                             {places.map((place, index) => (
+
                                                 <SortableItem key={place.id} place={place} index={index} />
                                             ))}
                                         </SortableContext>
+
                                     </DndContext>
                                 </div>
                             </div>
@@ -312,7 +361,7 @@ export default function MyPlanDetailPage() {
                                             />
                                             <DropdownInput
                                                 value={personValue}
-                                                onChange={setPersonValue} //인원
+                                                onChange={(val) => setPersonValue(String(val))} //인원
                                                 options={personOptions}
                                                 placeholder={t('myPlanPeople')}
                                                 width={148}
@@ -335,28 +384,8 @@ export default function MyPlanDetailPage() {
                          borderRadius="12px"
                          disabled={!isFormComplete}
 
-                         onClick={() => {
-                             // 결제 페이지로 이동
-                             navigate("/payment", {
-                                 state: {
-                                     places,
-                                     date: dateValue,
-                                     from: fromValue,
-                                     time: timeValue,
-                                     person: personValue,
-                                     mapLocations: visitedPlaces.map(p => ({
-                                         lat: p.lat || 37.751,
-                                         lng: p.lng || 128.876,
-                                         title: p.title
-                                     })),
-                                     clearVisited: true
-                                 }
-                             });
-
-                             localStorage.removeItem("myPlan");
-                             localStorage.removeItem("visitedPlaces");
-                         }}
-                         >
+                         onClick={() => handleSavePlan(true)}
+                >
                     {t("reserveButton")}
                 </Button>
             </div>
