@@ -140,6 +140,7 @@ const resources = {
             price: "30,000원",
             paymentSuccess: "결제가 완료되었습니다",
             receiptSent: "결제된 영수증은 이메일로 보냈어요.",
+            foreignTourTaxiNotice: "강원도 외국인 관광택시는 1일 1회 3시간 이용이 기본으로, 이용 시간에 따라 추가 요금이 발생할 수 있습니다.",
         },
     },
     en: {
@@ -279,6 +280,7 @@ const resources = {
             price: "$30.00",
             paymentSuccess: "Payment has been completed",
             receiptSent: "The receipt has been sent to your email.",
+            foreignTourTaxiNotice: "Gangwon foreign tour taxi is available for 3 hours per day by default, and additional charges may apply depending on usage time.",
         },
     },
     ja: {
@@ -417,6 +419,7 @@ const resources = {
             price: "¥30,000",
             paymentSuccess: "支付已完成",
             receiptSent: "收据已发送到您的电子邮箱。",
+            foreignTourTaxiNotice: "江原道外国人観光タクシーは、1日1回3時間の利用が基本で、利用時間に応じて追加料金が発生する場合があります。",
         },
     },
     cn: {
@@ -555,7 +558,7 @@ const resources = {
             price: "¥30,000",
             paymentSuccess: "お支払いが完了しました",
             receiptSent: "領収書をメールに送信しました。",
-
+            foreignTourTaxiNotice: "江原道外国游客观光出租车默认每日使用3小时，根据使用时间可能会产生额外费用。",
         },
     },
 };
