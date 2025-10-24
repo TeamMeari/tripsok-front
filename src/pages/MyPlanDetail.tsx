@@ -23,12 +23,18 @@ interface Place {
     lat?: number;
     lng?: number;
     memo?:string;
+    latitude?: number;   // 수정 예정 -> 제거
+    longitude?: number;  // 수정 예정  -> 제거
+    name: string;
 }
 
 
 // SortableItem.tsx  드래그 앱 드랍_각각의 여행지 상태관리
-function SortableItem({ place, index }: { place: Place; index: number }) {
+function SortableItem({ place, index, updateMemo }: { place: Place; index: number; updateMemo: (id: number, memo: string) => void }) {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: place.id });
+    const [editing, setEditing] = useState(false);
+    const [memo, setMemo] = useState(place.memo || "");
+
     const style: CSSProperties = {
         transform: CSS.Transform.toString(transform),
         transition,
@@ -36,17 +42,14 @@ function SortableItem({ place, index }: { place: Place; index: number }) {
         background: "#fff",
         borderRadius: 12,
         display: "flex",
-        height: "28px",
-        justifyContent: "space-between",
-        alignItems: "center",
-        cursor: "default",
+        flexDirection: "column",
+        width: "288px",
         border: "1px solid #D9D9D9",
-        width: "288px"
-    };
+        
+           };
 
     const colors = ["#E74C3C", "#3498DB", "#27AE60", "#F39C12", "#9B59B6"];
-
-    const badgeStyle: React.CSSProperties =  {
+    const badgeStyle: React.CSSProperties = {
         backgroundColor: colors[index % colors.length],
         color: "#fff",
         width: "24px",
@@ -56,44 +59,73 @@ function SortableItem({ place, index }: { place: Place; index: number }) {
         justifyContent: "center",
         alignItems: "center",
         fontSize: "14px",
-        fontWeight: "bold"
+        fontWeight: "bold",
     };
 
-    const titleStyle: CSSProperties = {
-        display: "flex",
-        flexDirection: "row",
-        gap: "8px",
-        alignItems: "center"
-    };
-
-    const rigthBtns: CSSProperties = {
-        display: "flex",
-        flexDirection: "row",
-        width: "40px",
-        justifyContent:"space-between",
-        alignItems:"center"
-    }
     return (
         <div ref={setNodeRef} style={style}>
-      <span style={titleStyle}>
-        <div style={badgeStyle}>{index + 1}</div>
-          {place.title}
-      </span>
-            <div style={rigthBtns}>
-                <img
-                    src="/InfoIcon/pencilIcon.svg"
-                    alt="pen"
-                    style={{width: 18, height: 18}}
-                />
-                <span {...listeners} {...attributes} style={{cursor: "grab"}}>
-                     &#9776;
-        </span>
+            <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                <span style={{display: "flex", alignItems: "center", gap: "8px"}}>
+                    <div style={badgeStyle}>{index + 1}</div>
+                    {place.title}
+                </span>
+                <div style={{display: "flex", alignItems: "center", gap: "8px"}}>
+                    {editing ? (
+                        <button
+                            style={{
+                                cursor: "pointer",
+                                border: "none",
+                                background: "none",
+                                color: "#3498DB",
+                                fontWeight: "bold"
+                            }}
+                            onClick={() => {
+                                updateMemo(place.id, memo);
+                                setEditing(false);
+                            }}
+                        >
+                            저장
+                        </button>
+                    ) : (
+                        <img
+                            src="/InfoIcon/pencilIcon.svg"
+                            alt="pen"
+                            style={{width: 18, height: 18, cursor: "pointer"}}
+                            onClick={() => setEditing(true)}
+                        />
+                    )}
+                    <span {...listeners} {...attributes} style={{cursor: "grab"}}>
+                        &#9776;
+                    </span>
+                </div>
             </div>
 
-
-</div>
-)
-    ;
+            <div >
+                {editing ? (
+                    <input
+                        type="text"
+                        value={memo}
+                        onChange={(e) => setMemo(e.target.value)}
+                        placeholder="메모를 입력하세요"
+                        style={{
+                            width: "100%",
+                            borderRadius: 8,
+                            padding: 6,
+                            border: "1px solid #ccc",
+                            marginTop: 8,
+                            boxSizing: "border-box",
+                            color: "#666666",
+                            fontSize: 14,
+                        }}
+                    />
+                ) : (
+                    memo && ( // memo가 있을 때만 div 렌더링
+                        <div style={{ fontSize: 14, color: "#666", marginTop: 8 }}>{memo}</div>
+                    )
+                )}
+            </div>
+        </div>
+    );
 }
 
 // Exit Modal
@@ -151,6 +183,13 @@ export default function MyPlanDetailPage() {
 
     const [showExitModal, setShowExitModal] = useState(false);
 
+    //메모저장 함수
+    const updateMemo = (id: number, memo: string) => {
+        setPlaces((prev) =>
+            prev.map((p) => (p.id === id ? { ...p, memo } : p))
+        );
+    };
+
     const generateTimeOptions = () => {
         const options: string[] = [];
         for (let hour = 9; hour <= 18; hour++) {
@@ -201,7 +240,7 @@ export default function MyPlanDetailPage() {
             },
             visitSpotSet: places.map((p, index) => ({
                 placeId: p.id,
-                memo: "",
+                memo:  p.memo || "",
                 orderIndex: index + 1,
             })),
         };
@@ -249,6 +288,20 @@ export default function MyPlanDetailPage() {
         }
     };
 
+    const savedPlan: Place[] = location.state?.savedPlan || [];
+    const mapLocations = [
+        ...savedPlan,
+        ...visitedPlaces.filter(
+            vp => !savedPlan.some(sp => sp.id === vp.id)
+        ),
+    ].map(p => ({
+        lat: p.lat || p.latitude || 37.751,   // latitude  수정 예정 -> lat 만 가능
+        lng: p.lng || p.longitude || 128.876, // longitude 수정 예정 -> lng 만 가능
+        title: p.title || p.name,
+    }));
+    console.log("✅ savedPlan 데이터:", savedPlan);
+    console.log("✅ visitedPlaces 데이터:", visitedPlaces);
+    console.log("카카오맵에 보내는 값:", mapLocations);
     return (
         <div style={{ height: "100vh", position: "relative" }}>
             <TransparentHeader
@@ -268,11 +321,7 @@ export default function MyPlanDetailPage() {
             />
             <div style={{ height: "100%", width: "100%" }}>
                 <KakaoMap
-                    locations={visitedPlaces.map(p => ({
-                        lat: p.lat || 37.751,
-                        lng: p.lng || 128.876,
-                        title: p.title
-                    }))}
+                    locations={mapLocations}
                     width="100%"
                     height="100%"
                 />
@@ -319,8 +368,7 @@ export default function MyPlanDetailPage() {
                                         >
 
                                             {places.map((place, index) => (
-
-                                                <SortableItem key={place.id} place={place} index={index} />
+                                                <SortableItem key={place.id} place={place} index={index} updateMemo={updateMemo} />
                                             ))}
                                         </SortableContext>
 
