@@ -26,8 +26,9 @@ interface PlaceResponse {
     information: string;
     mapX: number; // 경도
     mapY: number; // 위도
-    weekDays?: string;
-    openStatus?: string;
+    openDate?: string;
+    restDate?:string;
+    useTime?:string;
     tags: Tag[];
     child: {
         id: number;
@@ -97,7 +98,10 @@ const ContentPage = () => {
         setLoading(true);
         fetchApi<PlaceResponse>(`/places/${type}/${id}?locale=${locale}`, "GET")
             .then((res) => {
-                if (res.status === 200) setPlace(res.data);
+                if (res.status === 200) {
+                    setPlace(res.data);
+                    console.log("받아온 장소 데이터:", res.data);
+                }
             })
             .catch(err => console.error(err))
             .finally(() => setLoading(false));
@@ -195,17 +199,34 @@ const ContentPage = () => {
                 </div>
 
                 <div className={styles.ContetntData}>
-                    {place.weekDays && (
+                    {(place.openDate || place.restDate) && (
                         <div className={styles.dataDetails}>
-                            <img src="/InfoIcon/date.svg" alt="날짜" className={styles.dataIcon}/>
-                            {place.weekDays}
+                            <img src="/InfoIcon/date.svg" alt="날짜" className={styles.dataIcon} />
+                            {(() => {
+                                const open = place.openDate;
+                                const rest = place.restDate;
+
+                                // 둘 다 연중무휴이면 하나만 보여줌
+                                if (open === "연중무휴" && rest === "연중무휴") {
+                                    return "연중무휴";
+                                }
+
+                                // openDate, restDate 중 하나만 있을 경우
+                                if (!open) return rest + "  휴무";
+                                if (!rest) return open ;
+
+                                // 둘 다 있으면 괄호로 표시
+                                return `${open} (${rest})`;
+                            })()}
                         </div>
                     )}
 
-                    {place.openStatus && (
+
+                    {place.useTime && (
                         <div className={styles.dataDetails}>
                             <img src="/InfoIcon/time.svg" alt="시간" className={styles.dataIcon}/>
-                            <span className={styles.orangeText}>{place.openStatus}</span>
+                            {place.useTime}
+                            {/*<span className={styles.orangeText}>{place.useTime}</span>*/}
                         </div>
                     )}
                     <div className={styles.dataDetails}>
