@@ -12,6 +12,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useApi } from '../hooks/useApi';
 import useAuthStore from '../stores/authStore';
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 interface Tag {
     id: number;
@@ -108,6 +109,14 @@ const ContentPage = () => {
     }, [type, id, i18n.language]);
 
     useEffect(() => {
+        setPlace(null);
+        setNearCards([]);
+        setLiked(false);
+        setLoading(true);
+        setIsLoadingNearCards(true);
+    }, [type, id]);
+
+    useEffect(() => {
         if (!place) return;
         setIsLoadingNearCards(true);
 
@@ -176,7 +185,7 @@ const ContentPage = () => {
         }
     }, [isLoggedIn]);
 
-    if (loading) return <div>⏳ 로딩중...</div>;
+    if (loading) return  <LoadingSpinner />;
     if (!place) return <div>❌ 장소 정보를 불러올 수 없습니다.</div>;
     console.log("위도(lat):", place.mapY);
     console.log("경도(lng):", place.mapX);
