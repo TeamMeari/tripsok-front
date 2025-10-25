@@ -31,6 +31,9 @@ import PasswordResetPage from "./pages/passwordReset/PasswordResetPage";
 import PasswordResetCompletePage from "./pages/passwordReset/CompletePage";
 import { usePasswordResetStore } from "./stores/passwordResetStore";
 import ReviewFormPage from "./pages/review/ReviewFormPage";
+import LikePage from "./pages/mypage/LikePage";
+import MyPage from "./pages/mypage/MyPage";
+import UsageHistoryPage from "./pages/mypage/UsageHistoryPage";
 
 function App(): JSX.Element {
   const queryClient = new QueryClient();
@@ -69,6 +72,11 @@ function App(): JSX.Element {
 
               {/* 리뷰 */}
               <Route path="/review/write" element={<ReviewFormPage />} />
+
+              {/* 마이페이지 */}
+              <Route path="/my" element={<MyPage />} />
+              <Route path="/my/usage-history" element={<UsageHistoryPage />} />
+              <Route path="/my/like" element={<LikePage />} />
 
               <Route path="/list" element={<ListPage />} />
               <Route path="/content/:type/:id" element={<ContentPage />} />
