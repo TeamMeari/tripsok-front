@@ -147,6 +147,26 @@ const resources = {
             price: "30,000원",
             paymentSuccess: "결제가 완료되었습니다",
             receiptSent: "결제된 영수증은 이메일로 보냈어요.",
+            // 리뷰
+            howWasTaxiTour: "택시 투어는 어땠나요?",
+            tourInfo: "{{month}}월 {{day}}일 {{year}}년 {{departure}} {{time}} {{party}} 출발",
+            askGeneral : "특히 어떤 점이 좋았나요?",
+            reviewDriverKindness: "기사님이 친절했어요",
+            reviewDriverInformative: "관광지에 대해 쉽게 알 수 있었어요",
+            reviewDriverPunctual: "약속한 시간을 잘 지켰어요",
+            reviewDriverCleanVehicle: "차량이 청결하고 쾌적했어요",
+            feedback: {
+                ask: {
+                    service: "이용 후기를 알려주세요.",
+                    place: "{{place}} 어땠나요?",
+                },
+                placeholder: {
+                    service: "서비스 향상을 위한 개선점 (선택)",
+                    tour: "관광지 후기 등록 (선택)",
+                    restaurant: "식당 후기 등록 (선택)",
+                    accommodation: "숙소 후기 등록 (선택)"
+                }
+            }
         },
     },
     en: {
@@ -293,6 +313,26 @@ const resources = {
             price: "$30.00",
             paymentSuccess: "Payment has been completed",
             receiptSent: "The receipt has been sent to your email.",
+            // 리뷰
+            howWasTaxiTour: "How was the taxi tour?",
+            tourInfo: "{{month}} {{day}}, {{year}} {{departure}} {{time}} {{party}} Departure",
+            askGeneral : "What did you particularly like?",
+            reviewDriverKindness: "The driver was kind.",
+            reviewDriverInformative: "I could easily learn about the tourist spots.",
+            reviewDriverPunctual: "The driver kept the promised time well.",
+            reviewDriverCleanVehicle: "The vehicle was clean and comfortable.",
+            feedback: {
+                ask: {
+                    service: "Please let us know your experience.",
+                    place: "How was {{place}}?",
+                },
+                placeholder: {
+                    service: "Suggestions for Service Improvement (Optional)",
+                    tour: "Submit a review for a tourist attraction (optional)",
+                    restaurant: "Submit a review for a restaurant (optional)",
+                    accommodation: "Submit a review for a accommodation (optional)"
+                }
+            }
         },
     },
     ja: {
@@ -436,8 +476,28 @@ const resources = {
             payButton: "支払う",
             departure: "出发",
             price: "¥30,000",
-            paymentSuccess: "支付已完成",
-            receiptSent: "收据已发送到您的电子邮箱。",
+            paymentSuccess: "お支払いが完了しました",
+            receiptSent: "領収書をメールに送信しました。",
+            // 리뷰
+            howWasTaxiTour: "タクシーツアーはいかがでしたか？",
+            tourInfo: "{{year}}/{{month}}/{{day}} {{departure}} {{time}} {{party}} 出発",
+            askGeneral : "特にどの点が良かったですか？",
+            reviewDriverKindness: "運転手は親切でした。",
+            reviewDriverInformative: "観光スポットについて簡単に学ぶことができました。",
+            reviewDriverPunctual: "運転手は約束した時間をしっかり守りました。",
+            reviewDriverCleanVehicle: "車両は清潔で快適でした。",
+            feedback: {
+                ask: {
+                    service: "ご利用の感想をお聞かせください。",
+                    place: "{{place}}はいかがでしたか？",
+                },
+                placeholder: {
+                    service: "サービス向上のための改善点 (任意)",
+                    tour: "観光地レビュー登録 (任意)",
+                    restaurant: "飲食店レビュー登録 (任意)",
+                    accommodation: "宿泊施設レビュー登録 (任意)"
+                }
+            }
         },
     },
     cn: {
@@ -581,9 +641,28 @@ const resources = {
             payButton: "付款",
             departure: "出发",
             price: "¥30,000",
-            paymentSuccess: "お支払いが完了しました",
-            receiptSent: "領収書をメールに送信しました。",
-
+            paymentSuccess: "支付已完成",
+            receiptSent: "收据已发送到您的电子邮箱。",
+            // 리뷰
+            howWasTaxiTour: "出租车之旅怎么样？",
+            tourInfo: "{{year}}/{{month}}/{{day}} {{departure}} {{time}} {{party}} 出发",
+            askGeneral : "您觉得哪一点特别好呢？",
+            reviewDriverKindness: "司机态度友善。",
+            reviewDriverInformative: "我能轻松了解旅游景点信息。",
+            reviewDriverPunctual: "司机严格遵守约定时间。",
+            reviewDriverCleanVehicle: "车辆整洁舒适。",
+            feedback: {
+                ask: {
+                    service: "请分享您的使用体验。",
+                    place: "{{place}}怎么样？",
+                },
+                placeholder: {
+                    service: "服务改进建议（可选）",
+                    tour: "景点点评提交（可选）",
+                    restaurant: "餐厅点评提交（可选）",
+                    accommodation: "住宿点评提交（可选）"
+                }
+            }
         },
     },
 };
