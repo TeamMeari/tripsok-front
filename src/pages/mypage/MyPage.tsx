@@ -29,29 +29,31 @@ const MyPage = () => {
 
     return (
         <div className={styles.page}>
-            {  
-                recentReservation &&
-                <div className={styles.recentReservationContainer}>
-                    <h2 className={styles.title}>
-                        <Trans values={{ name: nickname }} i18nKey="reservationTitle"/>
-                    </h2>
-                    <TourHistoryCard
-                        {...recentReservation}
-                    />
+            <div className={styles.part}>
+                {  
+                    recentReservation &&
+                    <div className={styles.recentReservationContainer}>
+                        <h2 className={styles.title}>
+                            <Trans values={{ name: nickname }} i18nKey="reservationTitle"/>
+                        </h2>
+                        <TourHistoryCard
+                            {...recentReservation}
+                        />
+                    </div>
+                }
+                <div className={styles.menuContainer}>
+                    <h2 className={styles.title}>{t("reservationManagementTitle")}</h2>
+                    <MenuItem Icon={Heart} text={t("myLikePlace")} link="/my/like"/>
+                    <MenuItem Icon={Briefcase} text={t("usageHistory")} link="/my/usage-history"/>
                 </div>
-            }
-            <div className={styles.menuContainer}>
-                <h2 className={styles.title}>{t("reservationManagementTitle")}</h2>
-                <MenuItem Icon={Heart} text={t("myLikePlace")} link="/my/like"/>
-                <MenuItem Icon={Briefcase} text={t("usageHistory")} link="/my/usage-history"/>
-            </div>
 
-            <div className={styles.menuContainer}>
-                <h2 className={styles.title}>{t("accountManagementTitle")}</h2>
-                <MenuItem Icon={Lock} text={t("passwordReset")} link="/password/reset/email"/>
-                <MenuItem Icon={MessageSquareWarning} text={t("myInterest")} link="/my/interest"/>
-                <MenuItem Icon={FileSearch} text={t("terms")} link="/terms"/>
-                <MenuItem Icon={FileSearch} text={t("privacy")} link="/privacy"/>
+                <div className={styles.menuContainer}>
+                    <h2 className={styles.title}>{t("accountManagementTitle")}</h2>
+                    <MenuItem Icon={Lock} text={t("passwordReset")} link="/password/reset/email"/>
+                    <MenuItem Icon={MessageSquareWarning} text={t("myInterest")} link="/my/interest"/>
+                    <MenuItem Icon={FileSearch} text={t("terms")} link="/terms"/>
+                    <MenuItem Icon={FileSearch} text={t("privacy")} link="/privacy"/>
+                </div>
             </div>
             <MenuApp />
         </div>

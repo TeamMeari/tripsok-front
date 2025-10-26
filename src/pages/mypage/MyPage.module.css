@@ -1,20 +1,37 @@
 .page {
     margin-top: 84px;
     margin-bottom: 120px;
-    padding: 32px 24px;
+    padding: 32px 0;
     display: flex;
     flex-direction: column;
-    gap: 32px;
+}
+
+.part {
+    padding: 0 24px;
 }
 
 .title {
     color: #444444;
+    margin-bottom: 12px;
+}
+
+.recentReservationContainer > .title {
+    margin-bottom: 0px;
+}
+
+.menuContainer > .title {
+    margin-bottom: 0px;
 }
 
 .recentReservationContainer {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    margin-bottom: 32px;
+}
+
+.menuContainer {
+    margin: 32px 0;
 }
 
 .menuItem {
@@ -29,3 +46,29 @@
     flex: 1;
     margin-left: 7px;
 }
+
+.listContainer {
+    padding: 32px 12px;
+}
+
+.info {
+    display: flex;
+    margin-bottom: 12px;
+}
+
+.listCount {
+    color: black;
+}
+
+.list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.loadMore {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+

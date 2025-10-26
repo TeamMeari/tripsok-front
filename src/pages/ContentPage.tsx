@@ -12,6 +12,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useApi } from '../hooks/useApi';
 import useAuthStore from '../stores/authStore';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface Tag {
     id: number;
@@ -37,6 +38,8 @@ interface PlaceResponse {
 }
 
 const ContentPage = () => {
+    const queryClient = useQueryClient()
+
     const navigate = useNavigate();
     const location = useLocation();
     const { t, i18n } = useTranslation(); // i18n.language 사용
@@ -53,6 +56,7 @@ const ContentPage = () => {
 
     const handleClickLike = () => {
         if (!isLoggedIn) return;
+        queryClient.invalidateQueries({ queryKey: ['likePlaces']})
         // 먼저 UI 반영, 오류 시 롤백
         setLiked(prev => !prev);
         likePatchApiCall(`user/like-place/${id}`, 'POST').then(response => {
