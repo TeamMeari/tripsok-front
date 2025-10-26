@@ -62,3 +62,20 @@ h2.react-datepicker__current-month {
 .react-datepicker__day-name:nth-child(7) { /* 토요일 */
     color: #4242cc;
 }
+/* 이전 날짜 비활성화 */
+.react-datepicker__day--disabled {
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+/* 비활성화된 날짜 hover 방지 */
+.react-datepicker__day--disabled:hover {
+    background-color: #f5f5f5;
+}
+
+.disabledDate {
+    color: #ccc;
+    pointer-events: none;
+    background-color: #f5f5f5;
+}
+

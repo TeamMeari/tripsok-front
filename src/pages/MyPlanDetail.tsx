@@ -200,18 +200,16 @@ export default function MyPlanDetailPage() {
     };
     const timeOptions = generateTimeOptions();
 
-    const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
+    // 손잡이 드래그 이벤트
+    const handleDragStart = (e: React.TouchEvent | React.MouseEvent) => {
         startY.current = "touches" in e ? e.touches[0].clientY : e.clientY;
         startHeight.current = sheetHeight;
 
         const handleDrag = (moveEvent: MouseEvent | TouchEvent) => {
-            const clientY =
-                "touches" in moveEvent ? moveEvent.touches[0].clientY : moveEvent.clientY;
+            const clientY = "touches" in moveEvent ? moveEvent.touches[0].clientY : moveEvent.clientY;
             const diff = startY.current - clientY;
             let newHeight = startHeight.current + diff;
-
-            if (newHeight < MIN_HEIGHT) newHeight = MIN_HEIGHT;
-            if (newHeight > MAX_HEIGHT) newHeight = MAX_HEIGHT;
+            newHeight = Math.min(Math.max(newHeight, MIN_HEIGHT), MAX_HEIGHT);
 
             setSheetHeight(newHeight);
         };
@@ -225,7 +223,7 @@ export default function MyPlanDetailPage() {
 
         window.addEventListener("mousemove", handleDrag);
         window.addEventListener("mouseup", handleDragEnd);
-        window.addEventListener("touchmove", handleDrag);
+        window.addEventListener("touchmove", handleDrag, { passive: false });
         window.addEventListener("touchend", handleDragEnd);
     };
 
