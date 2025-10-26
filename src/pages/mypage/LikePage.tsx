@@ -9,6 +9,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from '../../utils/axios';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import React from 'react';
+import MenuApp from '../../components/MenuApp';
 
 interface PlaceInfo {
     id: number;
@@ -142,6 +143,7 @@ const LikePage = () => {
                 </div>
                 <List />
             </div>
+            <MenuApp />
         </div>
     );
 };

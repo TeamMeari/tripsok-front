@@ -1,14 +1,30 @@
 import { Trans, useTranslation } from 'react-i18next';
 import { Booking } from '../../types/booking';
 import styles from './BookingCard.module.css'
+import { useNavigate } from 'react-router-dom';
 
-interface BookingCardProps extends Omit<Booking, 'bookingId'> {
-    isLoading?: boolean;
+interface BookingCardProps extends Booking {
+    isLoading?: false;
 }
 
-const BookingCard = ({ tripDate, startTime, numberOfPeople, status, isLoading = false }: BookingCardProps) => {
+interface BookingCardLoadingProps {
+    isLoading: true;
+}
+
+const BookingCard = (props: | BookingCardProps | BookingCardLoadingProps) => {
+    if (props.isLoading) return <div className={styles.cardSkeleton}>
+            <div className={`${styles.titleSkeleton} skeleton`}></div>
+            <div className={`${styles.infoSkeleton} skeleton`}></div>
+            <div className={`${styles.stateSkeleton} skeleton`}></div>
+    </div>
+
     const { t, i18n } = useTranslation();
-    const [year, month, day] = tripDate.split("-").map(Number);
+    const navigate = useNavigate();
+    const [year, month, day] = props.tripDate.split("-").map(Number);
+
+    const handleClickCard = () => {
+        navigate('/myplan-detail/' + props.bookingId);
+    }
 
     const getStringPersonCount = (count: number) => {
         const lang = i18n.language;
@@ -26,15 +42,8 @@ const BookingCard = ({ tripDate, startTime, numberOfPeople, status, isLoading = 
         }
     }
 
-    if (isLoading) return <div className={styles.cardSkeleton}>
-            <div className={`${styles.titleSkeleton} skeleton`}></div>
-            <div className={`${styles.infoSkeleton} skeleton`}></div>
-            <div className={`${styles.stateSkeleton} skeleton`}></div>
-    </div>
-    
-
     return (
-        <div className={styles.card}>
+        <div className={styles.card} onClick={handleClickCard}>
             <h2 className={styles.title}>
                 <Trans
                     values={{ year, month, day }}
@@ -43,12 +52,12 @@ const BookingCard = ({ tripDate, startTime, numberOfPeople, status, isLoading = 
             </h2>
             <p className={`${styles.info} caption`}>
                 <Trans
-                    values={{ departure: "", time: startTime, party: getStringPersonCount(numberOfPeople) }}
+                    values={{ departure: "", time: props.startTime, party: getStringPersonCount(props.numberOfPeople) }}
                     i18nKey="booking.caption"
                 />
             </p>
             <h2 className={styles.state}>
-                {t(`booking.state.${status}`)}
+                {t(`booking.state.${props.status}`)}
             </h2>
         </div>
     );

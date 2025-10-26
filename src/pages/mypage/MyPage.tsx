@@ -32,12 +32,14 @@ const MyPage = () => {
         <div className={styles.page}>
             <div className={styles.part}>
                 {  
-                    latestBooking && <div className={styles.latestBookingContainer}>
-                        <h2 className={styles.title}>
-                            <Trans values={{ name: nickname }} i18nKey="bookingTitle"/>
-                        </h2>
-                        <BookingCard {...latestBooking} isLoading={isLoading} />
-                    </div>
+                    isLoading ?
+                        <BookingCard isLoading /> :
+                        latestBooking ? <div className={styles.latestBookingContainer}>
+                            <h2 className={styles.title}>
+                                <Trans values={{ name: nickname }} i18nKey="bookingTitle"/>
+                            </h2>
+                            <BookingCard {...latestBooking} />
+                        </div> : null
                 }
                 <div className={styles.menuContainer}>
                     <h2 className={styles.title}>{t("bookingManagementTitle")}</h2>
