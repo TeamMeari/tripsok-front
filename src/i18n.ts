@@ -45,9 +45,9 @@ const resources = {
             nicknameError: "닉네임을 입력해주세요.",
             existingNickname: "이미 존재하는 닉네임입니다.",
             termsRequired: "(필수) 이용 약관 동의",
-            termsContent: "이용 약관", // 수정 필요
+            terms: "이용 약관",
             privacyRequired: "(필수) 개인정보 수집 및 이용 동의",
-            privacyContent: "개인정보 수집 및 이용 동의", // 수정 필요
+            privacy: "개인정보 수집 및 이용",
             agree: "동의합니다",
             welcomeNickname: "<span>{{name}}</span>님, 반가워요! <br />관심있는 여행이 있으신가요?",
             guideHashtags: "1개 필수, 복수 선택 가능",
@@ -167,7 +167,24 @@ const resources = {
                     restaurant: "식당 후기 등록 (선택)",
                     accommodation: "숙소 후기 등록 (선택)"
                 }
-            }
+            },
+            // 마이페이지
+            reservationTitle: "{{name}}님의 가장 최근 예약",
+            reservation: {
+                title: "{{month}}월 {{day}}일 {{year}}년의 여정",
+                caption: "{{departure}} {{time}} {{party}} 출발",
+                state: {
+                    TRAVELING: "여행중",
+                    COMPLETED: "여행완료",
+		            CANCELED: "여행취소",
+		            BEFORE_TRAVEL: "여행전"
+                }
+            },
+            reservationManagementTitle: "예약 관리",
+            myLikePlace: "내가 찜한 장소",
+            usageHistory: "이용 내역",
+            accountManagementTitle: "계정 관리",
+            myInterest: "나의 관심 분야"
         },
     },
     en: {
@@ -211,9 +228,9 @@ const resources = {
             nicknameError: "Please enter your nickname.",
             existingNickname: "Nickname already exists.",
             termsRequired: "(Required) Agree to Terms of Service",
-            termsContent: "Terms of Service", // 수정 필요
+            terms: "Terms of Service",
             privacyRequired: "(Required) Agree to Privacy Policy",
-            privacyContent: "Privacy Policy", // 수정 필요
+            privacy: "Privacy Policy",
             agree: "Agree",
             welcomeNickname: "Welcome, {{name}}!<br />Do you have any trips in mind?",
             guideHashtags: "1 required, multiple selection possible",
@@ -334,7 +351,24 @@ const resources = {
                     restaurant: "Submit a review for a restaurant (optional)",
                     accommodation: "Submit a review for a accommodation (optional)"
                 }
-            }
+            },
+            // 마이페이지
+            reservationTitle: "{{name}}'s Most Recent Reservation",
+            reservation: {
+                title: "Journey on {{month}} {{day}} {{year}}",
+                caption: "{{departure}} {{time}} {{party}} Departure",
+                state: {
+                    TRAVELING: "Traveling",
+                    COMPLETED: "Travel Complete",
+                    CANCELED: "Travel Cancelled",
+                    BEFORE_TRAVEL: "Before Travel"
+                }
+            },
+            reservationManagementTitle: "Reservation Management",
+            myLikePlace: "My Liked Places",
+            usageHistory: "Usage History",
+            accountManagementTitle: "Account Management",
+            myInterest: "My Interests Tag"
         },
     },
     ja: {
@@ -378,9 +412,9 @@ const resources = {
             nicknameError: "ニックネームを入力してください。",
             existingNickname: "ニックネームが既に存在します。",
             termsRequired: "(必須) 利用規約に同意",
-            termsContent: "利用規約", // 수정 필요
+            terms: "利用規約", 
             privacyRequired: "(必須) 個人情報の収集および利用に同意",
-            privacyContent: "個人情報の収集および利用に同意", // 수정 필요
+            privacy: "個人情報の収集および利用",
             agree: "同意",
             welcomeNickname: "{{name}}さん、ようこそ！<br />興味のある旅行はありますか？",
             guideHashtags: "1つ必須、複数選択可能",
@@ -500,7 +534,24 @@ const resources = {
                     restaurant: "飲食店レビュー登録 (任意)",
                     accommodation: "宿泊施設レビュー登録 (任意)"
                 }
-            }
+            },
+            // 마이페이지
+            reservationTitle: "{{name}}さんの最新の予約",
+            reservation: {
+                title: "{{year}}/{{month}}/{{day}}の旅",
+                caption: "{{departure}} {{time}} {{party}} 出発",
+                state: {
+                    TRAVELING: "旅行中",
+                    COMPLETED: "旅行完了",
+                    CANCELED: "旅行キャンセル",
+                    BEFORE_TRAVEL: "旅行前"
+                }
+            },
+            reservationManagementTitle: "予約管理",
+            myLikePlace: "お気に入り場所",
+            usageHistory: "利用履歴",
+            accountManagementTitle: "アカウント管理",
+            myInterest: "興味タグ"
         },
     },
     cn: {
@@ -544,9 +595,9 @@ const resources = {
             nicknameError: "请输入您的昵称。",
             existingNickname: "昵称已存在。",
             termsRequired: "（必填）同意服务条款",
-            termsContent: "服务条款", // 수정 필요
+            terms: "服务条款",
             privacyRequired: "（必填）同意隐私政策",
-            privacyContent: "隐私政策", // 수정 필요
+            privacy: "隐私政策",
             agree: "同意",
             welcomeNickname: "{{name}}，欢迎！<br />有感兴趣的旅行吗？",
             guideHashtags: "1个必填，多个可选",
@@ -666,7 +717,24 @@ const resources = {
                     restaurant: "餐厅点评提交（可选）",
                     accommodation: "住宿点评提交（可选）"
                 }
-            }
+            },
+            // 마이페이지
+            reservationTitle: "{{name}}的最新预订",
+            reservation: {
+                title: "{{year}}/{{month}}/{{day}}的旅程",
+                caption: "{{departure}} {{time}} {{party}} 出发",
+                state: {
+                    TRAVELING: "旅行中",
+                    COMPLETED: "旅行完成",
+                    CANCELED: "旅行取消",
+                    BEFORE_TRAVEL: "旅行前"
+                }
+            },
+            reservationManagementTitle: "行程管理",
+            myLikePlace: "我的心仪地点",
+            usageHistory: "使用记录",
+            accountManagementTitle: "账户管理",
+            myInterest: "我的兴趣标签"
         },
     },
 };
