@@ -1,48 +1,46 @@
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import styles from './MyPage.module.css'
-import TourHistoryCard from "../../components/feature/TourHistoryCard";
-import { Reservation } from "../../types/reservation";
+import BookingCard from "../../components/feature/BookingCard";
+import { Booking } from "../../types/booking";
 import { LucideIcon, ChevronRight, Heart, Briefcase, Lock, MessageSquareWarning, FileSearch } from "lucide-react";
 import MenuApp from "../../components/MenuApp";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../../stores/authStore";
 import { Trans, useTranslation } from "react-i18next";
-
-const recentReservationExample: Reservation = {
-    year: 2025,
-    month: 10,
-    day: 26,
-    departure: "강릉역",
-    time: "13:00",
-    party: 2,
-    state: "BEFORE_TRAVEL"
-}
+import { useApi } from "../../hooks/useApi";
 
 const MyPage = () => {
     const { t } = useTranslation();
-    const [recentReservation, setRecentReservation] = useState<Reservation | null>(null);
+    const [latestBooking, setlatestBooking] = useState<Booking | null>(null);
     const { nickname } = useAuthStore();
+    const { apiCall, isLoading } = useApi();
 
+    // 최근 예약 불러오기
+    const fetchLatestBooking = () => {
+        apiCall<Booking>('/booking/latest', "POST", (response: { status: number; data: SetStateAction<Booking | null>; }) => {
+            if (response.status === 200) {
+                setlatestBooking(response.data);
+            }
+        })
+    }
+    
     useEffect(() => {
-        setRecentReservation(recentReservationExample)
+        fetchLatestBooking();
     }, [])
 
     return (
         <div className={styles.page}>
             <div className={styles.part}>
                 {  
-                    recentReservation &&
-                    <div className={styles.recentReservationContainer}>
+                    latestBooking && <div className={styles.latestBookingContainer}>
                         <h2 className={styles.title}>
-                            <Trans values={{ name: nickname }} i18nKey="reservationTitle"/>
+                            <Trans values={{ name: nickname }} i18nKey="bookingTitle"/>
                         </h2>
-                        <TourHistoryCard
-                            {...recentReservation}
-                        />
+                        <BookingCard {...latestBooking} isLoading={isLoading} />
                     </div>
                 }
                 <div className={styles.menuContainer}>
-                    <h2 className={styles.title}>{t("reservationManagementTitle")}</h2>
+                    <h2 className={styles.title}>{t("bookingManagementTitle")}</h2>
                     <MenuItem Icon={Heart} text={t("myLikePlace")} link="/my/like"/>
                     <MenuItem Icon={Briefcase} text={t("usageHistory")} link="/my/usage-history"/>
                 </div>

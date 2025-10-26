@@ -15,7 +15,7 @@
     margin-bottom: 12px;
 }
 
-.recentReservationContainer > .title {
+.recentBookingContainer > .title {
     margin-bottom: 0px;
 }
 
@@ -23,15 +23,14 @@
     margin-bottom: 0px;
 }
 
-.recentReservationContainer {
+.latestBookingContainer {
     display: flex;
     flex-direction: column;
-    gap: 12px;
     margin-bottom: 32px;
 }
 
 .menuContainer {
-    margin: 32px 0;
+    margin-bottom: 32px;
 }
 
 .menuItem {

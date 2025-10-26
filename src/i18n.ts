@@ -169,8 +169,8 @@ const resources = {
                 }
             },
             // 마이페이지
-            reservationTitle: "{{name}}님의 가장 최근 예약",
-            reservation: {
+            bookingTitle: "{{name}}님의 가장 최근 예약",
+            booking: {
                 title: "{{month}}월 {{day}}일 {{year}}년의 여정",
                 caption: "{{departure}} {{time}} {{party}} 출발",
                 state: {
@@ -180,7 +180,7 @@ const resources = {
 		            BEFORE_TRAVEL: "여행전"
                 }
             },
-            reservationManagementTitle: "예약 관리",
+            bookingManagementTitle: "예약 관리",
             myLikePlace: "내가 찜한 장소",
             usageHistory: "이용 내역",
             accountManagementTitle: "계정 관리",
@@ -353,8 +353,8 @@ const resources = {
                 }
             },
             // 마이페이지
-            reservationTitle: "{{name}}'s Most Recent Reservation",
-            reservation: {
+            bookingTitle: "{{name}}'s Most Recent booking",
+            booking: {
                 title: "Journey on {{month}} {{day}} {{year}}",
                 caption: "{{departure}} {{time}} {{party}} Departure",
                 state: {
@@ -364,7 +364,7 @@ const resources = {
                     BEFORE_TRAVEL: "Before Travel"
                 }
             },
-            reservationManagementTitle: "Reservation Management",
+            bookingManagementTitle: "booking Management",
             myLikePlace: "My Liked Places",
             usageHistory: "Usage History",
             accountManagementTitle: "Account Management",
@@ -536,8 +536,8 @@ const resources = {
                 }
             },
             // 마이페이지
-            reservationTitle: "{{name}}さんの最新の予約",
-            reservation: {
+            bookingTitle: "{{name}}さんの最新の予約",
+            booking: {
                 title: "{{year}}/{{month}}/{{day}}の旅",
                 caption: "{{departure}} {{time}} {{party}} 出発",
                 state: {
@@ -547,7 +547,7 @@ const resources = {
                     BEFORE_TRAVEL: "旅行前"
                 }
             },
-            reservationManagementTitle: "予約管理",
+            bookingManagementTitle: "予約管理",
             myLikePlace: "お気に入り場所",
             usageHistory: "利用履歴",
             accountManagementTitle: "アカウント管理",
@@ -719,8 +719,8 @@ const resources = {
                 }
             },
             // 마이페이지
-            reservationTitle: "{{name}}的最新预订",
-            reservation: {
+            bookingTitle: "{{name}}的最新预订",
+            booking: {
                 title: "{{year}}/{{month}}/{{day}}的旅程",
                 caption: "{{departure}} {{time}} {{party}} 出发",
                 state: {
@@ -730,7 +730,7 @@ const resources = {
                     BEFORE_TRAVEL: "旅行前"
                 }
             },
-            reservationManagementTitle: "行程管理",
+            bookingManagementTitle: "行程管理",
             myLikePlace: "我的心仪地点",
             usageHistory: "使用记录",
             accountManagementTitle: "账户管理",
