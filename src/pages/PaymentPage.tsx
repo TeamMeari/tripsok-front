@@ -10,7 +10,8 @@ const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
 const customerKey = "customer_1234";
 
 const PaymentPage: React.FC = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const isEnglish = i18n.language === "en";
     const [passengerName, setPassengerName] = useState("");
     const [email, setEmail] = useState("");
     const [paymentWidget, setPaymentWidget] = useState<PaymentWidgetInstance | null>(null);
@@ -20,6 +21,30 @@ const PaymentPage: React.FC = () => {
     const state = location.state as any;
     console.log("넘겨받은 state:", state);
 
+    // 언어별 날짜 설정
+    const formatDate = (dateStr: string, lang: string) => {
+        const dateObj = new Date(dateStr);
+        const month = dateObj.getMonth() + 1;
+        const day = dateObj.getDate();
+        const year = dateObj.getFullYear();
+
+        const mm = month < 10 ? `0${month}` : month;
+        const dd = day < 10 ? `0${day}` : day;
+        const yy = year % 100 < 10 ? `0${year % 100}` : year % 100;
+
+        const monthNamesEn = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+        const formats: Record<string, string> = {
+            ko: `${mm}월 ${dd}일 ${yy}년`,
+            en: `${monthNamesEn[month - 1]} ${dd}, ${year}`,
+            ja: `${yy}年${mm}月${dd}日`,
+            zh: `${yy}年${mm}月${dd}日`,
+        };
+
+        return formats[lang] || formats.ko;
+    };
+    
     const isFormValid =
         passengerName.trim() !== "" &&
         email.trim() !== "" &&
@@ -37,6 +62,7 @@ const PaymentPage: React.FC = () => {
     const handlePayment = async () => {
         if (!paymentWidget) return;
         sessionStorage.setItem("passengerEmail", email);
+        sessionStorage.setItem("passengerName", passengerName);
 
         try {
             await paymentWidget.requestPayment({
@@ -57,6 +83,8 @@ const PaymentPage: React.FC = () => {
         }
     };
 
+    const [showTooltip, setShowTooltip] = useState(false);
+
     return (
         <div className={styles.container}>
             <TransparentHeader type="auth" />
@@ -67,14 +95,35 @@ const PaymentPage: React.FC = () => {
                 <section className={styles.section1}>
                     <div className={styles.pymentPage_taxi}>
                         <h2 className={styles.sectionTitle}>
-                            {t("paymentCost")} <span className={styles.infoIcon}>ⓘ</span>
+                            {t("paymentCost")}
+                            <span
+                                className={styles.infoIconWrapper}
+                                onMouseEnter={() => setShowTooltip(true)}   // 마우스 오버
+                                onMouseLeave={() => setShowTooltip(false)}
+                                onClick={() => setShowTooltip(prev => !prev)} // 모바일 터치
+                            >
+                                <span className={styles.infoIcon}>ⓘ</span>
+                                {showTooltip && (
+                                    <div className={styles.tooltip}
+                                         style={{
+                                             left: isEnglish ? "-174%" : undefined, // 영어일 때만 left 적용
+                                         }}
+                                    >
+                                        <span className={styles.tooltipArrow}
+                                              style={{ left: isEnglish ? "70%" : undefined }}></span>
+                                        {t("foreignTourTaxiNotice")}
+                                    </div>
+                                )}
+                            </span>
+
+
                         </h2>
                         <div className={styles.paymentBox}>
                             <div className={styles.paymentInfo}>
                                 <div className={styles.productTitle}>
                                     {t("foreignTourTaxi")}
                                 </div>
-                                <div className={styles.productSub}>{state?.from} {state?.time} {state?.person} {t("departure")}</div>
+                                <div className={styles.productSub}>  {state?.date ? formatDate(state.date, i18n.language) : ""}  {state?.from} {state?.time} {state?.person} {t("departure")}</div>
                             </div>
                             <div className={styles.price}>{t("price")}</div>
                         </div>

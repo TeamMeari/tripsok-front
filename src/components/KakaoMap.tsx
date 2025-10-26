@@ -25,6 +25,8 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
                                                locations = DEFAULT_LOCATION,
                                            }) => {
     const mapRef = useRef<HTMLDivElement>(null);
+    const mapInstance = useRef<any>(null);       // 지도 객체
+    const markersRef = useRef<any[]>([]);        // 마커 객체들
 
     useEffect(() => {
         const script = document.createElement("script");
@@ -37,18 +39,25 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
             if (!kakao || !mapRef.current) return;
 
             kakao.maps.load(() => {
-                const map = new kakao.maps.Map(mapRef.current, {
-                    center: new kakao.maps.LatLng(locations[0].lat, locations[0].lng),
-                    level: 4,
-                    // mapTypeId: kakao.maps.MapTypeId.SKYVIEW,
-                });
+                // map이 없으면 생성
+                if (!mapInstance.current) {
+                    mapInstance.current = new kakao.maps.Map(mapRef.current, {
+                        center: new kakao.maps.LatLng(locations[0].lat, locations[0].lng),
+                        level: 4,
+                    });
+                }
+
+                // 기존 마커 제거
+                markersRef.current.forEach(marker => marker.setMap(null));
+                markersRef.current = [];
 
                 const bounds = new kakao.maps.LatLngBounds();
 
+                // 새로운 마커 생성
                 locations.forEach((loc) => {
                     const marker = new kakao.maps.Marker({
                         position: new kakao.maps.LatLng(loc.lat, loc.lng),
-                        map,
+                        map: mapInstance.current,
                         title: loc.title,
                     });
 
@@ -57,13 +66,17 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
                     });
 
                     kakao.maps.event.addListener(marker, "click", () => {
-                        infowindow.open(map, marker);
+                        infowindow.open(mapInstance.current, marker);
                     });
 
+                    markersRef.current.push(marker);
                     bounds.extend(marker.getPosition());
                 });
 
-                map.setBounds(bounds);
+                // 모든 마커가 보이도록 지도 영역 설정
+                if (locations.length > 0) {
+                    mapInstance.current.setBounds(bounds);
+                }
             });
         };
 

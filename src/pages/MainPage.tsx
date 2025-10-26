@@ -9,7 +9,7 @@ import { getDailyKeywords } from '../utils/keywordSelector';
 import { useStaticApiQuery } from '../hooks/useApi';
 import CardType from '../types/Card';
 import { MainCarouselItem } from '../components/feature/Carousel/MainCarousel';
-import { PlacesResponse, Place } from '../types/apiResponse';
+import { PlaceListResponse, PlaceListItem } from '../types/apiResponse';
 import { convertTypeToLowerCase } from '../utils/converter';
 import { Link } from 'react-router-dom';
 import MenuApp from '../components/MenuApp';
@@ -23,11 +23,11 @@ const MainPage = () => {
 
   // 메인 캐러셀: 정적 캐시
   const mainQueryParams = `?page=0&size=10&sortKey=rank&direction=desc&locale=${i18n.language}&typeSearch=text&categoryFilter=false&q=${t(dailyKeywords[0])}`;
-  const { data: mainData, isLoading: MainCarouselIsLoading } = useStaticApiQuery<PlacesResponse>(
+  const { data: mainData, isLoading: MainCarouselIsLoading } = useStaticApiQuery<PlaceListResponse>(
     ['main-carousel', i18n.language, t(dailyKeywords[0])],
     `/places/accommodation${mainQueryParams}`
   );
-  const mainCarouselItems: MainCarouselItem[] = (mainData?.items ?? []).map((v: Place) => ({
+  const mainCarouselItems: MainCarouselItem[] = (mainData?.items ?? []).map((v: PlaceListItem) => ({
     id: v.id,
     image: v.thumbnailUrl,
     type: convertTypeToLowerCase(v.type) as MainCarouselItem['type'],
@@ -35,11 +35,11 @@ const MainPage = () => {
 
   // 상단 Top5 카드: 정적 캐시 (gangneung)
   const top5Params = `?page=0&size=10&sortKey=rank&direction=desc&locale=${i18n.language}&categoryFilter=false&q=${t("gangneung")}`;
-  const { data: top5Data, isLoading: Top5CardCarouselIsLoading } = useStaticApiQuery<PlacesResponse>(
+  const { data: top5Data, isLoading: Top5CardCarouselIsLoading } = useStaticApiQuery<PlaceListResponse>(
     ['top5-cards', i18n.language, t('gangneung')],
     `/places/accommodation${top5Params}`
   );
-  const top5CardCarouselItems: CardType[] = (top5Data?.items ?? []).slice(0, 5).map((v: Place, idx: number) => ({
+  const top5CardCarouselItems: CardType[] = (top5Data?.items ?? []).slice(0, 5).map((v: PlaceListItem, idx: number) => ({
     id: v.id,
     image: v.thumbnailUrl,
     rank: idx + 1,
@@ -50,11 +50,11 @@ const MainPage = () => {
 
   // 첫 번째 키워드 카드: 정적 캐시
   const firstParams = `?page=0&size=10&sortKey=rank&direction=desc&locale=${i18n.language}&typeSearch=text&categoryFilter=false&q=${t(dailyKeywords[1])}`;
-  const { data: firstData, isLoading: FirstCardCarouselIsLoading } = useStaticApiQuery<PlacesResponse>(
+  const { data: firstData, isLoading: FirstCardCarouselIsLoading } = useStaticApiQuery<PlaceListResponse>(
     ['first-cards', i18n.language, t(dailyKeywords[1])],
     `/places/accommodation${firstParams}`
   );
-  const firstCardCarouselItems: CardType[] = (firstData?.items ?? []).map((v: Place) => ({
+  const firstCardCarouselItems: CardType[] = (firstData?.items ?? []).map((v: PlaceListItem) => ({
     id: v.id,
     image: v.thumbnailUrl,
     title: v.name,
@@ -64,11 +64,11 @@ const MainPage = () => {
 
   // 두 번째 키워드 카드: 정적 캐시
   const secondParams = `?page=0&size=10&sortKey=rank&direction=desc&locale=${i18n.language}&typeSearch=text&categoryFilter=false&q=${t(dailyKeywords[2])}`;
-  const { data: secondData, isLoading: SecondCardCarouselIsLoading } = useStaticApiQuery<PlacesResponse>(
+  const { data: secondData, isLoading: SecondCardCarouselIsLoading } = useStaticApiQuery<PlaceListResponse>(
     ['second-cards', i18n.language, t(dailyKeywords[2])],
     `/places/accommodation${secondParams}`
   );
-  const secondCardCarouselItems: CardType[] = (secondData?.items ?? []).map((v: Place) => ({
+  const secondCardCarouselItems: CardType[] = (secondData?.items ?? []).map((v: PlaceListItem) => ({
     id: v.id,
     image: v.thumbnailUrl,
     title: v.name,

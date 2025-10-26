@@ -93,8 +93,8 @@ const resources = {
             myPlanDepartureTime: "출발 시간",
             myPlanPeople: "인원수",
             myPlanStart: "방문지 추가하고 계획 시작하기",
-            addPlace: "방문지 추가하기",
-            viewPlan: "계획 상세보기",
+            addPlace: "방문지 추가",
+            viewPlan: "계획 만들기",
             likedSpots: "내가 좋아요를 누른 관광지",
             myJourney: "{{nickname}}님의 이번 강릉 여정",
             person: "{{count}}명",
@@ -184,7 +184,8 @@ const resources = {
             myLikePlace: "내가 찜한 장소",
             usageHistory: "이용 내역",
             accountManagementTitle: "계정 관리",
-            myInterest: "나의 관심 분야"
+            myInterest: "나의 관심 분야",
+            foreignTourTaxiNotice: "강원도 외국인 관광택시는 1일 1회 3시간 이용이 기본으로, 이용 시간에 따라 추가 요금이 발생할 수 있습니다.",
         },
     },
     en: {
@@ -277,7 +278,7 @@ const resources = {
             myPlanPeople: "Number of people",
             myPlanStart: "Add places and start planning",
             addPlace: "Add Place",
-            viewPlan: "View Plan Details",
+            viewPlan: "Create Plan",
             likedSpots: "Tourist spots I liked",
             myJourney: "{{nickname}}'s Gangneung Trip",
             person_one: "{{count}} person",
@@ -368,7 +369,8 @@ const resources = {
             myLikePlace: "My Liked Places",
             usageHistory: "Usage History",
             accountManagementTitle: "Account Management",
-            myInterest: "My Interests Tag"
+            myInterest: "My Interests Tag",
+            foreignTourTaxiNotice: "Gangwon foreign tour taxi is available for 3 hours per day by default, and additional charges may apply depending on usage time.",
         },
     },
     ja: {
@@ -461,7 +463,7 @@ const resources = {
             myPlanPeople: "人数",
             myPlanStart: "場所を追加して旅行計画を始める",
             addPlace: "場所を追加",
-            viewPlan: "計画の詳細を見る",
+            viewPlan: "計画を作る",
             likedSpots: "私がいいねした観光地",
             myJourney: "{{nickname}}さんの今回の江陵旅行",
             person: "{{count}}人",
@@ -551,7 +553,10 @@ const resources = {
             myLikePlace: "お気に入り場所",
             usageHistory: "利用履歴",
             accountManagementTitle: "アカウント管理",
-            myInterest: "興味タグ"
+            myInterest: "興味タグ",
+            paymentSuccess: "支付已完成",
+            receiptSent: "收据已发送到您的电子邮箱。",
+            foreignTourTaxiNotice: "江原道外国人観光タクシーは、1日1回3時間の利用が基本で、利用時間に応じて追加料金が発生する場合があります。",
         },
     },
     cn: {
@@ -644,7 +649,7 @@ const resources = {
             myPlanPeople: "人数",
             myPlanStart: "添加地点并开始规划旅行",
             addPlace: "添加地点",
-            viewPlan: "查看计划详情",
+            viewPlan: "创建计划",
             likedSpots: "我点赞过的景点",
             myJourney: "{{nickname}}的江陵行程",
             person: "{{count}}人",
@@ -734,7 +739,10 @@ const resources = {
             myLikePlace: "我的心仪地点",
             usageHistory: "使用记录",
             accountManagementTitle: "账户管理",
-            myInterest: "我的兴趣标签"
+            myInterest: "我的兴趣标签",
+            paymentSuccess: "お支払いが完了しました",
+            receiptSent: "領収書をメールに送信しました。",
+            foreignTourTaxiNotice: "江原道外国游客观光出租车默认每日使用3小时，根据使用时间可能会产生额外费用。",
         },
     },
 };

@@ -21,11 +21,11 @@ export interface OAuthSignupResponse {
     nickname: string;
 }
 
-export interface PlacesResponse {
+export interface PlaceListResponse {
     currentPage: number;
     totalPages: number;
     totalItems: number;
-    items: Place[];
+    items: PlaceListItem[];
 }
 
 export interface Place {
@@ -45,4 +45,16 @@ export interface Place {
     imageCount: number;
     updatedAt: Date;
     themes: Tag[];
+}
+
+export interface PlaceListItem {
+    id: number;
+    language: string;
+    name: string;
+    summary: string;
+    type: "RESTAURANT" | "ACCOMMODATION" | "TOUR";
+    lat: number;
+    lng: number;
+    thumbnailUrl: string;
+    updatedAt: Date;
 }

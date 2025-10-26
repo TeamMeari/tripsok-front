@@ -13,6 +13,7 @@ import { useParams } from 'react-router-dom';
 import { useApi } from '../hooks/useApi';
 import useAuthStore from '../stores/authStore';
 import { useQueryClient } from '@tanstack/react-query';
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 interface Tag {
     id: number;
@@ -27,8 +28,9 @@ interface PlaceResponse {
     information: string;
     mapX: number; // 경도
     mapY: number; // 위도
-    weekDays?: string;
-    openStatus?: string;
+    openDate?: string;
+    restDate?:string;
+    useTime?:string;
     tags: Tag[];
     child: {
         id: number;
@@ -36,6 +38,16 @@ interface PlaceResponse {
         imageList: string[];
     };
 }
+
+interface CardType {
+    id: number;
+    title: string;
+    description: string;
+    image: string;
+    type: "restaurant" | "tour" | "accommodation";
+    rank?: number;
+}
+
 
 const ContentPage = () => {
     const queryClient = useQueryClient()
@@ -53,6 +65,9 @@ const ContentPage = () => {
     const { apiCall: likePatchApiCall } = useApi();
     const { apiCall: likeFetchApiCall } = useApi();
     const [liked, setLiked] = useState(false);
+
+    const [nearCards, setNearCards] = useState<CardType[]>([]);
+    const [isLoadingNearCards, setIsLoadingNearCards] = useState(false);
 
     const handleClickLike = () => {
         if (!isLoggedIn) return;
@@ -88,11 +103,80 @@ const ContentPage = () => {
         setLoading(true);
         fetchApi<PlaceResponse>(`/places/${type}/${id}?locale=${locale}`, "GET")
             .then((res) => {
-                if (res.status === 200) setPlace(res.data);
+                if (res.status === 200) {
+                    setPlace(res.data);
+                    console.log("받아온 장소 데이터:", res.data);
+                }
             })
             .catch(err => console.error(err))
             .finally(() => setLoading(false));
     }, [type, id, i18n.language]);
+
+    useEffect(() => {
+        setPlace(null);
+        setNearCards([]);
+        setLiked(false);
+        setLoading(true);
+        setIsLoadingNearCards(true);
+    }, [type, id]);
+
+    useEffect(() => {
+        if (!place) return;
+        setIsLoadingNearCards(true);
+
+        const fetchNearbyPlaces = async () => {
+            try {
+                const res = await fetchApi<
+                    {
+                        id: number;
+                        language: string;
+                        name: string;
+                        summary: string;
+                        type: string;
+                        lat: number;
+                        lng: number;
+                        thumbnailUrl: string;
+                        updatedAt: string;
+                    }[]
+                >(
+                    `/places/nearby?lat=${place.mapY}&lng=${place.mapX}&distance=10km&size=6&locale=${i18n.language.toLowerCase()}`,
+                    "GET"
+                );
+
+                if (res.status === 200 && res.data) {
+                    const formattedCards: CardType[] = res.data.map((item) => {
+                        let cardType = item.type.toLowerCase();
+
+                        if (cardType === "tourist_spot") {
+                            cardType = "tour";
+                        }
+                        const cardLowerType: "restaurant" | "tour" | "accommodation" =
+                            cardType === "restaurant" || cardType === "tour" || cardType === "accommodation"
+                                ? cardType
+                                : "restaurant";
+                        return {
+                            id: item.id,
+                            title: item.name,
+                            description: item.summary,
+                            image: item.thumbnailUrl,
+                            type: cardLowerType,
+                        };
+                    });
+                    setNearCards(formattedCards);
+                }
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setIsLoadingNearCards(false);
+            }
+        };
+
+        fetchNearbyPlaces();
+    }, [place, i18n.language, fetchApi]);
+
+    const handleCardClick = (card: CardType) => {
+        navigate(`/content/${card.type}/${card.id}`);
+    };
 
     const handleAddToMyPlan = () => {
         if (!place) return;
@@ -111,7 +195,7 @@ const ContentPage = () => {
         }
     }, [isLoggedIn]);
 
-    if (loading) return <div>⏳ 로딩중...</div>;
+    if (loading) return  <LoadingSpinner />;
     if (!place) return <div>❌ 장소 정보를 불러올 수 없습니다.</div>;
     console.log("위도(lat):", place.mapY);
     console.log("경도(lng):", place.mapX);
@@ -124,7 +208,7 @@ const ContentPage = () => {
 
             {/* ContentCarousel */}
             <div className={styles.carouselWrapper}>
-                <ContentCarousel images={place.child.imageList} />
+                <ContentCarousel images={place.child.imageList?? []} />
             </div>
 
             <div className={styles.Container}>
@@ -134,17 +218,34 @@ const ContentPage = () => {
                 </div>
 
                 <div className={styles.ContetntData}>
-                    {place.weekDays && (
+                    {(place.openDate || place.restDate) && (
                         <div className={styles.dataDetails}>
-                            <img src="/InfoIcon/date.svg" alt="날짜" className={styles.dataIcon}/>
-                            {place.weekDays}
+                            <img src="/InfoIcon/date.svg" alt="날짜" className={styles.dataIcon} />
+                            {(() => {
+                                const open = place.openDate;
+                                const rest = place.restDate;
+
+                                // 둘 다 연중무휴이면 하나만 보여줌
+                                if (open === "연중무휴" && rest === "연중무휴") {
+                                    return "연중무휴";
+                                }
+
+                                // openDate, restDate 중 하나만 있을 경우
+                                if (!open) return rest + "  휴무";
+                                if (!rest) return open ;
+
+                                // 둘 다 있으면 괄호로 표시
+                                return `${open} (${rest})`;
+                            })()}
                         </div>
                     )}
 
-                    {place.openStatus && (
+
+                    {place.useTime && (
                         <div className={styles.dataDetails}>
                             <img src="/InfoIcon/time.svg" alt="시간" className={styles.dataIcon}/>
-                            <span className={styles.orangeText}>{place.openStatus}</span>
+                            {place.useTime}
+                            {/*<span className={styles.orangeText}>{place.useTime}</span>*/}
                         </div>
                     )}
                     <div className={styles.dataDetails}>
@@ -182,59 +283,20 @@ const ContentPage = () => {
                 </div>
 
                 <div className={styles.cardTitel}>
-                    <div className={styles.cardPlace}>{place.placeName}</div>
-                    <div className={styles.cardFixedTitle}>{t("cardSectionTitle")}</div>
+                    <div className={styles.cardPlace}>{place.placeName} <span
+                        style={{color: '#555',
+                            fontSize: '18px',
+                            fontWeight: 600,
+                            marginLeft: '2px'}}>{t("cardSectionTitle")}</span>
+                        {/*<div className={styles.cardFixedTitle}>{t("cardSectionTitle")}</div>*/}
+                    </div>
+
                 </div>
             </div>
 
             {/* CardCarousel */}
             <div className={styles.carouselWrapper}>
-                <CardCarousel
-                    cards={[
-                        {
-                            id: 1,
-                            title: '카드 제목 1',
-                            description: '카드 설명입니다. 첫 번째 카드입니다.',
-                            image: 'https://picsum.photos/200/300',
-                            type: 'restaurant'  //백엔드 값에 수정
-                        },
-                        {
-                            id: 2,
-                            title: '카드 제목 2',
-                            description: '카드 설명입니다. 두 번째 카드입니다.',
-                            image: 'https://picsum.photos/200/300',
-                            type: 'restaurant'
-                        },
-                        {
-                            id: 3,
-                            title: '카드 제목 3',
-                            description: '카드 설명입니다. 세 번째 카드입니다.',
-                            image: 'https://picsum.photos/200/300',
-                            type: 'restaurant'
-                        },
-                        {
-                            id: 4,
-                            title: '카드 제목 4',
-                            description: '카드 설명입니다. 네 번째 카드입니다.',
-                            image: 'https://picsum.photos/200/400',
-                            type: 'restaurant'
-                        },
-                        {
-                            id: 5,
-                            title: '카드 제목 5',
-                            description: '카드 설명입니다. 다섯 번째 카드입니다.',
-                            image: 'https://picsum.photos/200/350',
-                            type: 'restaurant'
-                        },
-                        {
-                            id: 6,
-                            title: '카드 제목 6',
-                            description: '카드 설명입니다. 여섯 번째 카드입니다.',
-                            image: 'https://picsum.photos/200/250',
-                            type: 'restaurant'
-                        }
-                    ]}
-                />
+                <CardCarousel cards={nearCards} isLoading={isLoadingNearCards}  onCardClick={handleCardClick} />
             </div>
 
             <div className={styles.fixedBtn}>
