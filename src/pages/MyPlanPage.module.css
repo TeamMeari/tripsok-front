@@ -1,20 +1,23 @@
-.Page{
+.Page {
     margin: 84px 0;
 }
-.MyPlanPage{
+
+.MyPlanPage {
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 64px;
     max-width: 360px;
 }
-.MyPlan{
+
+.MyPlan {
     margin-top: 24px;
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
-.MyPlanCreate{
+
+.MyPlanCreate {
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -22,56 +25,82 @@
     align-items: center;
 }
 
-.MyPlanTitle{
+.MyPlanTitle {
     font-size: 18px;
     font-weight: 600;
-
 }
-.MyPlanDetail{
+
+.MyPlanDetail {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
-.Myplan_FromPerson{
+
+.pinBtn, .plusBtn {
     display: flex;
-    justify-content: space-between;
-}
-.pinBtn{
-    display: flex;
-    align-Items: center;
-    gap: 8px;
-}
-.plusBtn{
-    display: flex;
-    align-Items: center;
+    align-items: center;
     gap: 8px;
 }
 
-.MyPlanLikeContent{
+
+.VisitedPlaces {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.SavedPlaces {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.placeItemWrapper {
+    width: 100%;
+}
+
+.arrowIcon {
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.arrowRight {
+    width: 13px;
+    height: 11px;
+}
+
+.arrowDown {
+    width: 15px;
+    height: 13px;
+}
+
+.savedButtonContent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.MyPlanLikeContent {
     max-width: 360px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 12px;
 }
-.MyPlanLikeTitle{
 
-
-}
-.VisitedPlaces{
-    display: flex;
-    gap: 12px;
-    flex-direction: column;
-}
-.LikeTitle{
+.LikeTitle {
     font-size: 18px;
     font-weight: 600;
     width: 312px;
 }
-.LikeList{
+
+.LikeList {
     width: 100%;
     margin-left: -8px;
 }
+
 .guestContainer {
     position: fixed;
     top: 0;
@@ -87,22 +116,21 @@
     gap: 8px;
 }
 
-/*.signupBtn {*/
-/*    margin-top: 16px;*/
-/*    padding: 10px 20px;*/
-/*    border-radius: 12px;*/
-/*    border: none;*/
-/*    cursor: pointer;*/
-/*}*/
-
-.textTitle{
+.textTitle {
     font-size: 24px;
     font-weight: 600;
     text-align: center;
 }
-.TexiTitle{
+
+.TexiTitle {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 32px;
+}
+
+.deleteIcon {
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: 8px;
 }

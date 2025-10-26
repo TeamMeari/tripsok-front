@@ -33,7 +33,7 @@
 .title{
     display: flex;
     flex-direction: column;
-    height: 64px;
+    /*height: 64px;*/
     justify-content: space-between;
     margin-bottom: 24px;
 }

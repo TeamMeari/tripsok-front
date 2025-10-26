@@ -22,12 +22,19 @@ interface Place {
     title: string;
     lat?: number;
     lng?: number;
+    memo?:string;
+    latitude?: number;   // 수정 예정 -> 제거
+    longitude?: number;  // 수정 예정  -> 제거
+    name: string;
 }
 
 
 // SortableItem.tsx  드래그 앱 드랍_각각의 여행지 상태관리
-function SortableItem({ place, index }: { place: Place; index: number }) {
+function SortableItem({ place, index, updateMemo }: { place: Place; index: number; updateMemo: (id: number, memo: string) => void }) {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: place.id });
+    const [editing, setEditing] = useState(false);
+    const [memo, setMemo] = useState(place.memo || "");
+
     const style: CSSProperties = {
         transform: CSS.Transform.toString(transform),
         transition,
@@ -35,17 +42,14 @@ function SortableItem({ place, index }: { place: Place; index: number }) {
         background: "#fff",
         borderRadius: 12,
         display: "flex",
-        height: "28px",
-        justifyContent: "space-between",
-        alignItems: "center",
-        cursor: "default",
+        flexDirection: "column",
+        width: "288px",
         border: "1px solid #D9D9D9",
-        width: "288px"
-    };
+        
+           };
 
     const colors = ["#E74C3C", "#3498DB", "#27AE60", "#F39C12", "#9B59B6"];
-
-    const badgeStyle: React.CSSProperties =  {
+    const badgeStyle: React.CSSProperties = {
         backgroundColor: colors[index % colors.length],
         color: "#fff",
         width: "24px",
@@ -55,31 +59,77 @@ function SortableItem({ place, index }: { place: Place; index: number }) {
         justifyContent: "center",
         alignItems: "center",
         fontSize: "14px",
-        fontWeight: "bold"
-    };
-
-    const titleStyle: CSSProperties = {
-        display: "flex",
-        flexDirection: "row",
-        gap: "8px",
-        alignItems: "center"
+        fontWeight: "bold",
     };
 
     return (
         <div ref={setNodeRef} style={style}>
-      <span style={titleStyle}>
-        <div style={badgeStyle}>{index + 1}</div>
-          {place.title}
-      </span>
-            <span {...listeners} {...attributes} style={{ cursor: "grab" }}>
-        &#9776;
-      </span>
+            <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                <span style={{display: "flex", alignItems: "center", gap: "8px"}}>
+                    <div style={badgeStyle}>{index + 1}</div>
+                    {place.title}
+                </span>
+                <div style={{display: "flex", alignItems: "center", gap: "8px"}}>
+                    {editing ? (
+                        <button
+                            style={{
+                                cursor: "pointer",
+                                border: "none",
+                                background: "none",
+                                color: "#3498DB",
+                                fontWeight: "bold"
+                            }}
+                            onClick={() => {
+                                updateMemo(place.id, memo);
+                                setEditing(false);
+                            }}
+                        >
+                            저장
+                        </button>
+                    ) : (
+                        <img
+                            src="/InfoIcon/pencilIcon.svg"
+                            alt="pen"
+                            style={{width: 18, height: 18, cursor: "pointer"}}
+                            onClick={() => setEditing(true)}
+                        />
+                    )}
+                    <span {...listeners} {...attributes} style={{cursor: "grab"}}>
+                        &#9776;
+                    </span>
+                </div>
+            </div>
+
+            <div >
+                {editing ? (
+                    <input
+                        type="text"
+                        value={memo}
+                        onChange={(e) => setMemo(e.target.value)}
+                        placeholder="메모를 입력하세요"
+                        style={{
+                            width: "100%",
+                            borderRadius: 8,
+                            padding: 6,
+                            border: "1px solid #ccc",
+                            marginTop: 8,
+                            boxSizing: "border-box",
+                            color: "#666666",
+                            fontSize: 14,
+                        }}
+                    />
+                ) : (
+                    memo && ( // memo가 있을 때만 div 렌더링
+                        <div style={{ fontSize: 14, color: "#666", marginTop: 8 }}>{memo}</div>
+                    )
+                )}
+            </div>
         </div>
     );
 }
 
 // Exit Modal
-function ExitModal({ visible, onCancel, onSave }: { visible: boolean; onCancel: () => void; onSave: () => void }) {
+function ExitModal({visible, onCancel, onSave}: { visible: boolean; onCancel: () => void; onSave: () => void }) {
     if (!visible) return null;
     return (
         <div className={styles.overlay}>
@@ -102,7 +152,7 @@ function ExitModal({ visible, onCancel, onSave }: { visible: boolean; onCancel: 
 }
 
 export default function MyPlanDetailPage() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const location = useLocation();
     const navigate = useNavigate();
     const { apiCall: fetchApi, isLoading } = useApi();
@@ -133,6 +183,13 @@ export default function MyPlanDetailPage() {
 
     const [showExitModal, setShowExitModal] = useState(false);
 
+    //메모저장 함수
+    const updateMemo = (id: number, memo: string) => {
+        setPlaces((prev) =>
+            prev.map((p) => (p.id === id ? { ...p, memo } : p))
+        );
+    };
+
     const generateTimeOptions = () => {
         const options: string[] = [];
         for (let hour = 9; hour <= 18; hour++) {
@@ -143,18 +200,16 @@ export default function MyPlanDetailPage() {
     };
     const timeOptions = generateTimeOptions();
 
-    const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
+    // 손잡이 드래그 이벤트
+    const handleDragStart = (e: React.TouchEvent | React.MouseEvent) => {
         startY.current = "touches" in e ? e.touches[0].clientY : e.clientY;
         startHeight.current = sheetHeight;
 
         const handleDrag = (moveEvent: MouseEvent | TouchEvent) => {
-            const clientY =
-                "touches" in moveEvent ? moveEvent.touches[0].clientY : moveEvent.clientY;
+            const clientY = "touches" in moveEvent ? moveEvent.touches[0].clientY : moveEvent.clientY;
             const diff = startY.current - clientY;
             let newHeight = startHeight.current + diff;
-
-            if (newHeight < MIN_HEIGHT) newHeight = MIN_HEIGHT;
-            if (newHeight > MAX_HEIGHT) newHeight = MAX_HEIGHT;
+            newHeight = Math.min(Math.max(newHeight, MIN_HEIGHT), MAX_HEIGHT);
 
             setSheetHeight(newHeight);
         };
@@ -168,42 +223,83 @@ export default function MyPlanDetailPage() {
 
         window.addEventListener("mousemove", handleDrag);
         window.addEventListener("mouseup", handleDragEnd);
-        window.addEventListener("touchmove", handleDrag);
+        window.addEventListener("touchmove", handleDrag, { passive: false });
         window.addEventListener("touchend", handleDragEnd);
     };
 
     const sensors = useSensors(useSensor(PointerSensor));
 
-      const handleSavePlan = async () => {
+    const handleSavePlan = async (goToPayment: boolean) => {
         const body = {
             tripPlan: {
                 tripDate: dateValue,
                 startTime: timeValue,
-                numberOfPeople: personValue ? Number(personValue) : null,
+                numberOfPeople: personValue ? parseInt(personValue, 10) : null,
             },
             visitSpotSet: places.map((p, index) => ({
                 placeId: p.id,
-                memo: "",
+                memo:  p.memo || "",
                 orderIndex: index + 1,
             })),
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("accessToken") || ""}`,
-            },
         };
-
+        const currentLocale = i18n.language.toUpperCase();
+        console.log("보낼 body:", body);
         try {
-            const res = await fetchApi(`/trip-plan?locale=KO`, "POST", body);
+            // 여행계획 저장 (토큰 자동 포함)
+            const res = await fetchApi(`/trip-plan?locale=${currentLocale}`, "POST", body);
             console.log("저장 성공:", res);
-            localStorage.removeItem("visitedPlaces");
-            setPlaces([]);
-            setShowExitModal(false);
-            navigate("/");
+
+            // 결제 전 검증 API
+            if (goToPayment) {
+                const validationRes = await fetchApi(`/booking`, "GET");
+
+                if (validationRes?.status === 204 || validationRes === null) {
+                    localStorage.removeItem("visitedPlaces");
+                    setPlaces([]);
+                    setShowExitModal(false);
+                    navigate("/payment", {
+                        state: {
+                            places,
+                            date: dateValue,
+                            from: fromValue,
+                            time: timeValue,
+                            person: personValue,
+                            mapLocations: visitedPlaces.map(p => ({
+                                lat: p.lat || 37.751,
+                                lng: p.lng || 128.876,
+                                title: p.title,
+                            })),
+                            clearVisited: true,
+                        },
+                    });
+                } else {
+                    alert("예약 검증에 실패했습니다. 다시 시도해주세요.");
+                }
+            } else {
+                navigate("/");
+            }
+
+
         } catch (err) {
             console.error("저장 실패:", err);
+            alert("여행 계획 저장에 실패했습니다.");
         }
-        console.log("전송할 body:", body);
     };
 
+    const savedPlan: Place[] = location.state?.savedPlan || [];
+    const mapLocations = [
+        ...savedPlan,
+        ...visitedPlaces.filter(
+            vp => !savedPlan.some(sp => sp.id === vp.id)
+        ),
+    ].map(p => ({
+        lat: p.lat || p.latitude || 37.751,   // latitude  수정 예정 -> lat 만 가능
+        lng: p.lng || p.longitude || 128.876, // longitude 수정 예정 -> lng 만 가능
+        title: p.title || p.name,
+    }));
+    console.log("✅ savedPlan 데이터:", savedPlan);
+    console.log("✅ visitedPlaces 데이터:", visitedPlaces);
+    console.log("카카오맵에 보내는 값:", mapLocations);
     return (
         <div style={{ height: "100vh", position: "relative" }}>
             <TransparentHeader
@@ -219,15 +315,11 @@ export default function MyPlanDetailPage() {
                     navigate(-1);
                 }}
 
-                onSave={handleSavePlan}
+                onSave={() => handleSavePlan(false)}
             />
             <div style={{ height: "100%", width: "100%" }}>
                 <KakaoMap
-                    locations={visitedPlaces.map(p => ({
-                        lat: p.lat || 37.751,
-                        lng: p.lng || 128.876,
-                        title: p.title
-                    }))}
+                    locations={mapLocations}
                     width="100%"
                     height="100%"
                 />
@@ -267,14 +359,17 @@ export default function MyPlanDetailPage() {
                                             }
                                         }}
                                     >
+
                                         <SortableContext
                                             items={places.map(p => p.id)}
                                             strategy={verticalListSortingStrategy}
                                         >
+
                                             {places.map((place, index) => (
-                                                <SortableItem key={place.id} place={place} index={index} />
+                                                <SortableItem key={place.id} place={place} index={index} updateMemo={updateMemo} />
                                             ))}
                                         </SortableContext>
+
                                     </DndContext>
                                 </div>
                             </div>
@@ -312,7 +407,7 @@ export default function MyPlanDetailPage() {
                                             />
                                             <DropdownInput
                                                 value={personValue}
-                                                onChange={setPersonValue} //인원
+                                                onChange={(val) => setPersonValue(String(val))} //인원
                                                 options={personOptions}
                                                 placeholder={t('myPlanPeople')}
                                                 width={148}
@@ -335,28 +430,8 @@ export default function MyPlanDetailPage() {
                          borderRadius="12px"
                          disabled={!isFormComplete}
 
-                         onClick={() => {
-                             // 결제 페이지로 이동
-                             navigate("/payment", {
-                                 state: {
-                                     places,
-                                     date: dateValue,
-                                     from: fromValue,
-                                     time: timeValue,
-                                     person: personValue,
-                                     mapLocations: visitedPlaces.map(p => ({
-                                         lat: p.lat || 37.751,
-                                         lng: p.lng || 128.876,
-                                         title: p.title
-                                     })),
-                                     clearVisited: true
-                                 }
-                             });
-
-                             localStorage.removeItem("myPlan");
-                             localStorage.removeItem("visitedPlaces");
-                         }}
-                         >
+                         onClick={() => handleSavePlan(true)}
+                >
                     {t("reserveButton")}
                 </Button>
             </div>
