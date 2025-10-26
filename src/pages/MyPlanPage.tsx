@@ -140,6 +140,12 @@ export default function Page() {
             if (!isLoggedIn) return; // 비로그인 시 요청 안 함
             setIsLikesLoading(true);
             try {
+                const localeMap: Record<string, string> = {
+                    ko: "KO",
+                    en: "EN",
+                    cn: "ZH",
+                };
+                const apiLocale = localeMap[i18n.language] || "KO";
                 const res = await apiCall<{
                     hasNext: boolean;
                     content: Array<{
@@ -147,16 +153,17 @@ export default function Page() {
                         language: string;
                         placeId: number;
                         name: string;
+                        summary:string;
                         type: string;
                         thumbnailUrl: string;
                     }>;
-                }>("/user/like-places?size=20&locale=KO", "GET");
+                }>(`/user/like-places?size=20&locale=${i18n.language.toUpperCase()}`, "GET");
 
                 if (res.status === 200 && res.data !== null && res.data.content) {
                     const formattedCards = res.data.content.map(item => ({
                         id: item.placeId,
                         title: item.name,
-                        description: "",
+                        description: item.summary,
                         image: item.thumbnailUrl,
                         rank: undefined,
                         type: item.type
