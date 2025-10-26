@@ -127,6 +127,7 @@ const ContentPage = () => {
                         id: number;
                         language: string;
                         name: string;
+                        summary: string;
                         type: string;
                         lat: number;
                         lng: number;
@@ -140,16 +141,21 @@ const ContentPage = () => {
 
                 if (res.status === 200 && res.data) {
                     const formattedCards: CardType[] = res.data.map((item) => {
-                        const cardType: "restaurant" | "tour" | "accommodation" =
-                            item.type === "restaurant" || item.type === "tour" || item.type === "accommodation"
-                                ? item.type
+                        let cardType = item.type.toLowerCase();
+
+                        if (cardType === "tourist_spot") {
+                            cardType = "tour";
+                        }
+                        const cardLowerType: "restaurant" | "tour" | "accommodation" =
+                            cardType === "restaurant" || cardType === "tour" || cardType === "accommodation"
+                                ? cardType
                                 : "restaurant";
                         return {
                             id: item.id,
                             title: item.name,
-                            description: "",
+                            description: item.summary,
                             image: item.thumbnailUrl,
-                            type: cardType,
+                            type: cardLowerType,
                         };
                     });
                     setNearCards(formattedCards);
@@ -198,7 +204,7 @@ const ContentPage = () => {
 
             {/* ContentCarousel */}
             <div className={styles.carouselWrapper}>
-                <ContentCarousel images={place.child.imageList} />
+                <ContentCarousel images={place.child.imageList?? []} />
             </div>
 
             <div className={styles.Container}>
@@ -273,8 +279,14 @@ const ContentPage = () => {
                 </div>
 
                 <div className={styles.cardTitel}>
-                    <div className={styles.cardPlace}>{place.placeName}</div>
-                    <div className={styles.cardFixedTitle}>{t("cardSectionTitle")}</div>
+                    <div className={styles.cardPlace}>{place.placeName} <span
+                        style={{color: '#555',
+                            fontSize: '18px',
+                            fontWeight: 600,
+                            marginLeft: '2px'}}>{t("cardSectionTitle")}</span>
+                        {/*<div className={styles.cardFixedTitle}>{t("cardSectionTitle")}</div>*/}
+                    </div>
+
                 </div>
             </div>
 
