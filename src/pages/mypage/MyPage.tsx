@@ -13,7 +13,7 @@ const MyPage = () => {
     const { t } = useTranslation();
     const [latestBooking, setlatestBooking] = useState<Booking | null>(null);
     const { nickname } = useAuthStore();
-    const { apiCall, isLoading } = useApi();
+    const { apiCall } = useApi();
 
     // 최근 예약 불러오기
     const fetchLatestBooking = () => {
@@ -32,14 +32,12 @@ const MyPage = () => {
         <div className={styles.page}>
             <div className={styles.part}>
                 {  
-                    isLoading ?
-                        <BookingCard isLoading /> :
-                        latestBooking ? <div className={styles.latestBookingContainer}>
-                            <h2 className={styles.title}>
-                                <Trans values={{ name: nickname }} i18nKey="bookingTitle"/>
-                            </h2>
-                            <BookingCard {...latestBooking} />
-                        </div> : null
+                    latestBooking ? <div className={styles.latestBookingContainer}>
+                        <h2 className={styles.title}>
+                            <Trans values={{ name: nickname }} i18nKey="bookingTitle"/>
+                        </h2>
+                        <BookingCard {...latestBooking} />
+                    </div> : null
                 }
                 <div className={styles.menuContainer}>
                     <h2 className={styles.title}>{t("bookingManagementTitle")}</h2>
