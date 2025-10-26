@@ -77,7 +77,7 @@ const Header: React.FC<HeaderProps> = ({ useBackground = false, isLogo = true, i
                         className={styles.logo}
                         onClick={handleLogoClick}
                     /> : 
-                    <button className={styles.arrowLeft} onClick={handleLogoClick}>
+                    <button className={styles.arrowLeft} onClick={() => navigate(-1)}>
                         <ArrowLeftIcon size={33} color="#888888" />
                     </button>}
             </div>
@@ -98,8 +98,8 @@ const Header: React.FC<HeaderProps> = ({ useBackground = false, isLogo = true, i
                     {/* 드롭다운 메뉴 */}
                     {isLoggedIn && showLogoutMenu && (
                         <div className={styles.dropdownMenu}>
-                            <button onClick={handleLogout}>{t("logout")}</button>
                             <button onClick={() => navigate("/my")}>{t("mypage")}</button>
+                            <button onClick={handleLogout}>{t("logout")}</button>
                         </div>
                     )}
                 </div>}
