@@ -13,7 +13,7 @@ const HeaderSelector: React.FC = () => {
     }
 
     // 리뷰 페이지는 로고가 없는 Header 사용
-    if (pathname.startsWith("/review")) {
+    if ((pathname.startsWith('/my') && pathname !== '/my') ||pathname.startsWith("/review") || pathname === "/privacy" || pathname === "/terms") {
       return <Header isLogo={false} />;
     }
     
