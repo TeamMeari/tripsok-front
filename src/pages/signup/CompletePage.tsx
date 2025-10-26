@@ -6,19 +6,11 @@ import HashtagBtnSkeleton from "../../components/common/HashtagBtnSkeleton";
 import { useApi } from "../../hooks/useApi";
 import { Tag } from "../../types/Tag";
 import styles from "./SignupPage.module.css";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuthStore from "../../stores/authStore";
 
 const SignupCompletePage = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  // 회원가입 완료 페이지 접근 경로 체크
-  useEffect(() => {
-    const prevPath = location.state?.from;
-    if (prevPath !== '/signup/email/3' && prevPath !== '/signup/oauth2') {
-      navigate('/', { replace: true });
-    }
-  }, []);
 
   const { t, i18n } = useTranslation();
   const { apiCall: fetchApiCall, isLoading: fetchIsLoading } = useApi();
@@ -34,6 +26,27 @@ const SignupCompletePage = () => {
       }
     });
   };
+
+  const fetchInterestHastags = () => {
+    fetchApiCall<{
+      "nickname": string,
+      "email": string,
+      "contactEmail": string,
+      "socialType": string,
+      "interestThemes": [
+        {
+          "id": 0,
+          "name": string
+        }
+      ],
+      "firstName": string,
+      "lastName": string
+    }>("/user/info", "GET").then((response) => {
+      if (response.status === 200) {
+        setSelectedIds(_ => new Set(response?.data?.interestThemes.map(v => v.id)))
+      }
+    })
+  }
 
   const patchHashtags = useCallback(() => {
     if (selectedIds.size === 0) return;
@@ -82,6 +95,7 @@ const SignupCompletePage = () => {
     }
     // fetch hashtags
     fetchHashtags();
+    fetchInterestHastags();
   }, []);
 
   useEffect(() => {

@@ -10,6 +10,7 @@ const resources = {
             greeting: "Hi, {{name}}",
             login: "로그인",
             logout: "로그아웃",
+            mypage: "마이페이지",
             loginSlogan: "투앙으로 더 편하게<br /> 강릉을 여행해요",
             passwordRule: "영문, 숫자, 특수문자 포함 8-20자",
             resetPassword: "비밀번호 재설정",
@@ -44,9 +45,9 @@ const resources = {
             nicknameError: "닉네임을 입력해주세요.",
             existingNickname: "이미 존재하는 닉네임입니다.",
             termsRequired: "(필수) 이용 약관 동의",
-            termsContent: "이용 약관", // 수정 필요
+            terms: "이용 약관",
             privacyRequired: "(필수) 개인정보 수집 및 이용 동의",
-            privacyContent: "개인정보 수집 및 이용 동의", // 수정 필요
+            privacy: "개인정보 수집 및 이용",
             agree: "동의합니다",
             welcomeNickname: "<span>{{name}}</span>님, 반가워요! <br />관심있는 여행이 있으신가요?",
             guideHashtags: "1개 필수, 복수 선택 가능",
@@ -147,6 +148,43 @@ const resources = {
             price: "30,000원",
             paymentSuccess: "결제가 완료되었습니다",
             receiptSent: "결제된 영수증은 이메일로 보냈어요.",
+            // 리뷰
+            howWasTaxiTour: "택시 투어는 어땠나요?",
+            tourInfo: "{{month}}월 {{day}}일 {{year}}년 {{departure}} {{time}} {{party}} 출발",
+            askGeneral : "특히 어떤 점이 좋았나요?",
+            reviewDriverKindness: "기사님이 친절했어요",
+            reviewDriverInformative: "관광지에 대해 쉽게 알 수 있었어요",
+            reviewDriverPunctual: "약속한 시간을 잘 지켰어요",
+            reviewDriverCleanVehicle: "차량이 청결하고 쾌적했어요",
+            feedback: {
+                ask: {
+                    service: "이용 후기를 알려주세요.",
+                    place: "{{place}} 어땠나요?",
+                },
+                placeholder: {
+                    service: "서비스 향상을 위한 개선점 (선택)",
+                    tour: "관광지 후기 등록 (선택)",
+                    restaurant: "식당 후기 등록 (선택)",
+                    accommodation: "숙소 후기 등록 (선택)"
+                }
+            },
+            // 마이페이지
+            bookingTitle: "{{name}}님의 가장 최근 예약",
+            booking: {
+                title: "{{month}}월 {{day}}일 {{year}}년의 여정",
+                caption: "{{departure}} {{time}} {{party}} 출발",
+                state: {
+                    TRAVELING: "여행중",
+                    COMPLETED: "여행완료",
+		            CANCELED: "여행취소",
+		            BEFORE_TRAVEL: "여행전"
+                }
+            },
+            bookingManagementTitle: "예약 관리",
+            myLikePlace: "내가 찜한 장소",
+            usageHistory: "이용 내역",
+            accountManagementTitle: "계정 관리",
+            myInterest: "나의 관심 분야",
             foreignTourTaxiNotice: "강원도 외국인 관광택시는 1일 1회 3시간 이용이 기본으로, 이용 시간에 따라 추가 요금이 발생할 수 있습니다.",
         },
     },
@@ -156,6 +194,7 @@ const resources = {
             greeting: "Hi, {{name}}",
             login: "Login",
             logout: "Logout",
+            mypage: "My Page",
             loginSlogan: "Travel Gangneung more easily<br />with 'touang'",
             passwordRule: "8-20 characters including letters, numbers, and symbols",
             resetPassword: "Reset Password",
@@ -190,9 +229,9 @@ const resources = {
             nicknameError: "Please enter your nickname.",
             existingNickname: "Nickname already exists.",
             termsRequired: "(Required) Agree to Terms of Service",
-            termsContent: "Terms of Service", // 수정 필요
+            terms: "Terms of Service",
             privacyRequired: "(Required) Agree to Privacy Policy",
-            privacyContent: "Privacy Policy", // 수정 필요
+            privacy: "Privacy Policy",
             agree: "Agree",
             welcomeNickname: "Welcome, {{name}}!<br />Do you have any trips in mind?",
             guideHashtags: "1 required, multiple selection possible",
@@ -294,6 +333,43 @@ const resources = {
             price: "$30.00",
             paymentSuccess: "Payment has been completed",
             receiptSent: "The receipt has been sent to your email.",
+            // 리뷰
+            howWasTaxiTour: "How was the taxi tour?",
+            tourInfo: "{{month}} {{day}}, {{year}} {{departure}} {{time}} {{party}} Departure",
+            askGeneral : "What did you particularly like?",
+            reviewDriverKindness: "The driver was kind.",
+            reviewDriverInformative: "I could easily learn about the tourist spots.",
+            reviewDriverPunctual: "The driver kept the promised time well.",
+            reviewDriverCleanVehicle: "The vehicle was clean and comfortable.",
+            feedback: {
+                ask: {
+                    service: "Please let us know your experience.",
+                    place: "How was {{place}}?",
+                },
+                placeholder: {
+                    service: "Suggestions for Service Improvement (Optional)",
+                    tour: "Submit a review for a tourist attraction (optional)",
+                    restaurant: "Submit a review for a restaurant (optional)",
+                    accommodation: "Submit a review for a accommodation (optional)"
+                }
+            },
+            // 마이페이지
+            bookingTitle: "{{name}}'s Most Recent booking",
+            booking: {
+                title: "Journey on {{month}} {{day}} {{year}}",
+                caption: "{{departure}} {{time}} {{party}} Departure",
+                state: {
+                    TRAVELING: "Traveling",
+                    COMPLETED: "Travel Complete",
+                    CANCELED: "Travel Cancelled",
+                    BEFORE_TRAVEL: "Before Travel"
+                }
+            },
+            bookingManagementTitle: "booking Management",
+            myLikePlace: "My Liked Places",
+            usageHistory: "Usage History",
+            accountManagementTitle: "Account Management",
+            myInterest: "My Interests Tag",
             foreignTourTaxiNotice: "Gangwon foreign tour taxi is available for 3 hours per day by default, and additional charges may apply depending on usage time.",
         },
     },
@@ -303,6 +379,7 @@ const resources = {
             greeting: "Hi, {{name}}",
             login: "ログイン",
             logout: "ログアウト",
+            mypage: "マイページ",
             loginSlogan: "'touang'でもっと便利に<br />江陵を旅行しましょう",
             passwordRule: "英字、数字、記号を含む8〜20文字",
             resetPassword: "パスワード再設定",
@@ -337,9 +414,9 @@ const resources = {
             nicknameError: "ニックネームを入力してください。",
             existingNickname: "ニックネームが既に存在します。",
             termsRequired: "(必須) 利用規約に同意",
-            termsContent: "利用規約", // 수정 필요
+            terms: "利用規約", 
             privacyRequired: "(必須) 個人情報の収集および利用に同意",
-            privacyContent: "個人情報の収集および利用に同意", // 수정 필요
+            privacy: "個人情報の収集および利用",
             agree: "同意",
             welcomeNickname: "{{name}}さん、ようこそ！<br />興味のある旅行はありますか？",
             guideHashtags: "1つ必須、複数選択可能",
@@ -438,6 +515,45 @@ const resources = {
             payButton: "支払う",
             departure: "出发",
             price: "¥30,000",
+            paymentSuccess: "お支払いが完了しました",
+            receiptSent: "領収書をメールに送信しました。",
+            // 리뷰
+            howWasTaxiTour: "タクシーツアーはいかがでしたか？",
+            tourInfo: "{{year}}/{{month}}/{{day}} {{departure}} {{time}} {{party}} 出発",
+            askGeneral : "特にどの点が良かったですか？",
+            reviewDriverKindness: "運転手は親切でした。",
+            reviewDriverInformative: "観光スポットについて簡単に学ぶことができました。",
+            reviewDriverPunctual: "運転手は約束した時間をしっかり守りました。",
+            reviewDriverCleanVehicle: "車両は清潔で快適でした。",
+            feedback: {
+                ask: {
+                    service: "ご利用の感想をお聞かせください。",
+                    place: "{{place}}はいかがでしたか？",
+                },
+                placeholder: {
+                    service: "サービス向上のための改善点 (任意)",
+                    tour: "観光地レビュー登録 (任意)",
+                    restaurant: "飲食店レビュー登録 (任意)",
+                    accommodation: "宿泊施設レビュー登録 (任意)"
+                }
+            },
+            // 마이페이지
+            bookingTitle: "{{name}}さんの最新の予約",
+            booking: {
+                title: "{{year}}/{{month}}/{{day}}の旅",
+                caption: "{{departure}} {{time}} {{party}} 出発",
+                state: {
+                    TRAVELING: "旅行中",
+                    COMPLETED: "旅行完了",
+                    CANCELED: "旅行キャンセル",
+                    BEFORE_TRAVEL: "旅行前"
+                }
+            },
+            bookingManagementTitle: "予約管理",
+            myLikePlace: "お気に入り場所",
+            usageHistory: "利用履歴",
+            accountManagementTitle: "アカウント管理",
+            myInterest: "興味タグ",
             paymentSuccess: "支付已完成",
             receiptSent: "收据已发送到您的电子邮箱。",
             foreignTourTaxiNotice: "江原道外国人観光タクシーは、1日1回3時間の利用が基本で、利用時間に応じて追加料金が発生する場合があります。",
@@ -449,6 +565,7 @@ const resources = {
             greeting: "Hi, {{name}}",
             login: "登录",
             logout: "登出",
+            mypage: "我的主页",
             loginSlogan: "用 'touang' 更轻松地<br />游江陵",
             passwordRule: "8-20位，必须包含字母、数字和符号",
             resetPassword: "重置密码",
@@ -483,9 +600,9 @@ const resources = {
             nicknameError: "请输入您的昵称。",
             existingNickname: "昵称已存在。",
             termsRequired: "（必填）同意服务条款",
-            termsContent: "服务条款", // 수정 필요
+            terms: "服务条款",
             privacyRequired: "（必填）同意隐私政策",
-            privacyContent: "隐私政策", // 수정 필요
+            privacy: "隐私政策",
             agree: "同意",
             welcomeNickname: "{{name}}，欢迎！<br />有感兴趣的旅行吗？",
             guideHashtags: "1个必填，多个可选",
@@ -584,6 +701,45 @@ const resources = {
             payButton: "付款",
             departure: "出发",
             price: "¥30,000",
+            paymentSuccess: "支付已完成",
+            receiptSent: "收据已发送到您的电子邮箱。",
+            // 리뷰
+            howWasTaxiTour: "出租车之旅怎么样？",
+            tourInfo: "{{year}}/{{month}}/{{day}} {{departure}} {{time}} {{party}} 出发",
+            askGeneral : "您觉得哪一点特别好呢？",
+            reviewDriverKindness: "司机态度友善。",
+            reviewDriverInformative: "我能轻松了解旅游景点信息。",
+            reviewDriverPunctual: "司机严格遵守约定时间。",
+            reviewDriverCleanVehicle: "车辆整洁舒适。",
+            feedback: {
+                ask: {
+                    service: "请分享您的使用体验。",
+                    place: "{{place}}怎么样？",
+                },
+                placeholder: {
+                    service: "服务改进建议（可选）",
+                    tour: "景点点评提交（可选）",
+                    restaurant: "餐厅点评提交（可选）",
+                    accommodation: "住宿点评提交（可选）"
+                }
+            },
+            // 마이페이지
+            bookingTitle: "{{name}}的最新预订",
+            booking: {
+                title: "{{year}}/{{month}}/{{day}}的旅程",
+                caption: "{{departure}} {{time}} {{party}} 出发",
+                state: {
+                    TRAVELING: "旅行中",
+                    COMPLETED: "旅行完成",
+                    CANCELED: "旅行取消",
+                    BEFORE_TRAVEL: "旅行前"
+                }
+            },
+            bookingManagementTitle: "行程管理",
+            myLikePlace: "我的心仪地点",
+            usageHistory: "使用记录",
+            accountManagementTitle: "账户管理",
+            myInterest: "我的兴趣标签",
             paymentSuccess: "お支払いが完了しました",
             receiptSent: "領収書をメールに送信しました。",
             foreignTourTaxiNotice: "江原道外国游客观光出租车默认每日使用3小时，根据使用时间可能会产生额外费用。",
