@@ -99,6 +99,7 @@ const Header: React.FC<HeaderProps> = ({ useBackground = false, isLogo = true, i
                     {isLoggedIn && showLogoutMenu && (
                         <div className={styles.dropdownMenu}>
                             <button onClick={handleLogout}>{t("logout")}</button>
+                            <button onClick={() => navigate("/my")}>{t("mypage")}</button>
                         </div>
                     )}
                 </div>}
