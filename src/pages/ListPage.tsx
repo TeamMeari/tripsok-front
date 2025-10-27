@@ -13,12 +13,13 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useStaticApiQuery } from '../hooks/useApi';
 import HashtagBtnSkeleton from '../components/common/HashtagBtnSkeleton';
 import useScrollHorizon from '../hooks/useScrollHorizon';
-import { PlacesResponse } from '../types/apiResponse';
+import { PlaceListResponse, PlaceListItem } from '../types/apiResponse';
 import EmptyList from '../components/common/EmptyList';
 import TopButton from '../components/common/TopButton';
 import { SortType } from '../types/sortOptions';
 import axios from '../utils/axios';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { convertTypeToLowerCase } from '../utils/converter';
 
 const ListPage = () => {
   const { t, i18n } = useTranslation();
@@ -49,7 +50,7 @@ const ListPage = () => {
   // 추후 별도 훅으로 분리
   // 무한 스크롤 infinite query
   const fetchPlaces = async ({ pageParam, type }: { pageParam: number, type: PlaceType }) => {
-      const response = await axios.get<PlacesResponse>(
+      const response = await axios.get<PlaceListResponse>(
           `/places/${type}?page=${pageParam}&size=20&sortKey=${sort}&direction=desc&locale=${i18n.language}${hashtagId ? `&themeId=${hashtagId}` : ''}${searchWord ? `&categoryFilter=true&q=${searchWord}&typeSearch=text` : ''}`
       );
       return response.data;
@@ -141,7 +142,14 @@ const ListPage = () => {
     return (
       <div className={styles.list}>
         {places.map((card) => (
-          <Card key={card.id} id={card.id} image={card.thumbnailUrl} title={card.name} description={card.summary} />
+          <Card
+            key={card.id} 
+            id={card.id} 
+            image={card.thumbnailUrl} 
+            title={card.name}
+            description={card.summary} 
+            type={convertTypeToLowerCase(card.type)}
+          />
         ))}
         {(isFetching || hasNextPage) && <div className={styles.loadMore} ref={loadMoreRef}>
           {Array(20).fill(0).map((_, index) => (

@@ -2,6 +2,7 @@ import styles from "./Card.module.css";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import placePlaceholder from "../../assets/image/place-placeholder.png";
+import { PlaceType } from "../../types/menuTabs";
 
 interface CardProps {
     id?: number;
@@ -10,7 +11,7 @@ interface CardProps {
     description?: string;
     isLoading?: boolean;
     rank?: number | null;
-    type?: "restaurant" | "tour" | "accommodation";
+    type?: PlaceType;
     onClick?:() => void;
 }
 
@@ -24,6 +25,7 @@ const Card = ({
     type,
     onClick,
 }: CardProps) => {
+    console.log(type);
     const navigate = useNavigate();
     const { t } = useTranslation();
     const RankBadge = () => {
@@ -43,7 +45,10 @@ const Card = ({
         </div>
     }
   return (
-    <div className={styles.card} onClick={() => navigate(`/content/${type}/${id}`)}>
+    <div className={styles.card} onClick={() => {
+        console.log(type);
+        navigate(`/content/${type || "tour"}/${id}`)
+        }}>
         { RankBadge() }
         <div className={styles.cardImageContainer}>
             <img src={image} alt={title} onError={(e) => {e.currentTarget.src = placePlaceholder;}}/>
