@@ -25,7 +25,6 @@ const Card = ({
     type,
     onClick,
 }: CardProps) => {
-    console.log(type);
     const navigate = useNavigate();
     const { t } = useTranslation();
     const RankBadge = () => {
@@ -46,7 +45,6 @@ const Card = ({
     }
   return (
     <div className={styles.card} onClick={() => {
-        console.log(type);
         navigate(`/content/${type || "tour"}/${id}`)
         }}>
         { RankBadge() }
