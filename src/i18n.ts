@@ -131,6 +131,11 @@ const resources = {
             nature: "자연",
             leisure: "레저",
             sports: "스포츠",
+            // 리스트 정렬 텍스트
+            sort : {
+                like: "좋아요순",
+                name: "이름순"
+            },
             // Summary 비어있음 오류 메세지
             emptySummary: "응답을 불러올 수 없습니다.",
             substituteSummary: "사진을 눌러 상세 정보를 확인해보세요.",
@@ -318,6 +323,11 @@ const resources = {
             nature: "nature",
             leisure: "leisure",
             sports: "sports",
+            // 리스트 정렬 텍스트
+            sort : {
+                like: "Like order",
+                name: "Name order"
+            },
             // Summary 비어있음 오류 메세지
             emptySummary: "Unable to retrieve response.",
             substituteSummary: "Click the photo to check the detailed information.",
@@ -507,6 +517,11 @@ const resources = {
             // Summary 비어있음 오류 메세지
             emptySummary: "応答を呼び出せません。",
             substituteSummary: "写真をクリックして詳細情報を確認してください。",
+            // 리스트 정렬 텍스트
+            sort : {
+                like: "いいね順",
+                name: "名前順"
+            },
             //결제관련 텍스트
             foreignTourTaxi: "外国人観光タクシー1日（3時間）利用券",
             agreeTerms: "必須の規約に同意してください。",
@@ -693,6 +708,11 @@ const resources = {
             // Summary 비어있음 오류 메세지
             emptySummary: "無法檢索回應。",
             substituteSummary: "请点击照片查看详细信息。",
+            // 리스트 정렬 텍스트
+            sort : {
+                like: "按点赞排序",
+                name: "按名称排序"
+            },
             //결제 관련 텍스트
             foreignTourTaxi: "外国游客观光出租车1日（3小时）使用券",
             agreeTerms: "请同意必填条款。",
