@@ -28,6 +28,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
     onFocus,
     onChange,
     onKeyDown,
+    readOnly,
     style,
     maxLength,
     onFocusDisabled = false,
@@ -68,6 +69,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
             onChange={onChange}
             onKeyDown={onKeyDown}
             maxLength={maxLength}
+            readOnly={readOnly}
         />
         { rightElement }
     </div>

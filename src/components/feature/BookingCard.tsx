@@ -21,6 +21,7 @@ const BookingCard = (props: | BookingCardProps | BookingCardLoadingProps) => {
     const { t, i18n } = useTranslation();
     const navigate = useNavigate();
     const [year, month, day] = props.tripDate.split("-").map(Number);
+    const time = props.startTime.split(":").slice(0, 2).join(":")
 
     const handleClickCard = () => {
         navigate('/myplan-detail/' + props.bookingId);
@@ -52,7 +53,7 @@ const BookingCard = (props: | BookingCardProps | BookingCardLoadingProps) => {
             </h2>
             <p className={`${styles.info} caption`}>
                 <Trans
-                    values={{ departure: "", time: props.startTime, party: getStringPersonCount(props.numberOfPeople) }}
+                    values={{ departure: t('locations.gangneungStation'), time: time, party: getStringPersonCount(props.numberOfPeople) }}
                     i18nKey="booking.caption"
                 />
             </p>
