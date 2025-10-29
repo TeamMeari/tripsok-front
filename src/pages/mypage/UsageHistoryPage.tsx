@@ -13,9 +13,9 @@ const UsageHistoryPage = () => {
     const { apiCall, isLoading } = useApi();
     
     const fetchBookings = () => {
-        apiCall<Booking[]>('/booking/list', "POST", (response: { status: number; data: any; }) => {
+        apiCall<Booking[]>('/booking/list', "POST").then(response => {
             if (response.status === 200) {
-                setBookings(response.data);
+                setBookings(response.data || []);
             }
         })
     }
