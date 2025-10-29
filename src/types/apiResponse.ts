@@ -52,7 +52,7 @@ export interface PlaceListItem {
     language: string;
     name: string;
     summary: string;
-    type: "RESTAURANT" | "ACCOMMODATION" | "TOUR";
+    type: "RESTAURANT" | "ACCOMMODATION" | "TOUR" | "TOURIST_SPOT";
     lat: number;
     lng: number;
     thumbnailUrl: string;

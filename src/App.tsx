@@ -20,8 +20,8 @@ import EmailPage from "./pages/signup/EmailPage";
 import EmailSignupPage from "./pages/signup/EmailSignupPage";
 import OAuthCallbackPage from "./pages/signup/OAuthCallbackPage";
 import OAuthSignupPage from "./pages/signup/OAuthSignupPage";
-import TermsPage from "./pages/signup/TermsPage";
-import PrivacyPage from "./pages/signup/PrivacyPage";
+import SignupTermsPage from "./pages/signup/TermsPage";
+import SignupPrivacyPage from "./pages/signup/PrivacyPage";
 import PaymentPage from "./pages/PaymentPage";
 import PaymentSuccessPage from "./pages/SuccessPage";
 import useAuthStore from "./stores/authStore";
@@ -30,6 +30,11 @@ import PasswordResetCodePage from "./pages/passwordReset/CodePage";
 import PasswordResetPage from "./pages/passwordReset/PasswordResetPage";
 import PasswordResetCompletePage from "./pages/passwordReset/CompletePage";
 import { usePasswordResetStore } from "./stores/passwordResetStore";
+import ReviewFormPage from "./pages/review/ReviewFormPage";
+import LikePage from "./pages/mypage/LikePage";
+import MyPage from "./pages/mypage/MyPage";
+import UsageHistoryPage from "./pages/mypage/UsageHistoryPage";
+import DocumentPage from "./pages/DocumentPage";
 
 function App(): JSX.Element {
   const queryClient = new QueryClient();
@@ -50,21 +55,35 @@ function App(): JSX.Element {
             <Routes>
               <Route path="/" element={<MainPage />} />
               <Route path="/login" element={<LoginPage />} />
+
               {/* 회원가입 */}
               <Route path="/oauth2/callback" element={<OAuthCallbackPage />} />
-              <Route path="/signup/terms" element={<TermsPage />} /> 
-              <Route path="/signup/privacy" element={<PrivacyPage />} />
+              <Route path="/signup/terms" element={<SignupTermsPage />} /> 
+              <Route path="/signup/privacy" element={<SignupPrivacyPage />} />
               <Route path="/signup/email/1" element={<EmailPage />} />
               <Route path="/signup/email/2" element={<CodePage />} />
               <Route path="/signup/email/3" element={<EmailSignupPage />} />
               <Route path="/signup/oauth2" element={<OAuthSignupPage />} />
-              <Route path="/signup/complete" element={<SignupCompletePage />} />
+              
 
               {/* 비밀번호 재설정 */}
               <Route path="/password/reset/email" element={<PasswordResetEmailPage />} />
               <Route path="/password/reset/code" element={<PasswordResetCodePage />} />
               <Route path="/password/reset/new" element={<PasswordResetPage />} />
               <Route path="/password/reset/complete" element={<PasswordResetCompletePage />} />
+
+              {/* 리뷰 */}
+              <Route path="/review/write" element={<ReviewFormPage />} />
+
+              {/* 마이페이지 */}
+              <Route path="/my" element={<MyPage />} />
+              <Route path="/my/usage-history" element={<UsageHistoryPage />} />
+              <Route path="/my/like" element={<LikePage />} />
+              <Route path="/my/interest" element={<SignupCompletePage />} />
+
+              {/* 이용 약관 및 개인정보 수집 이용 */}
+              <Route path="/terms" element={<DocumentPage markdownPath="/termAndPrivacy/terms" titleKey="termsRequired"/>} /> 
+              <Route path="/privacy" element={<DocumentPage markdownPath="/termAndPrivacy/privacy" titleKey="privacyRequired"/>} />
 
               <Route path="/list" element={<ListPage />} />
               <Route path="/content/:type/:id" element={<ContentPage />} />

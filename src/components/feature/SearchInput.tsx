@@ -7,6 +7,7 @@ import SearchIcon from '../Icons/SearchIcon';
 import { Upload } from 'lucide-react';
 import { animate } from "@motionone/dom";
 import Button from '../common/Button/CommonBtn';
+import { useTranslation } from 'react-i18next';
 
 interface SearchInputProps {
     variant: 'main' | 'list';
@@ -14,6 +15,7 @@ interface SearchInputProps {
 }
 
 const SearchInput = ({ variant, searchWord }: SearchInputProps) => {
+    const { t } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
     const [searchInput, setSearchInput] = useState(searchWord || '');
@@ -156,7 +158,7 @@ const SearchInput = ({ variant, searchWord }: SearchInputProps) => {
                 value={searchInput}
                 leftIcon={<SearchIcon color={variant === 'main' ? '#FF6B2C' : '#666666'}/>}
                 // placeholder="이미지를 이용해 더 편하게 검색"
-                placeholder="검색어를 입력해주세요."
+                placeholder={t("searchInputPlaceholder")}
                 // rightElement={cameraButton}
                 onChange={handleChangeInput}
                 onKeyDown={handleKeyDown}

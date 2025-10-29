@@ -1,6 +1,7 @@
 import styles from './Dropdown.module.css'
 import { useEffect, useState, useRef } from 'react'
 import { sortKey, SortType } from '../../types/sortOptions';
+import { useTranslation } from 'react-i18next';
 
 interface DropdownProps {
     current: SortType;
@@ -8,6 +9,7 @@ interface DropdownProps {
 }
 
 const Dropdown = ({ current, onClickOption }: DropdownProps) => {
+    const { t } = useTranslation();
     const [isHidden, setIsHidden] = useState(true);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -41,7 +43,7 @@ const Dropdown = ({ current, onClickOption }: DropdownProps) => {
             className={styles.dropdownButton}
             onClick={toggleHidden}
         >
-            <p className={styles.value}>{sortKey[current].label}</p>
+            <p className={styles.value}>{t(`sort.${sortKey[current].value}`)}</p>
             <p className={styles.arrow}>{ isHidden ? "▼" : "▲"}</p>
         </button>
         {!isHidden && <div
@@ -53,7 +55,7 @@ const Dropdown = ({ current, onClickOption }: DropdownProps) => {
                     className={`${styles.dropdownOption} ${current === key ? styles.selected : ""}`}
                     onClick={() => handleClickOption(key as SortType)}
                 >
-                    {sortKey[key as SortType].label}
+                    {t(`sort.${sortKey[key as SortType].value}`)}
                 </button>
             )}
         </div>}
