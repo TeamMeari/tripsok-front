@@ -17,7 +17,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 const Button: React.FC<ButtonProps> = ({
                                            variant = 'primary',
                                            size = 'small',
-                                           borderRadius,
+                                           borderRadius = '12px',
                                            children,
                                            style,
                                            onClick,
