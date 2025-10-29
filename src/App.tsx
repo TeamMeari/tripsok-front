@@ -13,7 +13,7 @@ import HeaderSelector from "./components/header/HeaderSelector";
 
 import MyPlan from "./pages/MyPlanPage";
 import MyPlanDetailPage from './pages/MyPlanDetail';
-
+import PlanCompletePage from './pages/PlanCompletePage';
 import CodePage from "./pages/signup/CodePage";
 import SignupCompletePage from "./pages/signup/CompletePage";
 import EmailPage from "./pages/signup/EmailPage";
@@ -70,6 +70,7 @@ function App(): JSX.Element {
               <Route path="/content/:type/:id" element={<ContentPage />} />
               <Route path="/myplan" element={<MyPlan />} />
               <Route path="/myplan-detail" element={<MyPlanDetailPage/>}/>
+              <Route path="/plan-complete" element={<PlanCompletePage/>}/>
               <Route path="/payment" element={<PaymentPage/>}/>
               <Route path="/success" element={<PaymentSuccessPage />} />
 
