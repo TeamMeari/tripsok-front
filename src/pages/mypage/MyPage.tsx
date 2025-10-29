@@ -17,7 +17,7 @@ const MyPage = () => {
 
     // 최근 예약 불러오기
     const fetchLatestBooking = () => {
-        apiCall<Booking>('/booking/latest', "POST", (response: { status: number; data: SetStateAction<Booking | null>; }) => {
+        apiCall<Booking>('/booking/latest', "POST").then(response => {
             if (response.status === 200) {
                 setlatestBooking(response.data);
             }
