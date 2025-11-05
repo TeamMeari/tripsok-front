@@ -116,7 +116,6 @@ const PaymentSuccessPage: React.FC = () => {
                 <Button
                     variant="primary"
                     size="large"
-                    borderRadius="12px"
                     onClick={() => (window.location.href = "/")}
                 >
                     메인으로 이동

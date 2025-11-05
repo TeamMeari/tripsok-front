@@ -303,7 +303,6 @@ const ContentPage = () => {
                 <LikeButton initialLiked={liked} onClick={handleClickLike}/>
                 <Button variant="primary"
                         size="small"
-                        borderRadius="12px"
                         onClick={handleAddToMyPlan}>
                     {t("addToJourney")}
                 </Button>

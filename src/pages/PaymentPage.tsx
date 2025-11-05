@@ -183,7 +183,6 @@ const PaymentPage: React.FC = () => {
                 <Button
                     variant={isFormValid ? "primary" : "grayPrimary"}
                     size="large"
-                    borderRadius="12px"
                     onClick={handlePayment}
                     disabled={!isFormValid}>
                     {t("payButton")}

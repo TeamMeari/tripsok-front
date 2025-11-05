@@ -4,32 +4,38 @@ import styles from './CommonBtn.module.css';
 
 type ButtonVariant = 'primary' |'grayPrimary'| 'secondary' | 'orangeOutline' | 'grayDashed' | 'blackOutline';
 type PrimaryButtonSize = 'small' | 'large' | 'mini'; // primary 전용 width 옵션
+type ButtonRadius = 'medium' | 'large';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: ButtonVariant;
     size?: PrimaryButtonSize;       // primary 버튼만 사용
-    borderRadius?: string;
+    radius?: ButtonRadius;
     children: React.ReactNode;
     onClick?: () => void
     isLoading?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
-                                           variant = 'primary',
-                                           size = 'small',
-                                           borderRadius = '12px',
-                                           children,
-                                           style,
-                                           onClick,
-                                           isLoading,
-                                           ...props
-                                       }) => {
-    const width =
-        variant === 'primary' || variant === 'grayPrimary' || variant === 'orangeOutline' || variant === 'grayDashed' || variant == 'blackOutline' ? (size === 'mini'
-            ? '140px'   // mini 버튼 길이
-            : size === 'small'
-                ? '280px'
-                : '312px') : undefined;
+        variant = 'primary',
+        size,
+        radius = 'medium',
+        children,
+        style,
+        onClick,
+        isLoading,
+        ...props
+    }) => {
+    // button size에 따른 width 값
+    const width = 
+        size === 'mini' ? '140px'
+        : size === 'small' ? '280px'
+        : size === 'large' ? '312px'
+        : undefined;
+
+    const borderRadius = 
+        radius === "medium" ? '12px' 
+        : radius === "large" ? '48px'
+        : undefined;
 
     return (
         <div className={styles.commonBtn} onClick={onClick}>

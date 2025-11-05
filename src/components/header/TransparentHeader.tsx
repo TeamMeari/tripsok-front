@@ -79,7 +79,7 @@ const TransparentHeader: React.FC<TransparentHeaderProps> = ({ type = "default",
                     <>
                         <IconButton type="globeIcon" />
                         <div className={styles.userMenuWrapper}>
-                            <Button variant="secondary" borderRadius="48px" onClick={handleAuthClick}>
+                            <Button variant="secondary" radius="large" onClick={handleAuthClick}>
                                 {isLoggedIn ? t("greeting", { name: nickname }) : t("login")}
                             </Button>
                             {isLoggedIn && showLogoutMenu && (

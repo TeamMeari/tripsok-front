@@ -139,10 +139,10 @@ function ExitModal({visible, onCancel, onSave}: { visible: boolean; onCancel: ()
                     저장하지 않고 나갈까요?
                 </p>
                 <div className={styles.buttons}>
-                    <Button variant="grayPrimary"  onClick={onCancel} size="mini" borderRadius="12px">
+                    <Button variant="grayPrimary"  onClick={onCancel} size="mini">
                         나가기
                     </Button>
-                    <Button variant="primary" onClick={onSave} size="mini" borderRadius="12px">
+                    <Button variant="primary" onClick={onSave} size="mini">
                         저장
                     </Button>
                 </div>
@@ -427,9 +427,7 @@ export default function MyPlanDetailPage() {
             <div className={styles.fixedBottomArea}>
                 <Button  variant={isFormComplete ? "primary" : "grayPrimary"}
                          size="large"
-                         borderRadius="12px"
                          disabled={!isFormComplete}
-
                          onClick={() => handleSavePlan(true)}
                 >
                     {t("reserveButton")}

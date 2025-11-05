@@ -87,7 +87,7 @@ const Header: React.FC<HeaderProps> = ({ useBackground = false, isLogo = true, i
                 {isLoginButton && <div className={styles.userMenuWrapper}>
                     <Button
                         variant="secondary"
-                        borderRadius="48px"
+                        radius="large"
                         onClick={handleAuthClick}
                     >
                         {isLoggedIn
