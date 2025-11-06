@@ -4,9 +4,10 @@ import { useTranslation } from "react-i18next";
 import styles from "./Header.module.css";
 import Button from "../common/Button/CommonBtn";
 import IconButton from "../common/Button/IconBtn";
-import { ArrowLeftIcon } from "lucide-react";
+import { ArrowLeft, ArrowLeftIcon } from "lucide-react";
 import useAuthStore from "../../stores/authStore";
 import { useApi } from "../../hooks/useApi";
+import LanguageIcon from "./LanguageButton";
 
 interface HeaderProps {
     isLogo?: boolean;
@@ -77,13 +78,16 @@ const Header: React.FC<HeaderProps> = ({ useBackground = false, isLogo = true, i
                         className={styles.logo}
                         onClick={handleLogoClick}
                     /> : 
-                    <button className={styles.arrowLeft} onClick={() => navigate(-1)}>
-                        <ArrowLeftIcon size={33} color="#888888" />
-                    </button>}
+                    <IconButton
+                        Icon={ArrowLeft}
+                        color={useBackground ? "white" : "gray"}
+                        onClick={() => navigate(-1)}
+                    />
+                }
             </div>
 
             <div className={styles.right} ref={menuRef}>
-                <IconButton type="globeIcon" />
+                <LanguageIcon color={useBackground ? "white": "gray"}/>
                 {isLoginButton && <div className={styles.userMenuWrapper}>
                     <Button
                         variant="secondary"

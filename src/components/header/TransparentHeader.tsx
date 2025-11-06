@@ -6,6 +6,8 @@ import { useTranslation } from "react-i18next";
 import useAuthStore from "../../stores/authStore";
 import { useNavigate } from "react-router-dom";
 import { useApi } from "../../hooks/useApi";
+import LanguageIcon from "./LanguageButton";
+import { ArrowLeft, Search } from "lucide-react";
 
 interface TransparentHeaderProps {
     type?: "default" | "auth"; // 기본 투명 헤더(default) / 로그인 포함(auth)
@@ -64,20 +66,23 @@ const TransparentHeader: React.FC<TransparentHeaderProps> = ({ type = "default",
     return (
         <header className={styles.header} style={headerStyle}>
             <div className={styles.left}>
-                <IconButton type="arrow" onClick={handleArrowClick} />
+                <IconButton Icon={ArrowLeft} styleType="shadow" onClick={handleArrowClick} />
             </div>
 
             <div className={styles.right} ref={menuRef}>
                 {type === "default" && (
                     <>
-                        <IconButton type="globeIcon" />
-                        <IconButton type="search" onClick={() => console.log("검색")} />
+                        <LanguageIcon />
+                        <IconButton
+                            Icon={Search}
+                            onClick={() => console.log("검색")}
+                        />
                     </>
                 )}
 
                 {type === "auth" && (
                     <>
-                        <IconButton type="globeIcon" />
+                        <LanguageIcon />
                         <div className={styles.userMenuWrapper}>
                             <Button variant="secondary" radius="large" onClick={handleAuthClick}>
                                 {isLoggedIn ? t("greeting", { name: nickname }) : t("login")}
