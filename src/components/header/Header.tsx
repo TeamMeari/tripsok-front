@@ -4,19 +4,19 @@ import { useTranslation } from "react-i18next";
 import styles from "./Header.module.css";
 import Button from "../common/Button/CommonBtn";
 import IconButton from "../common/Button/IconBtn";
-import { ArrowLeft, ArrowLeftIcon, Search } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import useAuthStore from "../../stores/authStore";
 import { useApi } from "../../hooks/useApi";
-import LanguageIcon from "./LanguageButton";
+import LanguageButton from "./LanguageButton";
 
 interface HeaderProps {
-    backgroundType: "white" | "image" | "transparent";
-    isLogo?: boolean;
-    isAuth?: boolean;
+    backgroundType: "white" | "image" | "transparent"; // 타입: 하얀색 배경 / 이미지 배경 / 투명 배경
+    isLogo?: boolean; // 로고 여부
+    isAuth?: boolean; // 로그인 및 닉네임 버튼 여부
     isFixed?: boolean; //  고정 여부
+    // isSearch?: boolean // 검색 버튼 여부 -> 연동이 안되어 임시 삭제
 }
 
-// const Header: React.FC<HeaderProps> = ({ useBackground = false, isLogo = true, isLoginButton = true }) => {
 const Header: React.FC<HeaderProps> = ({backgroundType, isLogo = false, isAuth = false, isFixed = true}) => {
     const { t } = useTranslation(); // i18next 훅
 
@@ -102,7 +102,7 @@ const Header: React.FC<HeaderProps> = ({backgroundType, isLogo = false, isAuth =
             </div>
 
             <div className={styles.right} ref={menuRef}>
-                <LanguageIcon color={iconColor}/>
+                <LanguageButton color={iconColor}/>
                 {
                     isAuth && <div className={styles.userMenuWrapper}>
                         <Button

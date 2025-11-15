@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 type ColorType = "white" | "gray";
 
-const LanguageIcon = ({ color = "white" } : {color?: ColorType}) => {
+const LanguageButton = ({ color = "white" } : {color?: ColorType}) => {
     const { i18n } = useTranslation();
     const [showMenu, setShowMenu] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
@@ -61,4 +61,4 @@ const LanguageIcon = ({ color = "white" } : {color?: ColorType}) => {
     );
 };
 
-export default LanguageIcon;
+export default LanguageButton;
