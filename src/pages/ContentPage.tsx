@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from "react-i18next";
-import TransparentHeader from '../components/header/TransparentHeader';
 import ContentCarousel from '../components/feature/Carousel/ContentCarousel';
 import CardCarousel from '../components/feature/Carousel/CardCarousel';
 import HashtagButton from "../components/common/HashtagBtn";
@@ -202,10 +201,6 @@ const ContentPage = () => {
 
     return (
         <div className={styles.contentpage}>
-            <div className={styles.header}>
-                <TransparentHeader />
-            </div>
-
             {/* ContentCarousel */}
             <div className={styles.carouselWrapper}>
                 <ContentCarousel images={place.child.imageList?? []} />

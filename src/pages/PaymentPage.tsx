@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { loadPaymentWidget, PaymentWidgetInstance } from "@tosspayments/payment-widget-sdk";
 import styles from "./PaymentPage.module.css";
-import TransparentHeader from "../components/header/TransparentHeader";
 import Button from "../components/common/Button/CommonBtn";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -87,7 +86,6 @@ const PaymentPage: React.FC = () => {
 
     return (
         <div className={styles.container}>
-            <TransparentHeader type="auth" />
             <hr style={{ margin: 0 }} />
 
             <div className={styles.paymentPage}>

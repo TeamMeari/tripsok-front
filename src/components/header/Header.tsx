@@ -10,14 +10,15 @@ import { useApi } from "../../hooks/useApi";
 import LanguageButton from "./LanguageButton";
 
 interface HeaderProps {
-    backgroundType: "white" | "image" | "transparent"; // 타입: 하얀색 배경 / 이미지 배경 / 투명 배경
+    backgroundType?: "white" | "image" | "transparent"; // 타입: 하얀색 배경 / 이미지 배경 / 투명 배경
     isLogo?: boolean; // 로고 여부
     isAuth?: boolean; // 로그인 및 닉네임 버튼 여부
     isFixed?: boolean; //  고정 여부
+    onBack: () => void;
     // isSearch?: boolean // 검색 버튼 여부 -> 연동이 안되어 임시 삭제
 }
 
-const Header: React.FC<HeaderProps> = ({backgroundType, isLogo = false, isAuth = false, isFixed = true}) => {
+const Header: React.FC<HeaderProps> = ({ backgroundType = "white", isLogo = false, isAuth = false, isFixed = true, onBack }) => {
     const { t } = useTranslation(); // i18next 훅
 
     const navigate = useNavigate();
@@ -96,7 +97,7 @@ const Header: React.FC<HeaderProps> = ({backgroundType, isLogo = false, isAuth =
                     <IconButton
                         Icon={ArrowLeft}
                         color={iconColor}
-                        onClick={() => navigate(-1)}
+                        onClick={() => onBack()}
                     />
                 }
             </div>

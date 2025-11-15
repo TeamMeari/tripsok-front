@@ -1,5 +1,5 @@
 import React, { useState, useRef,useEffect, CSSProperties } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import KakaoMap from "../components/KakaoMap";
 import styles from "./MyPlanDetail.module.css";
 import Button from "../components/common/Button/CommonBtn";
@@ -7,7 +7,6 @@ import DropdownInput from "../components/common/DropdownInput";
 import { useTranslation } from "react-i18next";
 
 import { DndContext, closestCenter, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
-import TransparentHeader from "../components/header/TransparentHeader";
 import { arrayMove, SortableContext, verticalListSortingStrategy, useSortable } from "@dnd-kit/sortable";
 
 import PersonIcon from "/public/InfoIcon/person.svg";
@@ -183,6 +182,8 @@ export default function MyPlanDetailPage() {
 
     const [showExitModal, setShowExitModal] = useState(false);
 
+    const { setOnBack } = useOutletContext<{ setOnBack: React.Dispatch<React.SetStateAction<(() => void) | null>> }>(); // 뒤로가기 함수 재설정을 위한 Outlet Context
+
     //메모저장 함수
     const updateMemo = (id: number, memo: string) => {
         setPlaces((prev) =>
@@ -300,14 +301,16 @@ export default function MyPlanDetailPage() {
     console.log("✅ savedPlan 데이터:", savedPlan);
     console.log("✅ visitedPlaces 데이터:", visitedPlaces);
     console.log("카카오맵에 보내는 값:", mapLocations);
+
+    // onBack 재설정
+    useEffect(() => {
+        setOnBack(() => () => {setShowExitModal(true)}
+        )
+        return () => setOnBack(() => () => navigate(-1));
+    }, [])
+
     return (
         <div style={{ height: "100vh", position: "relative" }}>
-            <TransparentHeader
-                type="auth"
-                fixed
-                onBackClick={() => setShowExitModal(true)}
-            />
-
             <ExitModal
                 visible={showExitModal}
                 onCancel={() => {

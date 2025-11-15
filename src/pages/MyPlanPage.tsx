@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import Header from "../components/header/Header";
 import MenuApp from "../components/MenuApp";
 import Button from "../components/common/Button/CommonBtn";
 import styles from "./MyPlanPage.module.css";
@@ -200,8 +199,6 @@ export default function Page() {
     return (
         <div className={styles.Page}>
             <div className={styles.MyPlanPage}>
-                <Header useBackground={true} />
-
                 {showLoginModal && (
                     <div className={styles.guestContainer}>
                         <img src="/InfoIcon/taxi.svg" alt="Taxi" className={styles.image} />
