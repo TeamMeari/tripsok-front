@@ -4,18 +4,20 @@ import { useTranslation } from "react-i18next";
 import styles from "./Header.module.css";
 import Button from "../common/Button/CommonBtn";
 import IconButton from "../common/Button/IconBtn";
-import { ArrowLeft, ArrowLeftIcon } from "lucide-react";
+import { ArrowLeft, ArrowLeftIcon, Search } from "lucide-react";
 import useAuthStore from "../../stores/authStore";
 import { useApi } from "../../hooks/useApi";
 import LanguageIcon from "./LanguageButton";
 
 interface HeaderProps {
+    backgroundType: "white" | "image" | "transparent";
     isLogo?: boolean;
-    isLoginButton?: boolean;
-    useBackground?: boolean; // 배경 이미지 사용 여부 선택
+    isAuth?: boolean;
+    isFixed?: boolean; //  고정 여부
 }
 
-const Header: React.FC<HeaderProps> = ({ useBackground = false, isLogo = true, isLoginButton = true }) => {
+// const Header: React.FC<HeaderProps> = ({ useBackground = false, isLogo = true, isLoginButton = true }) => {
+const Header: React.FC<HeaderProps> = ({backgroundType, isLogo = false, isAuth = false, isFixed = true}) => {
     const { t } = useTranslation(); // i18next 훅
 
     const navigate = useNavigate();
@@ -23,6 +25,27 @@ const Header: React.FC<HeaderProps> = ({ useBackground = false, isLogo = true, i
     const { isLoggedIn, logout, nickname } = useAuthStore();
     const [showLogoutMenu, setShowLogoutMenu] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
+
+    const logoSrc = backgroundType === "white" ? "/logo.svg" : "/logo_White.svg";
+    const iconColor = backgroundType === "white" ? "gray" : "white";
+    const backgroundImage = backgroundType === "image" ? "/HeaderBackImg.svg" : undefined;
+
+    const backgroundStyle = backgroundType === "image" ? {
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        borderBottom: "1px solid #D9D9D9"
+    } : backgroundType === "white" ? {
+        backgroundColor: "white",
+        borderBottom: "1px solid #D9D9D9"
+    } : {
+        backgroundColor: "transparent"
+    };
+    const fixedStyle = {
+        position: "absolute",
+        top: "0",
+        zIndex: "100"
+    }
 
     const handleLogoClick = () => {
         navigate("/");
@@ -57,18 +80,10 @@ const Header: React.FC<HeaderProps> = ({ useBackground = false, isLogo = true, i
         };
     }, []);
 
-    const logoSrc = useBackground ? "/logo_White.svg" : "/logo.svg";
-    const backgroundImage = useBackground ? "/HeaderBackImg.svg" : undefined;
-
     return (
         <header
             className={styles.header}
-            style={{
-                backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                borderBottom: backgroundImage ? "none" : "1px solid #D9D9D9",
-            }}
+            style={isFixed ? {...backgroundStyle, ...fixedStyle} : backgroundStyle}
         >
             <div className={styles.left}>
                 {isLogo ? 
@@ -80,34 +95,35 @@ const Header: React.FC<HeaderProps> = ({ useBackground = false, isLogo = true, i
                     /> : 
                     <IconButton
                         Icon={ArrowLeft}
-                        color={useBackground ? "white" : "gray"}
+                        color={iconColor}
                         onClick={() => navigate(-1)}
                     />
                 }
             </div>
 
             <div className={styles.right} ref={menuRef}>
-                <LanguageIcon color={useBackground ? "white": "gray"}/>
-                {isLoginButton && <div className={styles.userMenuWrapper}>
-                    <Button
-                        variant="secondary"
-                        radius="large"
-                        onClick={handleAuthClick}
-                    >
-                        {isLoggedIn
-                            ? t("greeting", { name: nickname })
-                            : t("login")}
-                    </Button>
+                <LanguageIcon color={iconColor}/>
+                {
+                    isAuth && <div className={styles.userMenuWrapper}>
+                        <Button
+                            variant="secondary"
+                            radius="large"
+                            onClick={handleAuthClick}
+                        >
+                            {isLoggedIn
+                                ? t("greeting", { name: nickname })
+                                : t("login")}
+                        </Button>
 
-                    {/* 드롭다운 메뉴 */}
-                    {isLoggedIn && showLogoutMenu && (
-                        <div className={styles.dropdownMenu}>
-                            <button onClick={() => navigate("/my")}>{t("mypage")}</button>
-                            <button onClick={handleLogout}>{t("logout")}</button>
-                        </div>
-                    )}
-                </div>}
-
+                        {/* 드롭다운 메뉴 */}
+                        {isLoggedIn && showLogoutMenu && (
+                            <div className={styles.dropdownMenu}>
+                                <button onClick={() => navigate("/my")}>{t("mypage")}</button>
+                                <button onClick={handleLogout}>{t("logout")}</button>
+                            </div>
+                        )}
+                    </div>
+                }
             </div>
         </header>
     );
