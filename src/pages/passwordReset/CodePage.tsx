@@ -70,9 +70,9 @@ const PasswordResetCodePage = () => {
 
     const CodeTimer = () => {
         if (min === 0 && sec === 0) {
-            return <p className={styles.timer}>00:00</p>;
+            return <p className={`body ${styles.timer}`}>00:00</p>;
         }
-        return <p className={styles.timer}>{min.toString().padStart(2, '0')}:{sec.toString().padStart(2, '0')}</p>;
+        return <p className={`body ${styles.timer}`}>{min.toString().padStart(2, '0')}:{sec.toString().padStart(2, '0')}</p>;
     }
 
     const resendCode = useCallback(() => {
@@ -97,23 +97,23 @@ const PasswordResetCodePage = () => {
     return (
         <div className={styles.page}>
             <div className={styles.step}>
-                <p className={styles.message}>
+                <h2 className={styles.message}>
                     <Trans i18nKey="enterVerificationCode" values={{ email }} components={{ br: <br />, span: <span /> }} />
-                </p>
+                </h2>
                 <div className={styles.content}>
                     <div className={styles.inputContainer}>
                         <Input onChange={handleCodeChange} rightElement={<CodeTimer />} value={code} maxLength={codeLength} />
                         {codeError ? (
                             <div className={styles.errorContainer}>
-                                <p className={styles.error}>{t(codeError)}</p>
+                                <p className={`caption ${styles.error}`}>{t(codeError)}</p>
                                 {codeError === EXPIRED_CODE && (
-                                    <button className={styles.resendButton} onClick={resendCode}>{t("resend")}</button>
+                                    <button className={`caption ${styles.resendButton}`} onClick={resendCode}>{t("resend")}</button>
                                 )}
                             </div>
                         ) : (
                             <div className={styles.errorContainer}>
-                                <p className={styles.checkSend}>{t("noEmail")}</p>
-                                <button className={styles.resendButton} onClick={resendCode}>{t("resend")}</button>
+                                <p className={`caption ${styles.checkSend}`}>{t("noEmail")}</p>
+                                <button className={`caption ${styles.resendButton}`} onClick={resendCode}>{t("resend")}</button>
                             </div>
                         )}
                     </div>
