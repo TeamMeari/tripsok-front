@@ -20,10 +20,6 @@ export function useApiQuery<T>(
     isStatic?: boolean; // 정적 데이터 여부
   }
 ) {
-  // 정적 데이터인 경우 더 긴 캐시 시간 설정
-  const defaultStaleTime = options?.isStatic ? 60 * 60 * 1000 : 5 * 60 * 1000; // 1시간,  5분
-  const defaultGcTime = options?.isStatic ? 24 * 60 * 60 * 1000 : 10 * 60 * 1000; // 24시간, 10분
-
   return useQuery({
     queryKey,
     queryFn: async (): Promise<T> => {
@@ -31,8 +27,8 @@ export function useApiQuery<T>(
       return response.data
     },
     enabled: options?.enabled ?? true,
-    staleTime: options?.staleTime ?? defaultStaleTime,
-    gcTime: options?.cacheTime ?? defaultGcTime,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
     retry: options?.retry ?? 3,
   })
 }
