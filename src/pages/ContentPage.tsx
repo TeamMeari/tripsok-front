@@ -30,6 +30,7 @@ interface PlaceResponse {
     openDate?: string;
     restDate?:string;
     useTime?:string;
+    isLiked: boolean;
     tags: Tag[];
     child: {
         id: number;
@@ -62,7 +63,6 @@ const ContentPage = () => {
     const { type, id } = useParams<{ type: string; id: string }>();
 
     const { apiCall: likePatchApiCall } = useApi();
-    const { apiCall: likeFetchApiCall } = useApi();
     const [liked, setLiked] = useState(false);
 
     const [nearCards, setNearCards] = useState<CardType[]>([]);
@@ -70,6 +70,7 @@ const ContentPage = () => {
 
     const handleClickLike = () => {
         if (!isLoggedIn) return;
+        console.log("작동")
         queryClient.invalidateQueries({ queryKey: ['likePlaces']})
         // 먼저 UI 반영, 오류 시 롤백
         setLiked(prev => !prev);
@@ -80,21 +81,6 @@ const ContentPage = () => {
         })
     }
 
-    const fetchLike = () => {
-        if (!isLoggedIn) return;
-        likeFetchApiCall(`user/like-places?size=20&type=${type?.toUpperCase()}&locale=${i18n.language.toUpperCase()}`, 'GET').then(response => {
-            if (response.status === 200 && response.data) {
-                const data = response.data as { content: { placeId: number }[] };
-                if ('content' in data) {
-                    setLiked(data.content.some(like => like.placeId === Number(id)));
-                }
-            }
-        })
-    }
-    
-    console.log("URL 파라미터 type:", type);
-    console.log("URL 파라미터 id:", id);
-
     useEffect(() => {
         if (!type || !id) return;
         const locale = i18n.language || "ko";
@@ -104,6 +90,7 @@ const ContentPage = () => {
             .then((res) => {
                 if (res.status === 200) {
                     setPlace(res.data);
+                    if (res.data !== null) setLiked(res.data.isLiked);
                     console.log("받아온 장소 데이터:", res.data);
                 }
             })
@@ -187,12 +174,6 @@ const ContentPage = () => {
         };
         navigate('/myplan', { state: { addedPlace } });
     };
-
-    useEffect(() => {
-        if (isLoggedIn) {
-            fetchLike();
-        }
-    }, [isLoggedIn]);
 
     if (loading) return  <LoadingSpinner />;
     if (!place) return <div>❌ 장소 정보를 불러올 수 없습니다.</div>;
@@ -295,7 +276,7 @@ const ContentPage = () => {
             </div>
 
             <div className={styles.fixedBtn}>
-                <LikeButton initialLiked={liked} onClick={handleClickLike}/>
+                <LikeButton state={liked} onClick={handleClickLike}/>
                 <Button variant="primary"
                         size="small"
                         onClick={handleAddToMyPlan}>

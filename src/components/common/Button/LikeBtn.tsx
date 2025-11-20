@@ -1,32 +1,26 @@
 // LikeButton.tsx
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { animate } from "@motionone/dom";
 import styles from "./LikeBtn.module.css";
 
 type LikeButtonProps = {
-    initialLiked?: boolean;
-    onChange?: (liked: boolean) => void;
+    state?: boolean;
     onClick?: () => void;
 };
 
-export default function LikeButton({ initialLiked = false, onChange, onClick }: LikeButtonProps) {
-    const [liked, setLiked] = useState(initialLiked);
+export default function LikeButton({ state = false, onClick }: LikeButtonProps) {
     const buttonRef = useRef<HTMLButtonElement>(null);
+    const isFirstRender = useRef(true); // 첫 렌더 애니메이션 삭제용 ref
 
-    const toggleLike = useCallback(() => {
-        setLiked(prev => {
-            const next = !prev;
-            onChange?.(next);
+    useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            return;
+        }
 
-            //애니메이션 추가
-            if (buttonRef.current) {
-                animate(buttonRef.current, { scale: [1, 1.5, 1] }, { duration: 0.3 });
-            }
-
-            return next;
-        });
-        onClick?.();
-    }, [onChange, onClick]);
+        if (!buttonRef.current) return;
+        animate(buttonRef.current, { scale: [1, 1.5, 1] }, { duration: 0.3 });
+    }, [state])
 
     const beforeIcon = "/like/before.svg";
     const afterIcon = "/like/after.svg";
@@ -35,14 +29,14 @@ export default function LikeButton({ initialLiked = false, onChange, onClick }: 
         <button
             ref={buttonRef}
             type="button"
-            onClick={toggleLike}
-            aria-pressed={liked}
-            aria-label={liked ? "좋아요 취소" : "좋아요"}
+            onClick={onClick}
+            aria-pressed={state}
+            aria-label={state ? "좋아요 취소" : "좋아요"}
             className={styles.button}
         >
             <img
-                src={liked ? afterIcon : beforeIcon}
-                alt={liked ? "좋아요 취소" : "좋아요"}
+                src={state ? afterIcon : beforeIcon}
+                alt={state ? "좋아요 취소" : "좋아요"}
                 className={styles.icon}
             />
         </button>
