@@ -185,10 +185,14 @@ const resources = {
                     COMPLETED: "여행완료",
 		            CANCELED: "여행취소",
 		            BEFORE_TRAVEL: "여행전"
-                }
+                },
+                contactCenter: "고객센터 문의",
+                writeReview: "후기 작성",
             },
             bookingManagementTitle: "예약 관리",
             myLikePlace: "내가 찜한 장소",
+            "myTripPlace": "나의 여행지",
+            "myTripSchedule": "나의 여행일정",
             usageHistory: "이용 내역",
             accountManagementTitle: "계정 관리",
             myInterest: "나의 관심 분야",
@@ -377,10 +381,14 @@ const resources = {
                     COMPLETED: "Travel Complete",
                     CANCELED: "Travel Cancelled",
                     BEFORE_TRAVEL: "Before Travel"
-                }
+                },
+                contactCenter: "Contact Support",
+                writeReview: "Write a Review",
             },
             bookingManagementTitle: "booking Management",
             myLikePlace: "My Liked Places",
+            "myTripPlace": "My Travel Place",
+            "myTripSchedule": "My Travel Schedule",
             usageHistory: "Usage History",
             accountManagementTitle: "Account Management",
             myInterest: "My Interests Tag",
@@ -568,10 +576,14 @@ const resources = {
                     COMPLETED: "旅行完了",
                     CANCELED: "旅行キャンセル",
                     BEFORE_TRAVEL: "旅行前"
-                }
+                },
+                contactCenter: "カスタマーセンターに問い合わせ",
+                writeReview: "レビューを書く",
             },
             bookingManagementTitle: "予約管理",
             myLikePlace: "お気に入り場所",
+            "myTripPlace": "私の旅行地",
+            "myTripSchedule": "私の旅行日程",
             usageHistory: "利用履歴",
             accountManagementTitle: "アカウント管理",
             myInterest: "興味タグ",
@@ -759,10 +771,15 @@ const resources = {
                     COMPLETED: "旅行完成",
                     CANCELED: "旅行取消",
                     BEFORE_TRAVEL: "旅行前"
-                }
+                },
+                contactCenter: "联系客服",
+                writeReview: "撰写评价",
             },
             bookingManagementTitle: "行程管理",
             myLikePlace: "我的心仪地点",
+            "myTripPlace": "我的旅行地",
+            "myTripSchedule": "我的旅行行程",
+
             usageHistory: "使用记录",
             accountManagementTitle: "账户管理",
             myInterest: "我的兴趣标签",

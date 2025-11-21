@@ -89,7 +89,7 @@ function App(): JSX.Element {
               <Route path="/content/:type/:id" element={<ContentPage />} />
               <Route path="/myplan" element={<MyPlan />} />
               <Route path="/myplan-detail" element={<MyPlanDetailPage/>}/>
-              <Route path="/plan-complete" element={<PlanCompletePage/>}/>
+              <Route path="/myplan-detail/:bookingId" element={<PlanCompletePage />} />
               <Route path="/payment" element={<PaymentPage/>}/>
               <Route path="/success" element={<PaymentSuccessPage />} />
 
