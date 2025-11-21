@@ -25,12 +25,12 @@ const PasswordResetCompletePage = () => {
     return (
         <div className={styles.page}>
             <div className={styles.step}>
-                <p className={styles.message} style={{ paddingBottom: "16px" }}>
+                <h2 className={styles.message} style={{ paddingBottom: "16px" }}>
                     <Trans i18nKey="passwordResetComplete"
                     values={{ name: nickname }}
                     components={{ br: <br />, span: <span /> }} />
-                </p>
-                <p className={styles.guide} style={{ color: "black"}}>{t("retryLoginGuide")}</p>
+                </h2>
+                <p className="caption">{t("retryLoginGuide")}</p>
                 <div className={styles.buttonFixedTab}>
                     <ValidationBtn
                         onClick={handleClickLogin}

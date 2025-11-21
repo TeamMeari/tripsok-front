@@ -41,9 +41,9 @@ const PasswordResetEmailPage = () => {
     return (
         <div className={styles.page}>
             <div className={styles.step}>
-                <p className={styles.message}>
+                <h2 className={styles.message}>
                     <Trans i18nKey="emailForPasswordReset" components={{ br: <br /> }} />
-                </p>
+                </h2>
                 <div className={styles.content}>
                     <div className={styles.inputContainer}>
                         <Input
@@ -54,9 +54,9 @@ const PasswordResetEmailPage = () => {
                         />
                         {emailError && (
                             <div className={styles.errorContainer}>
-                                <p className={styles.error}>{t(emailError)}</p>
+                                <p className={`caption ${styles.error}`}>{t(emailError)}</p>
                                 {emailError === EXISTING_EMAIL && (
-                                    <Link to="/login" className={styles.link}>
+                                    <Link to="/login" className={`caption ${styles.link}`}>
                                         {t("login")}
                                     </Link>
                                 )}

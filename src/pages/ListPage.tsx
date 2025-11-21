@@ -65,7 +65,7 @@ const ListPage = () => {
         if (lastPage.currentPage < lastPage.totalPages - 1) return lastPageParam + 1;
         return undefined;
       },
-      staleTime: 10 * 60 * 1000,
+      staleTime: 3 * 60 * 1000,
   })
   const places = data?.pages.flatMap(page => page.items) ?? [];
   const totalCount = data?.pages[0]?.totalItems ?? 0

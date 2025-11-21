@@ -33,7 +33,7 @@ axiosInstance.interceptors.response.use(
     response => {
         return response;
     },
-    error => {
+    async error => {
         const config = error.config;
         // /auth/login에서 401 에러가 발생한 경우 바로 에러 반환
         if (error.response?.status === 401 && config.url === '/auth/login/email') {
@@ -43,19 +43,18 @@ axiosInstance.interceptors.response.use(
         // 401 Unauthorized 에러 처리 - 토큰 갱신 시도
         if (error.response?.status === 401 && !config._retry) {
             config._retry = true;
-            const refreshToken = Cookies.get('refresh_token');
             
-            if (refreshToken) {
+            try {
                 // /auth/refresh에 Bearer refreshToken을 헤더에 붙여서 요청
                 return axios.post('/auth/refresh', {}, {
                     headers: {
-                        'Authorization': `Bearer ${refreshToken}`,
                         'Content-Type': 'application/json'
                     },
+                    withCredentials: true,
                     baseURL: import.meta.env.VITE_PUBLIC_API_BASE_URL
                 }).then(response => {
                     // refresh 성공 시 새로운 access token을 쿠키에 저장
-                    const newAccessToken = response.data.access_token;
+                    const newAccessToken = response.data.accessToken;
                     Cookies.set('access_token', newAccessToken);
                     
                     // 새로운 access token으로 원래 요청 재시도
@@ -68,9 +67,8 @@ axiosInstance.interceptors.response.use(
                     }
                     return Promise.reject(refreshError);
                 });
-            } else {
-                // refresh token이 없으면 로그아웃 처리
-                handleLogout();
+            } catch (err) {
+                return Promise.reject(err);
             }
         }
         
@@ -79,10 +77,24 @@ axiosInstance.interceptors.response.use(
     }
 );
 
-function handleLogout() {
-    Cookies.remove('access_token');
-    Cookies.remove('refresh_token');
-    window.location.href = '/';
+async function handleLogout() {
+    return axios.post('/auth/logout', {}, {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        withCredentials: true,
+        baseURL: import.meta.env.VITE_PUBLIC_API_BASE_URL
+    }).then(() => {
+        Cookies.remove('access_token');
+        Cookies.remove('refresh_token');
+        window.location.href = '/';
+    }).catch(refreshError => {
+        // refresh 요청도 401이면 로그아웃
+        if (refreshError.response?.status === 401) {
+            handleLogout();
+        }
+        return Promise.reject(refreshError);
+    });
 }
 
 export default axiosInstance;

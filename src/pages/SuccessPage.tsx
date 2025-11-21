@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./SuccessPage.module.css";
-import TransparentHeader from "../components/header/TransparentHeader";
 import Button from "../components/common/Button/CommonBtn";
 import { useTranslation } from "react-i18next";
 import { useApi } from "../hooks/useApi";
@@ -75,7 +74,6 @@ const PaymentSuccessPage: React.FC = () => {
 
     return (
         <div className={styles.container}>
-            <TransparentHeader type="auth" onBackClick={() => navigate(-1)} />
             <div className={styles.line}></div>
 
             <div className={styles.pyment_succssPage}>
@@ -116,7 +114,6 @@ const PaymentSuccessPage: React.FC = () => {
                 <Button
                     variant="primary"
                     size="large"
-                    borderRadius="12px"
                     onClick={() => (window.location.href = "/")}
                 >
                     메인으로 이동

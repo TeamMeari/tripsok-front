@@ -140,7 +140,7 @@ const SignupCompletePage = () => {
         </div>
         <div className={styles.buttonFixedTab}>
           <Link to="/">
-            <Button borderRadius="12px" size="large" disabled={selectedIds.size === 0}>
+            <Button size="large" disabled={selectedIds.size === 0}>
               {t("home")}
             </Button>
           </Link>

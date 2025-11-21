@@ -1,5 +1,5 @@
 import React, { useState, useRef,useEffect, CSSProperties } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import KakaoMap from "../components/KakaoMap";
 import styles from "./MyPlanDetail.module.css";
 import Button from "../components/common/Button/CommonBtn";
@@ -7,7 +7,6 @@ import DropdownInput from "../components/common/DropdownInput";
 import { useTranslation } from "react-i18next";
 
 import { DndContext, closestCenter, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
-import TransparentHeader from "../components/header/TransparentHeader";
 import { arrayMove, SortableContext, verticalListSortingStrategy, useSortable } from "@dnd-kit/sortable";
 
 import PersonIcon from "/public/InfoIcon/person.svg";
@@ -139,10 +138,10 @@ function ExitModal({visible, onCancel, onSave}: { visible: boolean; onCancel: ()
                     저장하지 않고 나갈까요?
                 </p>
                 <div className={styles.buttons}>
-                    <Button variant="grayPrimary"  onClick={onCancel} size="mini" borderRadius="12px">
+                    <Button variant="grayPrimary"  onClick={onCancel} size="mini">
                         나가기
                     </Button>
-                    <Button variant="primary" onClick={onSave} size="mini" borderRadius="12px">
+                    <Button variant="primary" onClick={onSave} size="mini">
                         저장
                     </Button>
                 </div>
@@ -182,6 +181,8 @@ export default function MyPlanDetailPage() {
     const startHeight = useRef(100);
 
     const [showExitModal, setShowExitModal] = useState(false);
+
+    const { setOnBack } = useOutletContext<{ setOnBack: React.Dispatch<React.SetStateAction<(() => void) | null>> }>(); // 뒤로가기 함수 재설정을 위한 Outlet Context
 
     //메모저장 함수
     const updateMemo = (id: number, memo: string) => {
@@ -300,14 +301,16 @@ export default function MyPlanDetailPage() {
     console.log("✅ savedPlan 데이터:", savedPlan);
     console.log("✅ visitedPlaces 데이터:", visitedPlaces);
     console.log("카카오맵에 보내는 값:", mapLocations);
+
+    // onBack 재설정
+    useEffect(() => {
+        setOnBack(() => () => {setShowExitModal(true)}
+        )
+        return () => setOnBack(() => () => navigate(-1));
+    }, [])
+
     return (
         <div style={{ height: "100vh", position: "relative" }}>
-            <TransparentHeader
-                type="auth"
-                fixed
-                onBackClick={() => setShowExitModal(true)}
-            />
-
             <ExitModal
                 visible={showExitModal}
                 onCancel={() => {
@@ -427,9 +430,7 @@ export default function MyPlanDetailPage() {
             <div className={styles.fixedBottomArea}>
                 <Button  variant={isFormComplete ? "primary" : "grayPrimary"}
                          size="large"
-                         borderRadius="12px"
                          disabled={!isFormComplete}
-
                          onClick={() => handleSavePlan(true)}
                 >
                     {t("reserveButton")}
