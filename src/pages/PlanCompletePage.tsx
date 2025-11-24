@@ -10,6 +10,7 @@ import DateIcon from "/public/InfoIcon/date.svg";
 import FlagIcon from "/public/InfoIcon/flag.svg";
 import StartTimeIcon from "/public/InfoIcon/starttimeIcon.svg";
 import Button from "../components/common/Button/CommonBtn";
+import ButtonTabBar from "../components/tabbar/ButtonTabBar";
 
 interface BookingSpot {
     placeId: number;
@@ -208,24 +209,25 @@ export default function PlanCompletePage() {
                             </div>
 
                             {/* 하단 버튼 */}
-                            <div className={styles.fixedBottomArea}>
+                            <ButtonTabBar
+                                Button={
+                                    <Button  variant="primary"
+                                        size="large"
 
-                                <Button  variant="primary"
-                                         size="large"
-
-                                         onClick={() => {
-                                             if (bookingDetail.status === "COMPLETED") {
-                                                 navigate("/review/write");  // 후기 작성
-                                             } else {
-                                                 alert(t("booking.contactCenter")); // 고객센터 문의
-                                             }
-                                         }}
-                                >
-                                    {bookingDetail.status === "COMPLETED"
-                                        ? t("booking.writeReview")
-                                        : t("booking.contactCenter")}
-                                </Button>
-                            </div>
+                                        onClick={() => {
+                                            if (bookingDetail.status === "COMPLETED") {
+                                                navigate("/review/write");  // 후기 작성
+                                            } else {
+                                                alert(t("booking.contactCenter")); // 고객센터 문의
+                                            }
+                                        }}
+                                    >
+                                        {bookingDetail.status === "COMPLETED"
+                                            ? t("booking.writeReview")
+                                            : t("booking.contactCenter")}
+                                    </Button>
+                                }
+                            />
                         </div>
                     </div>
                 )}

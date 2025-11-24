@@ -15,6 +15,7 @@ import FlagIcon from "/public/InfoIcon/flag.svg";
 import StartTimeIcon from "/public/InfoIcon/starttimeIcon.svg";
 import { CSS } from "@dnd-kit/utilities";
 import { useApi } from "../hooks/useApi";
+import ButtonTabBar from "../components/tabbar/ButtonTabBar";
 
 interface Place {
     id: number;
@@ -298,14 +299,10 @@ export default function MyPlanDetailPage() {
         lng: p.lng || p.longitude || 128.876, // longitude 수정 예정 -> lng 만 가능
         title: p.title || p.name,
     }));
-    console.log("✅ savedPlan 데이터:", savedPlan);
-    console.log("✅ visitedPlaces 데이터:", visitedPlaces);
-    console.log("카카오맵에 보내는 값:", mapLocations);
 
     // onBack 재설정
     useEffect(() => {
-        setOnBack(() => () => {setShowExitModal(true)}
-        )
+        setOnBack(() => () => {setShowExitModal(true)})
         return () => setOnBack(() => () => navigate(-1));
     }, [])
 
@@ -358,7 +355,6 @@ export default function MyPlanDetailPage() {
                                                 const newIndex = places.findIndex(p => p.id === over.id);
                                                 const newPlaces = arrayMove(places, oldIndex, newIndex);
                                                 setPlaces(newPlaces);
-                                                console.log("변경된 순서:", newPlaces.map(p => p.title));
                                             }
                                         }}
                                     >
@@ -427,15 +423,17 @@ export default function MyPlanDetailPage() {
             </div>
 
             {/* 하단 고정 버튼 */}
-            <div className={styles.fixedBottomArea}>
-                <Button  variant={isFormComplete ? "primary" : "grayPrimary"}
-                         size="large"
-                         disabled={!isFormComplete}
-                         onClick={() => handleSavePlan(true)}
-                >
-                    {t("reserveButton")}
-                </Button>
-            </div>
+            <ButtonTabBar
+                Button={
+                    <Button  variant={isFormComplete ? "primary" : "grayPrimary"}
+                        size="large"
+                        disabled={!isFormComplete}
+                        onClick={() => handleSavePlan(true)}
+                    >
+                        {t("reserveButton")}
+                    </Button>
+                }
+            />
         </div>
     );
 }
