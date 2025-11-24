@@ -111,16 +111,18 @@ export const PlanCompleteContactCenterTabBarComponent: Story = {
     render: () => {
         const { t } = useTranslation();
         return <BrowserRouter>
-        <div style={{ width: '360px', height: '100%', backgroundColor: '#fff'}}>
-            <ButtonTabBar>
-                <IconButton Icon={SquarePen} color="gray" />
-                <Button variant="primary"
-                    size="small"
-                    onClick={() => {}}
-                    >
-                        {t("booking.contactCenter")}
-                    </Button>
-            </ButtonTabBar>
+            <div style={{ width: '360px', height: '100%', backgroundColor: '#fff'}}>
+                <ButtonTabBar
+                    IconButton={<IconButton Icon={SquarePen} color="gray" />}
+                    Button={
+                        <Button variant="primary"
+                        size="small"
+                        onClick={() => {}}
+                        >
+                            {t("booking.contactCenter")}
+                        </Button>
+                    }
+                />
             </div>
         </BrowserRouter>
     }
