@@ -7,7 +7,6 @@
     cursor: pointer;
     border: none;
     transition: all 0.2s;
-    height: 56px;
 }
 
 
@@ -16,6 +15,7 @@
     color: white;
     font-size: 18px;
     font-weight: bold;
+    height: 56px;
 }
 
 .secondary {
@@ -32,6 +32,7 @@
     font-size: 16px;
     display: flex;
     align-items: center;
+    height: 56px;
 }
 
 .grayDashed {
@@ -41,6 +42,7 @@
     font-size: 16px;
     display: flex;
     align-items: center;
+    height: 56px;
 }
 
 .blackOutline {
@@ -51,6 +53,7 @@
     transition: all 0.2s;
     display: flex;
     align-items: center;
+    height: 56px;
 }
 
 .blackOutline:hover {
@@ -71,6 +74,7 @@
     align-items: center;
     justify-content: center;
     border: none;
+    height: 56px;
 }
 
 .grayPrimary:hover {
@@ -82,4 +86,5 @@
     color: #666666;
     font-size: 18px;
     font-weight: bold;
+    height: 56px;
 }
