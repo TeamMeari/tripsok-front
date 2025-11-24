@@ -1,9 +1,9 @@
-import { SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from './MyPage.module.css'
 import BookingCard from "../../components/feature/BookingCard";
 import { Booking } from "../../types/booking";
 import { LucideIcon, ChevronRight, Heart, Briefcase, Lock, MessageSquareWarning, FileSearch } from "lucide-react";
-import MenuApp from "../../components/MenuApp";
+import MenuApp from "../../components/tabbar/MenuApp";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../../stores/authStore";
 import { Trans, useTranslation } from "react-i18next";

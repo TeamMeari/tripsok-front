@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import KakaoMap from "../components/KakaoMap";
 import styles from "./PlanCompletePage.module.css";
-import TransparentHeader from "../components/header/TransparentHeader";
 import { useApi } from "../hooks/useApi";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -94,8 +93,6 @@ export default function PlanCompletePage() {
 
     return (
         <div style={{ height: "100vh", position: "relative" }}>
-            <TransparentHeader type="auth" fixed onBackClick={() => navigate(-1)} />
-
             <div style={{ height: "100%", width: "100%" }}>
                 <KakaoMap locations={mapLocations} width="100%" height="100%" />
             </div>
@@ -215,7 +212,6 @@ export default function PlanCompletePage() {
 
                                 <Button  variant="primary"
                                          size="large"
-                                         borderRadius="12px"
 
                                          onClick={() => {
                                              if (bookingDetail.status === "COMPLETED") {

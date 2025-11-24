@@ -8,8 +8,7 @@ import Card from '../../components/common/Card';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from '../../utils/axios';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import React from 'react';
-import MenuApp from '../../components/MenuApp';
+import MenuApp from '../../components/tabbar/MenuApp';
 
 interface PlaceInfo {
     id: number;

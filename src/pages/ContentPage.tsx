@@ -4,7 +4,6 @@ import ContentCarousel from '../components/feature/Carousel/ContentCarousel';
 import CardCarousel from '../components/feature/Carousel/CardCarousel';
 import HashtagButton from "../components/common/HashtagBtn";
 import styles from './ContentPage.module.css';
-import Button from '../components/common/Button/CommonBtn';
 import LikeButton from '../components/common/Button/LikeBtn';
 import KakaoMap from "../components/KakaoMap";
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -13,6 +12,8 @@ import { useApi } from '../hooks/useApi';
 import useAuthStore from '../stores/authStore';
 import { useQueryClient } from '@tanstack/react-query';
 import LoadingSpinner from "../components/common/LoadingSpinner";
+import ButtonTabBar from '../components/tabbar/ButtonTabBar';
+import Button from '../components/common/Button/CommonBtn';
 
 interface Tag {
     id: number;
@@ -275,14 +276,17 @@ const ContentPage = () => {
                 <CardCarousel cards={nearCards} isLoading={isLoadingNearCards}  onCardClick={handleCardClick} />
             </div>
 
-            <div className={styles.fixedBtn}>
-                <LikeButton state={liked} onClick={handleClickLike}/>
-                <Button variant="primary"
-                        size="small"
-                        onClick={handleAddToMyPlan}>
-                    {t("addToJourney")}
-                </Button>
-            </div>
+            <ButtonTabBar
+                IconButton={<LikeButton state={liked} onClick={handleClickLike}/>}
+                Button={
+                    <Button variant="primary"
+                    size="small"
+                    onClick={handleAddToMyPlan}
+                    >
+                        {t("addToJourney")}
+                    </Button>
+                }
+            />
         </div>
     );
 };

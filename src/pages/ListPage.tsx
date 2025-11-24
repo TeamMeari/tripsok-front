@@ -6,7 +6,7 @@ import HashtagButton from '../components/common/HashtagBtn';
 import Dropdown from '../components/common/Dropdown';
 import Card from '../components/common/Card';
 import { useTranslation } from 'react-i18next';
-import MenuApp from "../components/MenuApp";
+import MenuApp from "../components/tabbar/MenuApp";
 import SearchInput from '../components/feature/SearchInput';
 import { PlaceType } from '../types/menuTabs';
 import { useLocation, useNavigate } from 'react-router-dom';

@@ -13,6 +13,7 @@ import { useSignupStore } from "../../stores/signupStores";
 import { useNavigate } from "react-router-dom";
 import { LoginResponse } from "../../types/apiResponse";
 import useAuthStore from "../../stores/authStore";
+import ButtonTabBar from "../../components/tabbar/ButtonTabBar";
 
 const EmailSignupPage = () => {
     const { t } = useTranslation();
@@ -220,10 +221,10 @@ const EmailSignupPage = () => {
                             </div>
                         </div>
                     )}
-
-                    <div className={styles.buttonFixedTab}>
-                        <ValidationBtn isDisabled={!validateInfo || nicknameValidateIsLoading || submitIsLoading} onClick={handleSubmit}>{t("signup")}</ValidationBtn>
-                    </div>
+                    <ButtonTabBar
+                        type="inTheAir"
+                        Button={<ValidationBtn isDisabled={!validateInfo || nicknameValidateIsLoading || submitIsLoading} onClick={handleSubmit}>{t("signup")}</ValidationBtn>}
+                    />
                 </div>
             </div>
         </div>

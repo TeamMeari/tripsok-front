@@ -12,6 +12,7 @@ import { OAuthSignupResponse } from "../../types/apiResponse";
 import useAuthStore from "../../stores/authStore";
 import { useLocation } from "react-router-dom";
 import { Trans } from "react-i18next";
+import ButtonTabBar from "../../components/tabbar/ButtonTabBar";
 
 const OAuthSignupPage = () => {
     const navigate = useNavigate();
@@ -126,9 +127,12 @@ const OAuthSignupPage = () => {
                         </div>
                     )}
 
-                    <div className={styles.buttonFixedTab}>
-                        <ValidationBtn isDisabled={!validateInfo || nicknameValidateIsLoading || submitIsLoading} onClick={handleSubmit}>{t("signup")}</ValidationBtn>
-                    </div>
+                    <ButtonTabBar
+                        type="inTheAir"
+                        Button={
+                            <ValidationBtn isDisabled={!validateInfo || nicknameValidateIsLoading || submitIsLoading} onClick={handleSubmit}>{t("signup")}</ValidationBtn>
+                        }
+                    />
                 </div>
             </div>
         </div>
