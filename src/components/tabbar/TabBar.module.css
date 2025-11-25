@@ -1,0 +1,22 @@
+.tabBar {
+    width: 100%;
+    max-width: 360px;
+    height: 78px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.shadowed {
+    background-color: #fff;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.inTheAir {
+    background-color: transparent;
+}

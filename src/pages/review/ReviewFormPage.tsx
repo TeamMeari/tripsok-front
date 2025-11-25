@@ -173,7 +173,6 @@ const ReviewFormPage = () => {
                 <Button
                     onClick={() => navigate('/')}
                     size="large"
-                    borderRadius="12px"
                 >{t('home')}</Button>
             </AppBar>
         </div>

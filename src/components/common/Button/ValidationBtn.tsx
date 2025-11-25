@@ -9,7 +9,6 @@ interface ValidationBtnProps {
 const ValidationBtn = ({ children, onClick, isDisabled }: ValidationBtnProps) => {
     return <Button
         onClick={onClick}
-        borderRadius="12px"
         size="large"
         style={{ backgroundColor: isDisabled ? "#666666" : "#FF6B2C", color: "#ffffff" }}
         disabled={isDisabled}

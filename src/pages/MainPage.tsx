@@ -12,7 +12,7 @@ import { MainCarouselItem } from '../components/feature/Carousel/MainCarousel';
 import { PlaceListResponse, PlaceListItem } from '../types/apiResponse';
 import { convertTypeToLowerCase } from '../utils/converter';
 import { Link } from 'react-router-dom';
-import MenuApp from '../components/MenuApp';
+import MenuApp from '../components/tabbar/MenuApp';
 import NavigationMenuTab from '../components/feature/Tab/NavigationMenuTab';
 import TopButton from '../components/common/TopButton';
 

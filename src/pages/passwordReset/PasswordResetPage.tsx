@@ -7,6 +7,7 @@ import ValidationBtn from "../../components/common/Button/ValidationBtn";
 import { useApi } from "../../hooks/useApi";
 import { useNavigate, useLocation } from "react-router-dom";
 import { usePasswordResetStore } from "../../stores/passwordResetStore";
+import ButtonTabBar from "../../components/tabbar/ButtonTabBar";
 
 const PasswordResetPage = () => {
     const { t } = useTranslation();
@@ -61,38 +62,41 @@ const PasswordResetPage = () => {
     return (
         <div className={styles.page}>
             <div className={styles.step}>
-                <p className={styles.message}>
+                <h2 className={styles.message}>
                     <Trans i18nKey="enterNewPassword" components={{ br: <br /> }} />
-                </p>
+                </h2>
                 <div className={styles.content}>
                     <div className={styles.inputContainer}>
                         <PasswordInput onChange={handlePasswordChange} placeholder={t("enterPassword")} value={password} />
                         {password ?
                             (passwordError ?
-                                <p className={styles.error}>
+                                <p className={`caption ${styles.error}`}>
                                     <Trans i18nKey={passwordError} values={{ condition: passwordErrorCondition.map(condition => t(condition)).join(", ") }}/>
                                 </p> :
-                                <p className={styles.success}>{t("passwordValid")}</p>)
-                            : <p className={styles.guide}>{t("passwordRule")}</p>
+                                <p className={`caption ${styles.success}`}>{t("passwordValid")}</p>)
+                            : <p className="caption">{t("passwordRule")}</p>
                         }
                     </div>
 
                     {passwordConfirmVisible && (
                         <div className={styles.inputContainer}>
                             <PasswordInput onChange={handlePasswordConfirmChange} placeholder={t("reEnterPassword")} value={passwordConfirm || ""} />
-                            {passwordConfirmError ? <p className={styles.error}>{passwordConfirmError}</p>
-                            : passwordConfirm === "" ? null : <p className={styles.success}>{t("passwordMatch")}</p>}
+                            {passwordConfirmError ? <p className={`caption ${styles.error}`}>{passwordConfirmError}</p>
+                            : passwordConfirm === "" ? null : <p className={`caption ${styles.success}`}>{t("passwordMatch")}</p>}
                         </div>
                     )}
 
-                    <div className={styles.buttonFixedTab}>
-                        <ValidationBtn
+                    <ButtonTabBar
+                        type="inTheAir"
+                        Button={
+                            <ValidationBtn
                             isDisabled={password === "" || passwordConfirm === "" || Boolean(passwordError) || Boolean(passwordConfirmError) || isLoading}
                             onClick={handlePasswordReset}
-                        >
-                            {t("passwordReset")}
-                        </ValidationBtn>
-                    </div>
+                            >
+                                {t("passwordReset")}
+                            </ValidationBtn>
+                        }
+                    />
                 </div>
             </div>
         </div>

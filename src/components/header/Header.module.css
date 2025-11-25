@@ -8,23 +8,11 @@
     max-width: 360px;
     background-color: white;
     box-sizing: border-box;
-    position: absolute;
-    top: 0;
-    z-index: 100;
 }
 
 .left {
     display: flex;
     align-items: center;
-}
-
-.arrowLeft {
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    padding: 0;
-    margin: 0;
-    height: 33px;
 }
 
 .logo {
@@ -38,17 +26,9 @@
     gap: 12px;
 }
 
-.globe {
-    width: 36px;
-    height: 36px;
-    cursor: pointer;
-}
-
-
 .userMenuWrapper {
     position: relative;
 }
-
 
 .dropdownMenu {
     position: absolute;
@@ -65,7 +45,6 @@
     flex-direction: column;
     animation: dropdownFade 0.2s ease-out;
 }
-
 
 .dropdownMenu button {
     background: none;

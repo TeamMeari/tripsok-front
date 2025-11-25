@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { loadPaymentWidget, PaymentWidgetInstance } from "@tosspayments/payment-widget-sdk";
 import styles from "./PaymentPage.module.css";
-import TransparentHeader from "../components/header/TransparentHeader";
 import Button from "../components/common/Button/CommonBtn";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import ButtonTabBar from "../components/tabbar/ButtonTabBar";
 
 const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
 const customerKey = "customer_1234";
@@ -87,7 +87,6 @@ const PaymentPage: React.FC = () => {
 
     return (
         <div className={styles.container}>
-            <TransparentHeader type="auth" />
             <hr style={{ margin: 0 }} />
 
             <div className={styles.paymentPage}>
@@ -179,16 +178,17 @@ const PaymentPage: React.FC = () => {
             </div>
 
             {/* 결제 버튼 */}
-            <div className={styles.fixedBottomArea}>
-                <Button
-                    variant={isFormValid ? "primary" : "grayPrimary"}
-                    size="large"
-                    borderRadius="12px"
-                    onClick={handlePayment}
-                    disabled={!isFormValid}>
-                    {t("payButton")}
-                </Button>
-            </div>
+            <ButtonTabBar
+                Button={
+                    <Button
+                        variant={isFormValid ? "primary" : "grayPrimary"}
+                        size="large"
+                        onClick={handlePayment}
+                        disabled={!isFormValid}>
+                        {t("payButton")}
+                    </Button>
+                }
+            />
         </div>
     );
 };

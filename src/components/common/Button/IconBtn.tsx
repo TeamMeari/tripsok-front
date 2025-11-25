@@ -1,82 +1,37 @@
-import React, { useState, useRef, useEffect } from "react";
-import { ArrowLeft, Search } from "lucide-react";
-import { useTranslation } from "react-i18next";
+import React from "react";
+import { ArrowLeft, LucideIcon, Search } from "lucide-react";
 import styles from "./IconBtn.module.css";
-import GlobeIcon from "../../Icons/globeIcon";
-import { useNavigate } from "react-router-dom";
 
-type IconType = "search" | "arrow" | "globeIcon";
 type ColorType = "white" | "gray";
+type StyleType = "plain" | "shadow"
 
 interface IconButtonProps {
-    type: IconType;
+    Icon: LucideIcon;
+    styleType?: StyleType;
     color?: ColorType; // 기본값은 white
+    size?: number;
     onClick?: () => void;
 }
 
-const IconButton: React.FC<IconButtonProps> = ({ type, color = "white", onClick }) => {
-    const { i18n } = useTranslation();
-    const [showMenu, setShowMenu] = useState(false);
-    const menuRef = useRef<HTMLDivElement>(null);
-    const navigate = useNavigate();
-
-    // 글로브 클릭 시 언어 토글
-    const handleGlobeClick = () => {
-        setShowMenu((prev) => !prev);
-    };
-
-    // 언어 선택
-    const handleLanguageSelect = (lang: string) => {
-        i18n.changeLanguage(lang);
-        setShowMenu(false);
-    };
-
-    // 메뉴 외부 클릭 시 닫기
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-                setShowMenu(false);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
-
-    // 버튼 클릭 처리
-    const handleClick = () => {
-        if (type === "globeIcon") handleGlobeClick();
-        if (onClick) onClick();
-    };
+const IconButton: React.FC<IconButtonProps> = ({ Icon, color = "white", styleType = "plain", size = 29, onClick }) => {
+    const lineColor = color === 'white' ? "#ffffff" : color === 'gray' ? "#888888" : "#000000";
 
     return (
-        <div className={styles.iconWrapper} ref={menuRef}>
-            <button
-                className={`${styles.iconBtn} ${color === "gray" ? styles.gray : ""}`}
-                onClick={handleClick}
-            >
-                {type === "search" && <Search className={styles.icon} size={29} />}
-                {type === "arrow" && <ArrowLeft className={styles.icon} size={29} />}
-                {type === "globeIcon" && (
-                    <GlobeIcon
-                        className={styles.icon}
-                        size={29}
-                        color={color === "gray" ? "#888888" : "#ffffff"}
-                    />
-                )}
-            </button>
-
-            {/* 언어 선택 메뉴 */}
-            {showMenu && (
-                <div className={styles.languageMenu}>
-                    <div onClick={() => handleLanguageSelect("ko")}>한국어</div>
-                    <div onClick={() => handleLanguageSelect("en")}>English</div>
-                    <div onClick={() => handleLanguageSelect("cn")}>中文</div>
-                    <div onClick={() => handleLanguageSelect("ja")}>日本語</div>
-                </div>
-            )}
-        </div>
+        <button
+            className={`${styles.iconBtn} ${color === "gray" ? styles.gray : ""}`}
+            onClick={onClick}
+        >
+            <Icon className={`${styles.icon} ${styleType === "shadow" ? styles.shadow : ""}`} size={size} color={lineColor} />
+            {/* {type === "search" && <Search  size={29} className={styles.icon}/>}
+            {type === "arrow" && <ArrowLeft className={styles.icon} size={29} />}
+            {type === "globeIcon" && (
+                <GlobeIcon
+                    className={styles.icon}
+                    size={29}
+                    color={color === "gray" ? "#888888" : "#ffffff"}
+                />
+            )} */}
+        </button>
     );
 };
 

@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {
   QueryClient,
   QueryClientProvider,
@@ -13,7 +13,7 @@ import HeaderSelector from "./components/header/HeaderSelector";
 
 import MyPlan from "./pages/MyPlanPage";
 import MyPlanDetailPage from './pages/MyPlanDetail';
-
+import PlanCompletePage from './pages/PlanCompletePage';
 import CodePage from "./pages/signup/CodePage";
 import SignupCompletePage from "./pages/signup/CompletePage";
 import EmailPage from "./pages/signup/EmailPage";
@@ -35,6 +35,7 @@ import LikePage from "./pages/mypage/LikePage";
 import MyPage from "./pages/mypage/MyPage";
 import UsageHistoryPage from "./pages/mypage/UsageHistoryPage";
 import DocumentPage from "./pages/DocumentPage";
+import Layout from "./Layout";
 
 function App(): JSX.Element {
   const queryClient = new QueryClient();
@@ -48,52 +49,51 @@ function App(): JSX.Element {
     <div className="App">
       <div className="app-area">
         <BrowserRouter>
-          <QueryClientProvider client={queryClient}>
-          <HeaderSelector />
-          <div className="content-area">
-            <ZustandResetGuard />
+          <QueryClientProvider client={queryClient}>    
             <Routes>
-              <Route path="/" element={<MainPage />} />
-              <Route path="/login" element={<LoginPage />} />
+              <Route element={<Layout />}>
+                <Route path="/" element={<MainPage />} />
+                <Route path="/login" element={<LoginPage />} />
 
-              {/* 회원가입 */}
-              <Route path="/oauth2/callback" element={<OAuthCallbackPage />} />
-              <Route path="/signup/terms" element={<SignupTermsPage />} /> 
-              <Route path="/signup/privacy" element={<SignupPrivacyPage />} />
-              <Route path="/signup/email/1" element={<EmailPage />} />
-              <Route path="/signup/email/2" element={<CodePage />} />
-              <Route path="/signup/email/3" element={<EmailSignupPage />} />
-              <Route path="/signup/oauth2" element={<OAuthSignupPage />} />
-              
+                {/* 회원가입 */}
+                <Route path="/oauth2/callback" element={<OAuthCallbackPage />} />
+                <Route path="/signup/terms" element={<SignupTermsPage />} /> 
+                <Route path="/signup/privacy" element={<SignupPrivacyPage />} />
+                <Route path="/signup/email/1" element={<EmailPage />} />
+                <Route path="/signup/email/2" element={<CodePage />} />
+                <Route path="/signup/email/3" element={<EmailSignupPage />} />
+                <Route path="/signup/oauth2" element={<OAuthSignupPage />} />
+                
 
-              {/* 비밀번호 재설정 */}
-              <Route path="/password/reset/email" element={<PasswordResetEmailPage />} />
-              <Route path="/password/reset/code" element={<PasswordResetCodePage />} />
-              <Route path="/password/reset/new" element={<PasswordResetPage />} />
-              <Route path="/password/reset/complete" element={<PasswordResetCompletePage />} />
+                {/* 비밀번호 재설정 */}
+                <Route path="/password/reset/email" element={<PasswordResetEmailPage />} />
+                <Route path="/password/reset/code" element={<PasswordResetCodePage />} />
+                <Route path="/password/reset/new" element={<PasswordResetPage />} />
+                <Route path="/password/reset/complete" element={<PasswordResetCompletePage />} />
 
-              {/* 리뷰 */}
-              <Route path="/review/write" element={<ReviewFormPage />} />
+                {/* 리뷰 */}
+                <Route path="/review/write" element={<ReviewFormPage />} />
 
-              {/* 마이페이지 */}
-              <Route path="/my" element={<MyPage />} />
-              <Route path="/my/usage-history" element={<UsageHistoryPage />} />
-              <Route path="/my/like" element={<LikePage />} />
-              <Route path="/my/interest" element={<SignupCompletePage />} />
+                {/* 마이페이지 */}
+                <Route path="/my" element={<MyPage />} />
+                <Route path="/my/usage-history" element={<UsageHistoryPage />} />
+                <Route path="/my/like" element={<LikePage />} />
+                <Route path="/my/interest" element={<SignupCompletePage />} />
 
-              {/* 이용 약관 및 개인정보 수집 이용 */}
-              <Route path="/terms" element={<DocumentPage markdownPath="/termAndPrivacy/terms" titleKey="termsRequired"/>} /> 
-              <Route path="/privacy" element={<DocumentPage markdownPath="/termAndPrivacy/privacy" titleKey="privacyRequired"/>} />
+                {/* 이용 약관 및 개인정보 수집 이용 */}
+                <Route path="/terms" element={<DocumentPage markdownPath="/termAndPrivacy/terms" titleKey="termsRequired"/>} /> 
+                <Route path="/privacy" element={<DocumentPage markdownPath="/termAndPrivacy/privacy" titleKey="privacyRequired"/>} />
 
-              <Route path="/list" element={<ListPage />} />
-              <Route path="/content/:type/:id" element={<ContentPage />} />
-              <Route path="/myplan" element={<MyPlan />} />
-              <Route path="/myplan-detail" element={<MyPlanDetailPage/>}/>
-              <Route path="/payment" element={<PaymentPage/>}/>
-              <Route path="/success" element={<PaymentSuccessPage />} />
+                <Route path="/list" element={<ListPage />} />
+                <Route path="/content/:type/:id" element={<ContentPage />} />
+                <Route path="/myplan" element={<MyPlan />} />
+                <Route path="/myplan-detail" element={<MyPlanDetailPage/>}/>
+                 <Route path="/myplan-detail/:bookingId" element={<PlanCompletePage />} />
+                <Route path="/payment" element={<PaymentPage/>}/>
+                <Route path="/success" element={<PaymentSuccessPage />} />
+              </Route>
 
             </Routes>
-          </div>
           </QueryClientProvider>
         </BrowserRouter>
       </div>
@@ -102,21 +102,3 @@ function App(): JSX.Element {
 }
 
 export default App; 
-
-function ZustandResetGuard(): JSX.Element | null {
-  const location = useLocation();
-  const { reset } = usePasswordResetStore();
-  const wasInPasswordResetGroupRef = useRef<boolean>(false);
-
-  useEffect(() => {
-    // 비밀번호 재설정 라우트 그룹 여부를 명확히 표현
-    const inPasswordResetGroup = location.pathname.startsWith("/password/reset");
-    // 비밀번호 재설정 그룹에서 벗어나는 순간에만 reset
-    if (wasInPasswordResetGroupRef.current && !inPasswordResetGroup) {
-      reset();
-    }
-    wasInPasswordResetGroupRef.current = inPasswordResetGroup;
-  }, [location.pathname, reset]);
-
-  return null;
-}

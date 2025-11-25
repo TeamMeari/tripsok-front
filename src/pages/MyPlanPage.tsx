@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import Header from "../components/header/Header";
-import MenuApp from "../components/MenuApp";
+import MenuApp from "../components/tabbar/MenuApp";
 import Button from "../components/common/Button/CommonBtn";
 import styles from "./MyPlanPage.module.css";
 import { useTranslation } from "react-i18next";
@@ -200,8 +199,6 @@ export default function Page() {
     return (
         <div className={styles.Page}>
             <div className={styles.MyPlanPage}>
-                <Header useBackground={true} />
-
                 {showLoginModal && (
                     <div className={styles.guestContainer}>
                         <img src="/InfoIcon/taxi.svg" alt="Taxi" className={styles.image} />
@@ -211,7 +208,7 @@ export default function Page() {
                                 계획부터 예약까지<br/>
                                 간편하게 진행해요
                             </div>
-                            <Button variant="primary" size="large" borderRadius="12px"
+                            <Button variant="primary" size="large"
                                     onClick={() => navigate("/signup/email/1")}
                             >
                                 회원가입
@@ -231,7 +228,6 @@ export default function Page() {
                                 <Button
                                     variant="orangeOutline"
                                     size="large"
-                                    borderRadius="12px"
                                     onClick={handleLoadSavedPlan}
                                 >
                                   <span className={styles.savedButtonContent}>
@@ -257,7 +253,6 @@ export default function Page() {
                                                 <Button
                                                     variant="blackOutline"
                                                     size="large"
-                                                    borderRadius="12px"
                                                     style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 12px' }}
                                                 >
                                                     <span className={styles.pinBtn} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -298,7 +293,6 @@ export default function Page() {
                                             <Button
                                                 variant="blackOutline"
                                                 size="large"
-                                                borderRadius="12px"
                                                 style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 12px' }}
                                             >
                                                 <span className={styles.pinBtn} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -331,7 +325,6 @@ export default function Page() {
                             <Button
                                 variant="grayDashed"
                                 size="large"
-                                borderRadius="12px"
                                 onClick={handleStartTravel}
                             >
                                 <span className={styles.plusBtn}>
@@ -347,7 +340,6 @@ export default function Page() {
                             <Button
                                 variant={visitedPlaces.length > 0 || showSavedPlaces ? "primary" : "grayPrimary"}
                                 size="large"
-                                borderRadius="12px"
                                 onClick={handleViewPlanDetail}
                                 disabled={visitedPlaces.length === 0 && !showSavedPlaces}
                             >

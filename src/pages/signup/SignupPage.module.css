@@ -95,18 +95,6 @@
     align-items: center;
 }
 
-.buttonFixedTab {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: transparent;
-    padding: 0 24px 24px 24px;
-}
-
 .documentButton {
     display: flex;
     align-items: center;

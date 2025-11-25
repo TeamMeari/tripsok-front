@@ -3,6 +3,7 @@ import { Trans, useTranslation } from "react-i18next";
 import ValidationBtn from "../../components/common/Button/ValidationBtn";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import ButtonTabBar from "../../components/tabbar/ButtonTabBar";
 
 const PasswordResetCompletePage = () => {
     const { t } = useTranslation();
@@ -25,20 +26,21 @@ const PasswordResetCompletePage = () => {
     return (
         <div className={styles.page}>
             <div className={styles.step}>
-                <p className={styles.message} style={{ paddingBottom: "16px" }}>
+                <h2 className={styles.message} style={{ paddingBottom: "16px" }}>
                     <Trans i18nKey="passwordResetComplete"
                     values={{ name: nickname }}
                     components={{ br: <br />, span: <span /> }} />
-                </p>
-                <p className={styles.guide} style={{ color: "black"}}>{t("retryLoginGuide")}</p>
-                <div className={styles.buttonFixedTab}>
-                    <ValidationBtn
+                </h2>
+                <p className="caption">{t("retryLoginGuide")}</p>
+                <ButtonTabBar
+                    type="inTheAir"
+                    Button={<ValidationBtn
                         onClick={handleClickLogin}
                         isDisabled={false}
                     >
                         {t("login")}
-                    </ValidationBtn>
-                </div>
+                    </ValidationBtn>}
+                />
             </div>
         </div>
     );

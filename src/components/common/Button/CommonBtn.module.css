@@ -1,3 +1,5 @@
+@import url('../../../App.css');
+
 /* Button.module.css */
 .button {
     padding: 10px 20px;
@@ -9,7 +11,7 @@
 
 
 .primary {
-    background-color: #FF6B2C;
+    background-color: var(--primary-color);
     color: white;
     font-size: 18px;
     font-weight: bold;
@@ -26,11 +28,11 @@
 .orangeOutline {
     background-color: white;
     color: #111;
-    border: 1px solid #FF6B2C;
+    border: 1px solid var(--primary-color);
     font-size: 16px;
-    height: 56px;
     display: flex;
     align-items: center;
+    height: 56px;
 }
 
 .grayDashed {
@@ -38,9 +40,9 @@
     color: #111;
     border: 1.4px dashed #D9D9D9;
     font-size: 16px;
-    height: 56px;
     display: flex;
     align-items: center;
+    height: 56px;
 }
 
 .blackOutline {
@@ -49,9 +51,9 @@
     color: #000;
     cursor: pointer;
     transition: all 0.2s;
-    height: 56px;
     display: flex;
     align-items: center;
+    height: 56px;
 }
 
 .blackOutline:hover {
@@ -72,8 +74,17 @@
     align-items: center;
     justify-content: center;
     border: none;
+    height: 56px;
 }
 
 .grayPrimary:hover {
     background-color: #b3b3b3;
+}
+
+.disabled {
+    background-color: #D9D9D9;
+    color: #666666;
+    font-size: 18px;
+    font-weight: bold;
+    height: 56px;
 }
