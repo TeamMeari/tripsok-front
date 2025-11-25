@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import MenuApp from "../components/MenuApp";
+import MenuApp from "../components/tabbar/MenuApp";
 import Button from "../components/common/Button/CommonBtn";
 import styles from "./MyPlanPage.module.css";
 import { useTranslation } from "react-i18next";

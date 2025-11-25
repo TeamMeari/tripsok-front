@@ -2,7 +2,7 @@
 import React from 'react';
 import styles from './CommonBtn.module.css';
 
-type ButtonVariant = 'primary' |'grayPrimary'| 'secondary' | 'orangeOutline' | 'grayDashed' | 'blackOutline';
+type ButtonVariant = 'primary' |'grayPrimary'| 'secondary' | 'orangeOutline' | 'grayDashed' | 'blackOutline' | 'disabled';
 type PrimaryButtonSize = 'small' | 'large' | 'mini'; // primary 전용 width 옵션
 type ButtonRadius = 'medium' | 'large';
 
@@ -11,7 +11,8 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     size?: PrimaryButtonSize;       // primary 버튼만 사용
     radius?: ButtonRadius;
     children: React.ReactNode;
-    onClick?: () => void
+    onClick?: () => void;
+    disabled?: boolean;
     isLoading?: boolean;
 }
 
@@ -22,6 +23,7 @@ const Button: React.FC<ButtonProps> = ({
         children,
         style,
         onClick,
+        disabled = false,
         isLoading,
         ...props
     }) => {
@@ -40,10 +42,10 @@ const Button: React.FC<ButtonProps> = ({
     return (
         <div className={styles.commonBtn} onClick={onClick}>
             <button
-                className={`${styles.button} ${styles[variant]}`}
+                className={`${styles.button} ${styles[disabled ? 'disabled' : variant]}`}
                 style={{width, borderRadius, ...style}}
                 {...props}
-                disabled={isLoading}
+                disabled={disabled || isLoading}
             >
                 {children}
             </button>

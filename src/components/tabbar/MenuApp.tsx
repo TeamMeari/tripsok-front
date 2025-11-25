@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "./MenuApp.module.css";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import TabBar from "./TabBar";
 
 interface MenuItem {
     key: string; // i18n 키
@@ -48,7 +49,12 @@ const MenuApp: React.FC<MenuAppProps> = ({ defaultIndex = 0 }) => {
     };
 
     return (
-        <div className={styles.menuContainer}>
+        <TabBar
+            style={{
+                justifyContent: 'space-around',
+                alignItems: 'center',
+            }}
+        >
             {menuItems.map((item, index) => (
                 <div
                     key={index}
@@ -69,7 +75,7 @@ const MenuApp: React.FC<MenuAppProps> = ({ defaultIndex = 0 }) => {
                     </span>
                 </div>
             ))}
-        </div>
+        </TabBar>
     );
 };
 

@@ -7,6 +7,7 @@ import ValidationBtn from "../../components/common/Button/ValidationBtn";
 import { useApi } from "../../hooks/useApi";
 import { useNavigate, useLocation } from "react-router-dom";
 import { usePasswordResetStore } from "../../stores/passwordResetStore";
+import ButtonTabBar from "../../components/tabbar/ButtonTabBar";
 
 const PasswordResetPage = () => {
     const { t } = useTranslation();
@@ -85,14 +86,17 @@ const PasswordResetPage = () => {
                         </div>
                     )}
 
-                    <div className={styles.buttonFixedTab}>
-                        <ValidationBtn
+                    <ButtonTabBar
+                        type="inTheAir"
+                        Button={
+                            <ValidationBtn
                             isDisabled={password === "" || passwordConfirm === "" || Boolean(passwordError) || Boolean(passwordConfirmError) || isLoading}
                             onClick={handlePasswordReset}
-                        >
-                            {t("passwordReset")}
-                        </ValidationBtn>
-                    </div>
+                            >
+                                {t("passwordReset")}
+                            </ValidationBtn>
+                        }
+                    />
                 </div>
             </div>
         </div>

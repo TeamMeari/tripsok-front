@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import KakaoMap from "../components/KakaoMap";
 import styles from "./PlanCompletePage.module.css";
-import TransparentHeader from "../components/header/TransparentHeader";
 import { useApi } from "../hooks/useApi";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -11,6 +10,7 @@ import DateIcon from "/public/InfoIcon/date.svg";
 import FlagIcon from "/public/InfoIcon/flag.svg";
 import StartTimeIcon from "/public/InfoIcon/starttimeIcon.svg";
 import Button from "../components/common/Button/CommonBtn";
+import ButtonTabBar from "../components/tabbar/ButtonTabBar";
 
 interface BookingSpot {
     placeId: number;
@@ -94,8 +94,6 @@ export default function PlanCompletePage() {
 
     return (
         <div style={{ height: "100vh", position: "relative" }}>
-            <TransparentHeader type="auth" fixed onBackClick={() => navigate(-1)} />
-
             <div style={{ height: "100%", width: "100%" }}>
                 <KakaoMap locations={mapLocations} width="100%" height="100%" />
             </div>
@@ -211,25 +209,25 @@ export default function PlanCompletePage() {
                             </div>
 
                             {/* 하단 버튼 */}
-                            <div className={styles.fixedBottomArea}>
+                            <ButtonTabBar
+                                Button={
+                                    <Button  variant="primary"
+                                        size="large"
 
-                                <Button  variant="primary"
-                                         size="large"
-                                         borderRadius="12px"
-
-                                         onClick={() => {
-                                             if (bookingDetail.status === "COMPLETED") {
-                                                 navigate("/review/write");  // 후기 작성
-                                             } else {
-                                                 alert(t("booking.contactCenter")); // 고객센터 문의
-                                             }
-                                         }}
-                                >
-                                    {bookingDetail.status === "COMPLETED"
-                                        ? t("booking.writeReview")
-                                        : t("booking.contactCenter")}
-                                </Button>
-                            </div>
+                                        onClick={() => {
+                                            if (bookingDetail.status === "COMPLETED") {
+                                                navigate("/review/write");  // 후기 작성
+                                            } else {
+                                                alert(t("booking.contactCenter")); // 고객센터 문의
+                                            }
+                                        }}
+                                    >
+                                        {bookingDetail.status === "COMPLETED"
+                                            ? t("booking.writeReview")
+                                            : t("booking.contactCenter")}
+                                    </Button>
+                                }
+                            />
                         </div>
                     </div>
                 )}

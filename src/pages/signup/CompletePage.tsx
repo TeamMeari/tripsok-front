@@ -8,6 +8,7 @@ import { Tag } from "../../types/Tag";
 import styles from "./SignupPage.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import useAuthStore from "../../stores/authStore";
+import ButtonTabBar from "../../components/tabbar/ButtonTabBar";
 
 const SignupCompletePage = () => {
   const navigate = useNavigate();
@@ -138,13 +139,16 @@ const SignupCompletePage = () => {
             </div>
           )}
         </div>
-        <div className={styles.buttonFixedTab}>
-          <Link to="/">
-            <Button size="large" disabled={selectedIds.size === 0}>
-              {t("home")}
-            </Button>
-          </Link>
-        </div>
+        <ButtonTabBar
+          type='inTheAir'
+          Button={
+            <Link to="/">
+              <Button size="large" disabled={selectedIds.size === 0}>
+                {t("home")}
+              </Button>
+            </Link>
+          }
+        />
       </div>
     </div>
   );

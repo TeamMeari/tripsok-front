@@ -4,6 +4,7 @@ import styles from "./SuccessPage.module.css";
 import Button from "../components/common/Button/CommonBtn";
 import { useTranslation } from "react-i18next";
 import { useApi } from "../hooks/useApi";
+import ButtonTabBar from "../components/tabbar/ButtonTabBar";
 
 const PaymentSuccessPage: React.FC = () => {
     const { t } = useTranslation();
@@ -110,15 +111,17 @@ const PaymentSuccessPage: React.FC = () => {
                 </div>
             </div>
 
-            <div className={styles.fixedBottomArea}>
-                <Button
-                    variant="primary"
-                    size="large"
-                    onClick={() => (window.location.href = "/")}
-                >
-                    메인으로 이동
-                </Button>
-            </div>
+            <ButtonTabBar
+                Button={
+                    <Button
+                        variant="primary"
+                        size="large"
+                        onClick={() => (window.location.href = "/")}
+                    >
+                        메인으로 이동
+                    </Button>
+                }
+            />
         </div>
     );
 };

@@ -5,6 +5,7 @@ import { useSignupStore } from "../../stores/signupStores";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
+import ButtonTabBar from "../../components/tabbar/ButtonTabBar";
 
 const TermsPage = () => {
     const { t, i18n } = useTranslation();
@@ -34,9 +35,10 @@ const TermsPage = () => {
                 <p className={styles.documentContent}>
                     <ReactMarkdown>{content}</ReactMarkdown>
                 </p>
-                <div className={styles.buttonFixedTab}>
-                    <ValidationBtn onClick={onClickAgree} isDisabled={false}>{t("agree")}</ValidationBtn>
-                </div>
+                <ButtonTabBar
+                    type="inTheAir"
+                    Button={<ValidationBtn onClick={onClickAgree} isDisabled={false}>{t("agree")}</ValidationBtn>}
+                />
             </div>
         </div>
     );

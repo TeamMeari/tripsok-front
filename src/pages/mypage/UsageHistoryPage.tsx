@@ -2,8 +2,7 @@ import styles from './MyPage.module.css';
 import { Booking } from "../../types/booking";
 import { useTranslation } from 'react-i18next';
 import BookingCard from '../../components/feature/BookingCard';
-import Button from '../../components/common/Button/CommonBtn';
-import MenuApp from '../../components/MenuApp';
+import MenuApp from '../../components/tabbar/MenuApp';
 import { useApi } from '../../hooks/useApi';
 import { useEffect, useState } from 'react';
 

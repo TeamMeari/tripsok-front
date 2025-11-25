@@ -4,6 +4,7 @@ import styles from "./PaymentPage.module.css";
 import Button from "../components/common/Button/CommonBtn";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import ButtonTabBar from "../components/tabbar/ButtonTabBar";
 
 const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
 const customerKey = "customer_1234";
@@ -177,15 +178,17 @@ const PaymentPage: React.FC = () => {
             </div>
 
             {/* 결제 버튼 */}
-            <div className={styles.fixedBottomArea}>
-                <Button
-                    variant={isFormValid ? "primary" : "grayPrimary"}
-                    size="large"
-                    onClick={handlePayment}
-                    disabled={!isFormValid}>
-                    {t("payButton")}
-                </Button>
-            </div>
+            <ButtonTabBar
+                Button={
+                    <Button
+                        variant={isFormValid ? "primary" : "grayPrimary"}
+                        size="large"
+                        onClick={handlePayment}
+                        disabled={!isFormValid}>
+                        {t("payButton")}
+                    </Button>
+                }
+            />
         </div>
     );
 };
